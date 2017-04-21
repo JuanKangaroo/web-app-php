@@ -1,0 +1,6 @@
+/vendor
+/config/app.php
+composer.phar
+composer.lock
+composer.back
+composer.json.dev

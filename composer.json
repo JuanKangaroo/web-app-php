@@ -1,0 +1,38 @@
+{
+    "name": "kangaroorewards/web-app-php",
+    "description": "Kangaroo Rewards API - App example",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Valentin Ursuleac",
+            "email": "ursuleacv@gmail.com",
+            "homepage": "http://valnet.ca",
+            "role": "Developer"
+        }
+    ],
+    "keywords": [
+        "oauth",
+        "rest api",
+        "Kangaroo Rewards",
+        "Kangaroo",
+        "loyalty"
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "ursuleacv/wallaby": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "c:/MAMP/htdocs/test.dev/wallaby",
+            "options": {
+                "symlink": false
+            }
+        }
+    ]
+}
