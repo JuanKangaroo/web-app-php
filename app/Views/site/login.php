@@ -25,6 +25,16 @@
                     <button class="btn btn-primary btn-block btn-lg" id="login__btn"> Log In </button>
                 </div>
             </form>
+
+            <div class="text-center">
+                <a href="">Having trouble logging in?</a>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <a href="/site/register" class="btn btn-secondary btn-block btn-lg">Register</a>
+            </div>
         </div>
     </div>
 </div>

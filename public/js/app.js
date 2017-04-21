@@ -235,15 +235,18 @@ Storage.prototype.getObject = function(key) {
     };
 
     App.redirectIfAuthenticated = function() {
-        var redirectTo =  App.config.appBaseUrl + App.config.appHomeUrl;
+        var redirectToHome =  App.config.appBaseUrl + App.config.appHomeUrl;
+        var redirectToRegister =  App.config.appBaseUrl + App.config.appRegisterUrl;
         var currentUrl = top.location.href;
 
         currentUrl = currentUrl.replace(/\/$/, "");
 
+        console.log('currentUrl', currentUrl, 'App.config.appHomeUrl', redirectToHome);
+
         // if (App.isAuthenticated() && currentUrl != redirectTo) {
         //     location.href = redirectTo;
         // } else 
-        if(!App.isAuthenticated() && currentUrl != App.config.appBaseUrl) {
+        if(!App.isAuthenticated() && !$.inArray(currentUrl, [redirectToHome, redirectToRegister ])) {
             location.href = App.config.appBaseUrl;
         }
     };
