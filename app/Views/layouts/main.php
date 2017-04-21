@@ -25,7 +25,9 @@
     <?php $config = require_once ROOT . '/config/app.php'; ?>
 
     <header class="header">
-        <h1 class="header__title"><?php echo $config['appName']; ?></h1>
+        <h1 class="header__title">
+            <a href="/"><?php echo $config['appName']; ?></a>
+        </h1>
         <!-- <button id="butRefresh" class="header__refresh" aria-label="Refresh"></button> -->
     </header>
     <div id="app" class="main">
