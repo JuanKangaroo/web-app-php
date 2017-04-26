@@ -3,8 +3,10 @@
 ?>
 
 <div class="container-fluid pt-5">
-    <div class="row justify-content-md-center">
-        <h2>Log In</h2>
+    <div class="row justify-content-md-center pb-2">
+        <h3>
+            <img src="<?php echo config('logoPath'); ?>" class="d-inline" width="35px">
+        </h3>
     </div>
     <div class="row justify-content-md-center">
         <div class="col-12 col-md-6 col-lg-4">
@@ -12,7 +14,7 @@
                 <div class="form-group">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i></span>
-                        <input id="email" type="email" class="form-control form-control-lg" name="email" value="" placeholder="E-Mail Address" required="" autofocus="">
+                        <input id="email" type="email" class="form-control form-control-lg" name="email" value="" placeholder="Email" required="" autofocus="">
                     </div>
                 </div>
                 <div class="form-group ">
