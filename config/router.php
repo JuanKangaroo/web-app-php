@@ -1,6 +1,6 @@
 <?php
     return [
-        'baseAction' => 'login',
+        'baseAction' => 'index',
         'baseController' => 'site',
         'errorHandler' => 'site/error',
         'routes' => '^(?<controller>[a-z-]+)?/?(?<action>[a-z-]+)?/?(?<parameter>[a-z0-9/-]+)?$',

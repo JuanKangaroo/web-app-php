@@ -26,26 +26,37 @@
         var config = <?php echo json_encode($config) ?>
     </script>
 
-    <nav class="navbar navbar-light bg-faded">
-        <a class="navbar-brand" href="#">
+    <nav class="navbar navbar-toggleable-md fixed-top navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="/">
             <img src="<?php echo $config['logoPath'] ?>" width="30" height="30" class="d-inline-block align-top" alt="">
-            <?php echo $config['appName'] ?>
+            <?php echo $config['appName']; ?>
         </a>
-        <ul class="nav justify-content-end">
-            <li class="nav-item">
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
                 <div class=" dropdown">
-                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbar_user_profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Profile
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar_user_profile">
                         <a class="dropdown-item" href="#">Action</a>
                         <a class="dropdown-item" href="#">Another action</a>
                         <a class="dropdown-item" href="#" id="logout">Log Out</a>
                     </div>
                 </div>
-            </li>
-        </ul>
+            </form>
+        </div>
     </nav>
+
     <div id="app" class="main">
         <?= $content?>
     </div>

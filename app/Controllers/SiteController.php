@@ -29,11 +29,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        return $this->render('site/login');
+        
         // $users = $this->model->findAll();
 
-        return $this->render('site/index', [
-            'users' => ['John', 'Max'],
-        ]);
+        // return $this->render('site/index', [
+        //     'users' => ['John', 'Max'],
+        // ]);
     }
 
     /**
