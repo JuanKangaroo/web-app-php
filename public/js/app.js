@@ -32,12 +32,10 @@ Storage.prototype.getObject = function(key) {
         var self = this;
         var headers = {};
 
-        //Do not include Authorization header for user_login
-        if (options.action != 'user_login') {
-            var token = localStorage.getObject('user_token');
-            headers = App.config.headers;
-            headers.Authorization = token.token_type +' '+ token.access_token;
-        }
+        var token = localStorage.getObject('user_token');
+        headers = App.config.headers;
+        //append access token to the headers
+        headers.Authorization = token.token_type +' '+ token.access_token;
 
         //merge default options with options passed
         self.options = $.extend({
@@ -101,6 +99,7 @@ Storage.prototype.getObject = function(key) {
     App.log = function (level, funcName, logData) {
         $.post(App.config.loggerUrl, { level: level, funcName: funcName, data: logData });
     }
+
     /*****************************************************************************
      *
      * Event listeners for UI elements
@@ -108,6 +107,7 @@ Storage.prototype.getObject = function(key) {
      ****************************************************************************/
 
     $(document).on('click', '#login__btn', function(e) {
+        e.preventDefault();
         App.userLogin();
     });
 
@@ -161,19 +161,31 @@ Storage.prototype.getObject = function(key) {
         params.append('client_id', App.config.api.client_id);
         params.append('client_secret', App.config.api.client_secret);
         params.append('scope', App.config.api.scope);
+        params.append('application_key', App.config.headers['X-Application-Key']);
 
-        App.client.request({ 
-            url: App.config.api.baseUrl + App.config.api.endpoints.tokenUrl, 
+        axios({
             method: 'POST',
-            action: 'user_login',
-            params: params,
-            headers: {}
+            url: App.config.api.endpoints.tokenUrl,
+            data: params,
+        }).then(response => {
+            // console.log(response.data);
+            App.handleResponse(response.data, {action: 'user_login'});
+            App.hideSpinner();
+        })
+        .catch (error => {
+            // List errors on response...
+            console.log(error); console.log(error.response);
+            
+            App.log('error', App.config.appName, JSON.stringify(error));
+
+            App.hideSpinner();
         });
+
     };
 
     App.getAccount = function () {
         App.client.request({ 
-            url: App.config.api.baseUrl + App.config.api.endpoints.me, 
+            url: App.config.api.endpoints.me, 
             method: 'GET',
             action: 'api_me',
             params: {},

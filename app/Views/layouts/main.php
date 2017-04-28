@@ -30,8 +30,8 @@
         <h1 class="header__title">
             <a href="/"><?php echo config('appName'); ?></a>
         </h1>
-        <!-- <button id="butRefresh" class="header__refresh" aria-label="Refresh"></button> -->
     </header>
+    
     <div id="app" class="main">
         <?= $content?>
     </div>
@@ -42,7 +42,6 @@
         </svg>
     </div>
 
-    <script> var config = <?php echo json_encode($config) ?> </script>
     <script src="/js/jquery-3.2.1.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/handlebars-v4.0.5.js"></script>

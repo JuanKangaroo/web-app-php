@@ -8,6 +8,10 @@ error_reporting(-1);
 
 define('ROOT', __DIR__);
 
+$config = require_once __DIR__ . '/config/app.php';
+
+global $config;
+
 if (!function_exists('config')) {
     /**
      * Get / set the specified configuration value.
@@ -19,10 +23,8 @@ if (!function_exists('config')) {
      * @return mixed
      */
     function config($key = null, $default = null)
-    {
-        $config = require __DIR__ . '/config/app.php';
-        
-        return $config[$key];
+    {   
+        return $GLOBALS['config'][$key];
     }
 }
 
