@@ -18,6 +18,7 @@ Storage.prototype.getObject = function(key) {
         spinner: document.querySelector('.loader'),
         // container: document.querySelector('.main'),
         $loginForm: $('form.login'),
+        $signupForm: $('form.signup'),
         client: new AjaxRequest(),
         config: config || {},
     };
@@ -108,7 +109,15 @@ Storage.prototype.getObject = function(key) {
 
     $(document).on('click', '#login__btn', function(e) {
         e.preventDefault();
-        App.userLogin();
+        var username = App.$loginForm.find('#email').val();
+        var password = App.$loginForm.find('#password').val();
+
+        App.userLogin(username, password);
+    });
+
+    $(document).on('click', '#signup_btn', function(e) {
+        e.preventDefault();
+        App.userSignup();
     });
 
     $(document).on('click', '#logout', function(e) {
@@ -153,10 +162,10 @@ Storage.prototype.getObject = function(key) {
         App.spinner.removeAttribute('hidden');
     };
 
-    App.userLogin = function () {
+    App.userLogin = function (username, password) {
         var params = new URLSearchParams();
-        params.append('username', App.$loginForm.find('#email').val());
-        params.append('password', App.$loginForm.find('#password').val());
+        params.append('username', username);
+        params.append('password', password);
         params.append('grant_type', App.config.api.grant_type);
         params.append('client_id', App.config.api.client_id);
         params.append('client_secret', App.config.api.client_secret);
@@ -171,8 +180,7 @@ Storage.prototype.getObject = function(key) {
             // console.log(response.data);
             App.handleResponse(response.data, {action: 'user_login'});
             App.hideSpinner();
-        })
-        .catch (error => {
+        }).catch (error => {
             // List errors on response...
             console.log(error); console.log(error.response);
             
@@ -180,7 +188,36 @@ Storage.prototype.getObject = function(key) {
 
             App.hideSpinner();
         });
+    };
 
+    App.userSignup = function () {
+        var params = {
+            'email': App.$signupForm.find('#email').val(),
+            'pin_code': App.$signupForm.find('#password').val(),
+        };
+
+        axios({
+            method: 'POST',
+            url: App.config.api.endpoints.createUser,
+            data: params,
+            headers: { 'X-Application-Key': App.config.headers['X-Application-Key']},
+        }).then(response => {
+            console.log(response.data);
+            location.href = App.config.appBaseUrl + App.config.appLoginUrl;
+            // App.userLogin(params);
+            App.hideSpinner();
+        }).catch (error => {
+            // List errors on response...
+            console.log(error); console.log(error.response);
+            
+            if (error.response.status == 422) {
+                console.log(error.response.data.email.length);
+
+            }
+            App.log('error', App.config.appName, JSON.stringify(error));
+
+            App.hideSpinner();
+        });
     };
 
     App.getAccount = function () {
