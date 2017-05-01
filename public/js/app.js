@@ -19,6 +19,7 @@ Storage.prototype.getObject = function(key) {
         // container: document.querySelector('.main'),
         $loginForm: $('form.login'),
         $signupForm: $('form.signup'),
+        $message: $('#message__container'),
         client: new AjaxRequest(),
         config: config || {},
     };
@@ -131,38 +132,21 @@ Storage.prototype.getObject = function(key) {
      ****************************************************************************/
 
     // Toggles the visibility of the add new city dialog.
-    App.toggleAddDialog = function(visible) {
-        if (visible) {
-            App.addDialog.classList.add('dialog-container--visible');
-        } else {
-            App.addDialog.classList.remove('dialog-container--visible');
-        }
-    };
+    // App.toggleAddDialog = function(visible) {
+    //     if (visible) {
+    //         App.addDialog.classList.add('dialog-container--visible');
+    //     } else {
+    //         App.addDialog.classList.remove('dialog-container--visible');
+    //     }
+    // };
 
     /*****************************************************************************
      *
-     * Methods for dealing with the model
+     * Methods for dealing with the API (API Requests)
      *
      ****************************************************************************/
 
-    /*
-     * Gets a template
-     */
-    App.getTemplate = function(url) {
-        $.get(url, function(template) {
-            $('#target').html(template);
-        });
-    };
-
-    App.hideSpinner = function() {
-        App.spinner.setAttribute('hidden', true);
-    };
-
-    App.showSpinner = function() {
-        App.spinner.removeAttribute('hidden');
-    };
-
-    App.userLogin = function (username, password) {
+     App.userLogin = function (username, password) {
         var params = new URLSearchParams();
         params.append('username', username);
         params.append('password', password);
@@ -174,7 +158,7 @@ Storage.prototype.getObject = function(key) {
 
         axios({
             method: 'POST',
-            url: App.config.api.endpoints.tokenUrl,
+            url: App.config.api.endpoints.token,
             data: params,
         }).then(response => {
             // console.log(response.data);
@@ -182,9 +166,13 @@ Storage.prototype.getObject = function(key) {
             App.hideSpinner();
         }).catch (error => {
             // List errors on response...
-            console.log(error); console.log(error.response);
+            // console.log(error); console.log(error.response);
+
+            if (error.response.status == 401) {
+                App.alert('NOT_OK', error.response.data.message);
+            }
             
-            App.log('error', App.config.appName, JSON.stringify(error));
+            App.log('error', 'App.userSignup: ' + App.config.appName, JSON.stringify(error));
 
             App.hideSpinner();
         });
@@ -208,13 +196,15 @@ Storage.prototype.getObject = function(key) {
             App.hideSpinner();
         }).catch (error => {
             // List errors on response...
-            console.log(error); console.log(error.response);
+            // console.log(error); console.log(error.response);
             
             if (error.response.status == 422) {
-                console.log(error.response.data.email.length);
-
+                if (error.response.data.email.length > 0) {
+                    App.alert('NOT_OK', error.response.data.email[0]);
+                }
             }
-            App.log('error', App.config.appName, JSON.stringify(error));
+
+            App.log('error', 'App.userSignup: ' + App.config.appName, JSON.stringify(error));
 
             App.hideSpinner();
         });
@@ -227,6 +217,29 @@ Storage.prototype.getObject = function(key) {
             action: 'api_me',
             params: {},
         });
+    };
+
+    /*****************************************************************************
+     *
+     * Methods for dealing with the UI and App logic
+     *
+     ****************************************************************************/
+
+    /*
+     * Gets a template
+     */
+    App.getTemplate = function(url) {
+        $.get(url, function(template) {
+            $('#target').html(template);
+        });
+    };
+
+    App.hideSpinner = function() {
+        App.spinner.setAttribute('hidden', true);
+    };
+
+    App.showSpinner = function() {
+        App.spinner.removeAttribute('hidden');
     };
 
     App.userLogout = function () {
@@ -242,22 +255,18 @@ Storage.prototype.getObject = function(key) {
     };
 
     App.alert = function(type, message, delayTime) {
-        var delay = 3000;
+        var delay = 4000;
         var alertContent = '<div class="alert-content"><span>' + message + '</span></div>';
 
         if (typeof delayTime != 'undefined') delay = delayTime;
 
-        if (type == 'NOT_OK')
-            $('.errormessage').html(alertContent).fadeIn();
-        else if (type == 'OK')
-            $('.successmessage').html(alertContent).fadeIn();
+        if (type == 'NOT_OK') {
+            App.$message.find('.message__error').html(alertContent).fadeIn().delay(delay).fadeOut();
+        } else if (type == 'OK') {
+            App.$message.find('.message__success').html(alertContent).fadeIn().delay(delay).fadeOut();
+        }
 
         App.scrollTop();
-
-        window.setTimeout(function() {
-            $('.errormessage').fadeOut();
-            $('.successmessage').fadeOut();
-        }, delay);
     }
 
     App.scrollTop = function() {
@@ -274,8 +283,7 @@ Storage.prototype.getObject = function(key) {
         return false;
     };
 
-    App.init = function(source) {
-        // console.log('App init:', source);
+    App.init = function() {
         App.hideSpinner();
 
         this.redirectIfAuthenticated();
@@ -288,7 +296,7 @@ Storage.prototype.getObject = function(key) {
         var redirectToRegister =  App.config.appBaseUrl + App.config.appRegisterUrl;
         var currentUrl = top.location.href;
 
-        currentUrl = currentUrl.replace(/\/$/, "");
+        currentUrl = currentUrl.replace(/\/$/, "");//remove the last / from url
 
         console.log('currentUrl', currentUrl, 'App.config.appHomeUrl', redirectToHome);
 
@@ -304,13 +312,14 @@ Storage.prototype.getObject = function(key) {
         var redirectTo =  App.config.appBaseUrl + App.config.appHomeUrl;
         var currentUrl = top.location.href;
 
-        currentUrl = currentUrl.replace(/\/$/, "");
+        currentUrl = currentUrl.replace(/\/$/, "");//remove the last / from url
 
         // console.log('currentUrl', currentUrl, 'App.config.appHomeUrl', App.config.appHomeUrl);
         if (currentUrl == App.config.appBaseUrl + App.config.appHomeUrl) {
-            console.log('home page');
+            //home page
             App.getAccount();
         } else if (currentUrl == App.config.appBaseUrl && App.isAuthenticated()) {
+            //login page and user is authenticated
             location.href = App.config.appBaseUrl + App.config.appHomeUrl;
         }
     };
@@ -321,8 +330,7 @@ Storage.prototype.getObject = function(key) {
      *
      ************************************************************************/
 
-    // TODO add startup code here
-    App.init('load');
+    App.init();
 
 })(jQuery);
 

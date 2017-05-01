@@ -23,6 +23,8 @@ class HomeController extends Controller
      */
     public function actionIndex()
     {
+        $this->title = config('appName') .' - ' . 'Home';
+        
         return $this->render('home/index', [
             
         ]);

@@ -29,6 +29,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $this->title = config('appName');
+
         return $this->render('site/login');
         
         // $users = $this->model->findAll();
@@ -45,6 +47,8 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        $this->title = config('appName') .' - ' . 'Login';
+
         // if (isset($_POST['username'], $_POST['password'])) { }
         return $this->render('site/login');
     }
@@ -56,6 +60,7 @@ class SiteController extends Controller
      */
     public function actionRegister()
     {
+        $this->title = config('appName') .' - ' . 'Register';
         return $this->render('site/signup');
     }
 
@@ -66,6 +71,8 @@ class SiteController extends Controller
      */
     public function actionError()
     {
+        $this->title = config('appName') .' - ' . 'Error';
+
         return $this->render('site/error', ['code' => 404]);
     }
 }

@@ -1,7 +1,3 @@
-<?php
-    $this->title = 'Register';
-?>
-
 <div class="container-fluid pt-3" style="margin: 100px auto 0;">
     <div class="row justify-content-md-center">
         <h2><img src="<?php echo config('logoPath'); ?>" class="d-inline" width="35px"></h2>
