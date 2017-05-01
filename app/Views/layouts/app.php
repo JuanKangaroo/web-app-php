@@ -57,6 +57,12 @@
         </div>
     </nav>
 
+    <div class="message__container--fixed" id="message__container">
+        <div class="c-message message__success" style="display: none"></div>
+        <div class="c-message message__error" style="display: none"></div>
+        <div class="c-message message__info" style="display: none"></div>
+    </div>
+    
     <div id="app" class="main">
         <?= $content?>
     </div>

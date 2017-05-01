@@ -25,12 +25,34 @@
     <script> <?php $config = require ROOT . '/config/app.php'; ?>
         var config = <?php echo json_encode($config) ?>
     </script>
+
+    <nav class="navbar navbar-toggleable-md fixed-top navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <a class="navbar-brand" href="/">
+            <img src="<?php echo $config['logoPath'] ?>" width="30" height="30" class="d-inline-block align-top" alt="">
+            <?php echo config('appName'); ?>
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Contact <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <a href="/site/login" class="btn btn-primary"> Log In</a>
+            </form>
+        </div>
+    </nav>
     
-    <header class="header">
+    <!-- <header class="header">
         <h1 class="header__title">
-            <a href="/"><?php echo config('appName'); ?></a>
+            <a href="/"><?php //echo config('appName'); ?></a>
         </h1>
-    </header>
+    </header> -->
 
     <div class="message__container--fixed" id="message__container">
         <div class="c-message message__success" style="display: none"></div>

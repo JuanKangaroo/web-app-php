@@ -125,6 +125,7 @@ Storage.prototype.getObject = function(key) {
         App.userLogout();
     });
 
+
     /*****************************************************************************
      *
      * Methods to update/refresh the UI
@@ -335,7 +336,7 @@ Storage.prototype.getObject = function(key) {
 })(jQuery);
 
 
-// $( document ).ready(function(){
-//     // console.log('Ready');
-//     App.ready();
-// });
+$( document ).ready(function(){
+    // console.log('Ready');
+    // App.ready();
+});

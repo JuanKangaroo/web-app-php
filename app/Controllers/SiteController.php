@@ -29,9 +29,9 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $this->title = config('appName');
+        $this->title = config('appName') .' - ' . 'Loyalty Program';
 
-        return $this->render('site/login');
+        return $this->render('site/index');
         
         // $users = $this->model->findAll();
 
