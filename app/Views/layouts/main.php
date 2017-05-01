@@ -32,14 +32,17 @@
         </button>
 
         <a class="navbar-brand" href="/">
-            <img src="<?php echo $config['logoPath'] ?>" width="30" height="30" class="d-inline-block align-top" alt="">
-            <?php echo config('appName'); ?>
+            <img src="<?php echo $config['logoPath'] ?>" height="40" class="d-inline-block align-top" alt="">
+            <?php //echo config('appName'); ?>
         </a>
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Contact <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#">Locations <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Contact Us</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">

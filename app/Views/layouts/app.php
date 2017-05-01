@@ -32,8 +32,8 @@
         </button>
 
         <a class="navbar-brand" href="/">
-            <img src="<?php echo $config['logoPath'] ?>" width="30" height="30" class="d-inline-block align-top" alt="">
-            <?php echo $config['appName']; ?>
+            <img src="<?php echo $config['logoPath'] ?>" height="40" class="d-inline-block align-top" alt="">
+            <?php //echo $config['appName']; ?>
         </a>
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">

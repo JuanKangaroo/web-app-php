@@ -1,6 +1,6 @@
 <div class="container-fluid pt-3" style="margin: 100px auto 0;">
     <div class="row justify-content-md-center">
-        <h2><img src="<?php echo config('logoPath'); ?>" class="d-inline" width="35px"></h2>
+        <h2><img src="<?php echo config('logoPath'); ?>" class="d-inline" height="45px"></h2>
     </div>
     <div class="row justify-content-md-center">
         <div class="col-12 col-md-6 col-lg-4">
