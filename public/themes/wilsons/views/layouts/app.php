@@ -71,7 +71,10 @@
         </svg>
     </div>
 
-    <?php require_once '/../templates/userProfile.tpl' ?>
+    <?php
+        require_once '/../templates/userProfile.tpl';
+        require_once '/../templates/businesses.tpl';
+    ?>
     
     <script src="/themes/wilsons/assets/js/jquery-3.2.1.min.js"></script>
     <script src="/js/axios.min.js"></script>

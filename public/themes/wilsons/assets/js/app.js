@@ -27,7 +27,8 @@
                 location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
             } else if (ajaxOptions.action == 'api_me' && ajaxOptions.method == 'GET') {
                 //fill the page with the info from API
-                ;
+                App.buildUserProfile(response.data);
+                App.buildBusinessesList(response.data);
             }
         } catch (e) {
             console.log(e);
@@ -65,7 +66,7 @@
             method: 'GET',
             action: 'api_me',
             params: {},
-        }, App.buildUserProfile, App.handleError);
+        }, App.handleResponse, App.handleError);
     };
 
     /*****************************************************************************
@@ -124,7 +125,15 @@
         var source   = $("#tpl_login").html(); //console.log(source); return;
         var template = Handlebars.compile(source);
 
-        $('#user__profile').html(template(context.data));
+        $('#user__profile').html(template(context));
+    };
+
+    App.buildBusinessesList = function(context) {
+        // console.log(context); return;
+        var source   = $("#tpl_businesses").html(); //console.log(source); return;
+        var template = Handlebars.compile(source);
+
+        $('#business__list').html(template(context));
     };
 
     App.scrollTop = function() {
