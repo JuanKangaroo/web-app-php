@@ -1,7 +1,3 @@
-<div class="landing-banner pt-5 pb-5">
-    <!-- <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="100%"> -->
-</div>
-
 <div class="container">
     <div class="row pt-5 pb-5">
         <div class="col text-center">
@@ -24,17 +20,17 @@
             <h4 class="display-4">Join</h4>
             <p>Download the App and create an account</p>
             <br>
-            <img src="/images/join.png">
+            <img src="/themes/default/assets/images/join.png">
         </div>
         <div class="col-lg-4 text-center">
             <h4 class="display-4">Earn</h4>
-            <p>Check in at your favorite Wilsons Business and earn points for every transaction.</p>
-            <img src="/images/earn.png">
+            <p>Check in at your favorite default Business and earn points for every transaction.</p>
+            <img src="/themes/default/assets/images/earn.png">
         </div>
         <div class="col-lg-4 text-center">
             <h4 class="display-4">Reward</h4>
             <p>Redeem points for free items or save up for something bigger. Choose your own adventure.</p>
-            <img src="/images/reward.png">
+            <img src="/themes/default/assets/images/reward.png">
         </div>
     </div>
 
@@ -44,13 +40,13 @@
             <p>All you need is your phone number or email to get rewards for your purchases</p>
         </div>
         <div class="col-md-5 text-center">
-            <img src="/images/Olive-Double-Phone.png" class="img-fluid" width="100px">
+            <img src="/themes/default/assets/images/Olive-Double-Phone.png" class="img-fluid" width="100px">
         </div>
     </div>
 
     <div class="row pt-5 pb-5">
         <div class="col-md-5 text-center">
-            <img src="/images/Olive-Double-Phone.png" class="img-fluid" width="100px">
+            <img src="/themes/default/assets/images/Olive-Double-Phone.png" class="img-fluid" width="100px">
         </div>
 
         <div class="col-md-7">

@@ -8,16 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $this->title ?: htmlspecialchars($this->title)?></title>
     <?php //$this->getLayoutStyles()?>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/app.css">
+    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/app.css">
     <!-- TODO add manifest here -->
     <!-- <link rel="manifest" href="manifest.json"> -->
     <!-- Add to home screen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Weather PWA">
-    <link rel="apple-touch-icon" href="/images/icons/icon-152x152.png">
-    <meta name="msapplication-TileImage" content="/images/icons/icon-144x144.png">
+    <meta name="apple-mobile-web-app-title" content="<?= $this->title ?: htmlspecialchars($this->title)?>">
     <meta name="msapplication-TileColor" content="#2F3BA2">
 </head>
 
@@ -33,29 +31,29 @@
 
         <a class="navbar-brand" href="/">
             <img src="<?php echo $config['logoPath'] ?>" height="40" class="d-inline-block align-top" alt="">
-            <?php //echo $config['appName']; ?>
+            <?php //echo config('appName'); ?>
         </a>
 
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#">Locations <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Contact Us</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <div class=" dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbar_user_profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Profile
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar_user_profile">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#" id="logout">Log Out</a>
-                    </div>
-                </div>
+                <a href="/site/login" class="btn btn-primary"> Log In</a>
             </form>
         </div>
     </nav>
+    
+    <!-- <header class="header">
+        <h1 class="header__title">
+            <a href="/"><?php //echo config('appName'); ?></a>
+        </h1>
+    </header> -->
 
     <div class="message__container--fixed" id="message__container">
         <div class="c-message message__success" style="display: none"></div>
@@ -73,14 +71,14 @@
         </svg>
     </div>
 
-    <?php require_once '/../templates/userProfile.tpl' ?>
-    
-    <script src="/js/jquery-3.2.1.min.js"></script>
+    <script src="/themes/wilsons/assets/js/jquery-3.2.1.min.js"></script>
     <script src="/js/axios.min.js"></script>
-    <script src="/js/handlebars-v4.0.5.js"></script>
+    <script src="/js/kangaroo-api.js"></script>
+    <script src="/themes/wilsons/assets/js/handlebars-v4.0.5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/app.js"></script>
+    <script src="/themes/wilsons/assets/js/bootstrap.min.js"></script>
+    <script src="/themes/wilsons/assets/js/app.js"></script>
+
     <?php //$this->getLayoutScripts()?>
 </body>
 </html>

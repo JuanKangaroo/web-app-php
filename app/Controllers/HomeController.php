@@ -13,6 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        $this->theme = config('theme');
         $this->layout = 'layouts/app';
     }
 

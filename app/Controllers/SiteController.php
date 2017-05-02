@@ -19,6 +19,8 @@ class SiteController extends Controller
         // $this->model = new User();
 
         // set the layout
+        // $this->layout = 'layouts/main';
+        $this->theme = config('theme');
         $this->layout = 'layouts/main';
     }
 

@@ -151,7 +151,7 @@ body {
 }
 
 .message__error {
-    background: #fff url(/images/cancel-red-bttn.png);
+    background: #fff url(../images/cancel-red-bttn.png);
     background-size: 65px;
     background-position: 20px;
     background-repeat: no-repeat;
@@ -161,7 +161,7 @@ body {
     border-left: 10px solid #5ec3dc;
 }
 .message__success{
-    background: #fff url(/images/success-green-bttn.png);
+    background: #fff url(../images/success-green-bttn.png);
     background-size: 75px;
     background-position: 20px;
     background-repeat: no-repeat;
@@ -172,7 +172,7 @@ body {
 .landing-banner {
     position: relative;
     height: 22rem;
-    background-image: url(/images/oil-truck-winter-web.jpg);
+    background-image: url(../images/oil-truck-winter-web.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
