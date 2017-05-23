@@ -225,6 +225,10 @@ body {
     border-bottom: 1px solid #fff;
 }
 
+.navbar-top .dropdown-toggle::after{
+    border: none;
+}
+
 .landing-banner {
     position: relative;
     height: 22rem;

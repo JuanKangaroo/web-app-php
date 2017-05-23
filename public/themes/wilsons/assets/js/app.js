@@ -8,6 +8,7 @@
         $loginForm: $('form.login'),
         $signupForm: $('form.signup'),
         $message: $('#message__container'),
+        redeemItem: {},
         config: config || {},
     };
 
@@ -34,6 +35,8 @@
             } else if (ajaxOptions.action == 'api_rewards' && ajaxOptions.method == 'GET') {
                 //fill the page with the info from API
                 App.buildRewardsList(response.data);
+            } else if (ajaxOptions.action == 'api_redeem_tpr' && ajaxOptions.method == 'POST') {
+                App.alert('OK', 'You have successfully redeemed a partner reward');
             }
         } catch (e) {
             console.log(e);
@@ -111,6 +114,29 @@
 
     $(document).on('click', '#logout', function(e) {
         api.logout();
+    });
+
+    $(document).on('click', '.js-redeem__confirm-btn', function(e) {
+        $('#rewardsRedemptionConfirmModal').modal('hide');
+        App.showSpinner();
+        api.client.request({ 
+            url: App.config.api.endpoints.transactions, 
+            method: 'POST',
+            action: 'api_redeem_tpr',
+            params: {'intent': 'redeem', 'catalog_items': [App.redeemItem]},
+        }, App.handleResponse, App.handleError);
+    });
+
+    $('#rewardsRedemptionConfirmModal').on('shown.bs.modal', function (event) {
+        var $button = $(event.relatedTarget); // Button that triggered the modal
+        var rewardId = $button.data('rewardId'); // Extract info from data-* attributes
+        var rewardTitle = $button.data('rewardTitle'); // Extract info from data-* attributes
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var $modal = $(this);
+        // modal.find('.modal-title').text('New message to ' + recipient);
+        $modal.find('#reward_title').html(rewardTitle);
+
+        App.redeemItem = {id: rewardId, quantity: 1};
     });
 
     /*****************************************************************************
@@ -212,17 +238,15 @@
 
         currentUrl = currentUrl.replace(/\/$/, "");//remove the last / from url
 
+        $('.navbar-top').find('.nav-item').removeClass('active');
+
         // console.log('currentUrl', currentUrl, 'App.config.appHomeUrl', App.config.appHomeUrl);
         if (currentUrl == App.config.appBaseUrl + App.config.appHomeUrl) {
-            App.getAccount(); //home page
-
-            $('.navbar-top').find('.nav-item').removeClass('active');
             $('.navbar-top').find('#menu_home').addClass('active');
+            App.getAccount(); //home page
         } else if (currentUrl == App.config.appBaseUrl + App.config.appRewardsUrl) {
-            App.getRewards();
-
-            $('.navbar-top').find('.nav-item').removeClass('active');
             $('.navbar-top').find('#menu_rewards').addClass('active');
+            App.getRewards();
         } else if (currentUrl == App.config.appBaseUrl && App.isAuthenticated()) {
             //login page and user is authenticated
             location.href = App.config.appBaseUrl + App.config.appHomeUrl;

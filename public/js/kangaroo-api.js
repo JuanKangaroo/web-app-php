@@ -146,7 +146,7 @@ function time() {
     KangarooApi.signup = function (input, successCb, failCb) {
         axios({
             method: 'POST',
-            url: KangarooApi.config.api.endpoints.createUser,
+            url: KangarooApi.config.api.endpoints.users,
             data: input,
             headers: { 'X-Application-Key': KangarooApi.config.headers['X-Application-Key']},
         }).then(response => {
