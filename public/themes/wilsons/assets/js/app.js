@@ -127,7 +127,7 @@
         }, App.handleResponse, App.handleError);
     });
 
-    $('#rewardsRedemptionConfirmModal').on('shown.bs.modal', function (event) {
+    $('#rewardsRedemptionConfirmModal').on('show.bs.modal', function (event) {
         var $button = $(event.relatedTarget); // Button that triggered the modal
         var rewardId = $button.data('rewardId'); // Extract info from data-* attributes
         var rewardTitle = $button.data('rewardTitle'); // Extract info from data-* attributes
