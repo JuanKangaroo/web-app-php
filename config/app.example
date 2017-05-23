@@ -1,23 +1,64 @@
 <?php
+    $apiBaseUrl = 'https://api.kangaroorewards.com';
+
     return [
+
+        /*
+        |--------------------------------------------------------------------------
+        | App related params
+        |--------------------------------------------------------------------------
+        |
+        | Application name, base url, theme name, logo
+        |
+        */
+        
         'appName' => 'My App Name',
         'appBaseUrl' => 'http://localhost',
         'appHomeUrl' => '/home',
-        'logoPath' => '/images/logo.png',
-        'loggerUrl' => 'http://localkangaroo.dev/site/logger',
+        'appRewardsUrl' => '/rewards',
+        'appRegisterUrl' => '/site/register',
+        'appLoginUrl' => '/site/login',
+        'loggerUrl' => 'http://localhost/site/logger',
+        'theme' => 'default',
+        'logoPath' => '/themes/default/assets/images/logo.jpg',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Headers for API requests
+        |--------------------------------------------------------------------------
+        |
+        | X-Application-Key - the token for a coalition or rgular business
+        |
+        */
+        
         'headers' => [
-            'X-Application-Key' => 'eyJ0eXAiOiJKV1QiLCJfhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImJ1c2luZXNzSWQdiOjk1LCJicmFuY2hJZCI6MTI3fX0.ct7cjjB8PG94SQOONb1OpYi8-OxZH0wiNZdL86nLIno',
+            'X-Application-Key' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImJ1c2luZXNzSWQiO',
             'Accept' => 'application/vnd.kangaroorewards.api.v1+json;',
+            'Content-Type' => 'application/json',
         ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | API related params
+        |--------------------------------------------------------------------------
+        |
+        | Client ID and secret
+        | API endpoints
+        |
+        */
+        
         'api' => [
-            'baseUrl' => 'https://api.kangaroorewards.com',
+            'baseUrl' => $apiBaseUrl,
             'grant_type' => 'password',
             'client_id' => '{YOUR CLIENT ID}',
             'client_secret' => '{YOUR CLIENT SECRET}',
-            'scope' => 'all',
+            'scope' => '*',
             'endpoints' => [
-                'tokenUrl' => '/oauth/token',
-                'me' => '/users/me?include[]=offers&include[]=catalog_items',
+                'token' => $apiBaseUrl . '/oauth/token',
+                'me' => $apiBaseUrl . '/users/me?include[]=businesses&include[]=balance&include[]=catalog_items',
+                'users' => $apiBaseUrl . '/users',
+                'rewards' => $apiBaseUrl . '/users/rewards',
+                'transactions' => $apiBaseUrl . '/users/transactions',
             ],
         ],
     ];
