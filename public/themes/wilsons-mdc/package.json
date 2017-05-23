@@ -1,0 +1,27 @@
+{
+  "name": "webapp",
+  "version": "1.0.0",
+  "description": "Kangaroo Rewards - White Label Web App",
+  "main": "index.js",
+  "dependencies": {
+    "material-components-web": "^0.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kangaroorewards/web-app-php.git"
+  },
+  "keywords": [
+    "kangaroo",
+    "rewards"
+  ],
+  "author": "Valentin Ursuleac",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kangaroorewards/web-app-php/issues"
+  },
+  "homepage": "https://github.com/kangaroorewards/web-app-php#readme"
+}

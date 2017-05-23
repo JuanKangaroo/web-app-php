@@ -1,17 +1,20 @@
 <script id="tpl_businesses" type="text/x-handlebars-template">
+<p class="lead">My Points Balance</p>
+<p class="display-4 mb-5">{{formatNumber balance.points}}</p>
+
 {{#if businesses}}
-    {{#each businesses}}
     <div class="row">
-        <div class="col-4">
-            <img src="{{logo}}" class="img-fluid">
+    {{#each businesses}}
+        <div class="col-12 col-md-4">
+            <div class="card" style="border: none;">
+                <img class="card-img-top img-fluid mx-auto" src="{{logo}}" alt="{{name}}" style="max-width: 100px;">
+                <div class="card-block">
+                    <h4 class="card-title">{{formatNumber balance.points}} points</h4>
+                </div>
+            </div>
         </div>
-        <div class="col-8">
-            <p class="lead">{{name}}</p>
-            <p>{{about}}</p>
-            
-        </div>
-    </div>
     {{/each}}
+    </div>
 {{else}}
 <h1>No Businesses to display</h1>
 {{/if}}

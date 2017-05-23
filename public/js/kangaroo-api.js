@@ -10,12 +10,25 @@ Storage.prototype.getObject = function(key) {
     return value && JSON.parse(value);
 };
 
+//=========================================================================
+//              Global function to get UNIX timestamp in JavaScript
+//=========================================================================
+function time() {
+    //A unary operator like plus triggers the valueOf method in the Date object and it returns the time-stamp
+    return Math.floor(+ new Date() / 1000);
+
+    //On almost all current browsers you can use Date.now() to get the UTC timestamp in milliseconds
+    // return Math.floor(Date.now() / 1000);
+};
+
+//=========================================================================
+//              Kangaroo API methods
+//=========================================================================
 ;(function($, undefined) {
     'use strict';
 
     var KangarooApi = {
         client: new AjaxRequest(),
-
         config: config || {},
     };
 
@@ -33,6 +46,11 @@ Storage.prototype.getObject = function(key) {
 
         if (!token) {
             throw 'No User Token found'; 
+        } else if (token.expires < time()) {
+            // console.log('Token Expired', 'now', time(), 'token.expires', token.expires );
+            // Token expired - refresh it !
+            token = KangarooApi.refreshToken(token, options, onSuccess, onError);
+            return;
         }
 
         headers = KangarooApi.config.headers;
@@ -87,11 +105,40 @@ Storage.prototype.getObject = function(key) {
             url: KangarooApi.config.api.endpoints.token,
             data: params,
         }).then(response => {
-            // console.log(response.data);
-            successCb(response.data, {action: 'user_login'});
+            console.log(response.data);
+            var token = response.data;
+            token.expires = time() + token.expires_in;//store expires time for token
+            localStorage.setObject('user_token', token);//store the token
+            successCb(token, {action: 'user_login'});
         }).catch (error => {
             // console.log(error); console.log(error.response);
             failCb(error);
+            KangarooApi.log('error', 'KangarooApi.userLogin: ' + KangarooApi.config.appName, JSON.stringify(error));
+        });
+    };
+
+    KangarooApi.refreshToken = function (token, options, onSuccess, onError) {
+        var params = new URLSearchParams();
+        params.append('grant_type', 'refresh_token');
+        params.append('refresh_token', token.refresh_token);
+        params.append('client_id', KangarooApi.config.api.client_id);
+        params.append('client_secret', KangarooApi.config.api.client_secret);
+        params.append('scope', KangarooApi.config.api.scope);
+
+        axios({
+            method: 'POST',
+            url: KangarooApi.config.api.endpoints.token,
+            data: params,
+        }).then(response => {
+            console.log('Refreshed Token', response);
+            var token = response.data;
+            token.expires = time() + token.expires_in;//store expires time for token
+            localStorage.setObject('user_token', token);//store the token
+            //call the previous request that started before refreshing the token
+            KangarooApi.request(options, onSuccess, onError);
+            return;
+        }).catch (error => {
+            console.log('Refresh Token Error', error);
             KangarooApi.log('error', 'KangarooApi.userLogin: ' + KangarooApi.config.appName, JSON.stringify(error));
         });
     };

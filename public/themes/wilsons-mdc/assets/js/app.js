@@ -11,8 +11,6 @@
         config: config || {},
     };
 
-    HandlebarsIntl.registerWith(Handlebars);
-
     /*****************************************************************************
      *
      * Methods for dealing with the API (API Requests, handle response)
@@ -20,7 +18,6 @@
      ****************************************************************************/
 
     App.handleResponse = function(response, ajaxOptions) {
-        App.hideSpinner();
         console.log('action', ajaxOptions.action, 'data', response);
         try {
             if (ajaxOptions.action == 'user_login' && response.token_type == 'Bearer') {
@@ -29,11 +26,8 @@
                 location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
             } else if (ajaxOptions.action == 'api_me' && ajaxOptions.method == 'GET') {
                 //fill the page with the info from API
-                // App.buildUserProfile(response.data);
+                App.buildUserProfile(response.data);
                 App.buildBusinessesList(response.data);
-            } else if (ajaxOptions.action == 'api_rewards' && ajaxOptions.method == 'GET') {
-                //fill the page with the info from API
-                App.buildRewardsList(response.data);
             }
         } catch (e) {
             console.log(e);
@@ -66,21 +60,10 @@
     };
 
     App.getAccount = function () {
-        App.showSpinner();
         api.client.request({ 
             url: App.config.api.endpoints.me, 
             method: 'GET',
             action: 'api_me',
-            params: {},
-        }, App.handleResponse, App.handleError);
-    };
-
-    App.getRewards = function () {
-        App.showSpinner();
-        api.client.request({ 
-            url: App.config.api.endpoints.rewards, 
-            method: 'GET',
-            action: 'api_rewards',
             params: {},
         }, App.handleResponse, App.handleError);
     };
@@ -145,26 +128,11 @@
     };
 
     App.buildBusinessesList = function(context) {
-
-        var intlData = {
-            locales: 'en-US'
-        }
-
         // console.log(context); return;
         var source   = $("#tpl_businesses").html(); //console.log(source); return;
         var template = Handlebars.compile(source);
 
-        $('#business__list').html(template(context, {
-            data: {intl: intlData}
-        }));
-    };
-
-    App.buildRewardsList = function(context) {
-        // console.log(context); return;
-        var source   = $("#tpl_rewards").html(); //console.log(source); return;
-        var template = Handlebars.compile(source);
-
-        $('#rewards__list').html(template(context));
+        $('#business__list').html(template(context));
     };
 
     App.scrollTop = function() {
@@ -214,15 +182,8 @@
 
         // console.log('currentUrl', currentUrl, 'App.config.appHomeUrl', App.config.appHomeUrl);
         if (currentUrl == App.config.appBaseUrl + App.config.appHomeUrl) {
-            App.getAccount(); //home page
-
-            $('.navbar-top').find('.nav-item').removeClass('active');
-            $('.navbar-top').find('#menu_home').addClass('active');
-        } else if (currentUrl == App.config.appBaseUrl + App.config.appRewardsUrl) {
-            App.getRewards();
-
-            $('.navbar-top').find('.nav-item').removeClass('active');
-            $('.navbar-top').find('#menu_rewards').addClass('active');
+            //home page
+            App.getAccount();
         } else if (currentUrl == App.config.appBaseUrl && App.isAuthenticated()) {
             //login page and user is authenticated
             location.href = App.config.appBaseUrl + App.config.appHomeUrl;
