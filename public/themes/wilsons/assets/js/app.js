@@ -12,7 +12,9 @@
         config: config || {},
     };
 
-    HandlebarsIntl.registerWith(Handlebars);
+    if (window.HandlebarsIntl) {
+        HandlebarsIntl.registerWith(Handlebars);
+    }
 
     /*****************************************************************************
      *
