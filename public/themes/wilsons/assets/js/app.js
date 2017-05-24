@@ -48,10 +48,16 @@
 
     App.handleError = function(error) {
         App.hideSpinner();
-        if (error.response.status == 401) {
+        if (error.response.status == 400) {
+            App.alert('NOT_OK', error.response.data.error.description);
+        } else if (error.response.status == 401) {
             App.alert('NOT_OK', error.response.data.message);
         } else if (error.response.status == 422) {
-            App.alert('NOT_OK', error.response.data.email[0]);
+            if (error.response.data.email) {
+                App.alert('NOT_OK', error.response.data.email[0]);
+            } else if (error.response.data.phone) {
+                App.alert('NOT_OK', error.response.data.phone[0]);
+            }
         }
     };
 
@@ -108,10 +114,19 @@
     $(document).on('click', '#signup_btn', function(e) {
         e.preventDefault();
 
-        api.signup({
-            'email': App.$signupForm.find('#email').val(),
-            'pin_code': App.$signupForm.find('#password').val(),
-        }, App.handleResponse, App.handleError);
+        var email = App.$signupForm.find('#email').val();
+        if ($.isNumeric(email)) {
+            api.signup({
+                'phone': email,
+                'country_code': 'CA',
+                'pin_code': App.$signupForm.find('#password').val(),
+            }, App.handleResponse, App.handleError);
+        } else {
+            api.signup({
+                'email': email,
+                'pin_code': App.$signupForm.find('#password').val(),
+            }, App.handleResponse, App.handleError);
+        }
     });
 
     $(document).on('click', '#logout', function(e) {

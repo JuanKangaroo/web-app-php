@@ -28,14 +28,5 @@
         "psr-4": {
             "App\\": "app/"
         }
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "c:/MAMP/htdocs/test.dev/wallaby",
-            "options": {
-                "symlink": false
-            }
-        }
-    ]
+    }
 }

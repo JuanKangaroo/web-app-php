@@ -91,12 +91,13 @@
     ?>
     
     <script src="/themes/wilsons/assets/js/jquery-3.2.1.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="/themes/wilsons/assets/js/bootstrap.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/kangaroo-api.js"></script>
     <script src="/themes/wilsons/assets/js/handlebars-v4.0.5.js"></script>
     <script src="/themes/wilsons/assets/js/handlebars-intl.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="/themes/wilsons/assets/js/bootstrap.min.js"></script>
     <script src="/themes/wilsons/assets/js/pushy.min.js"></script>
     <script src="/themes/wilsons/assets/js/app.js?v=<?= $config['version'] ?>"></script>
     <?php //$this->getLayoutScripts()?>

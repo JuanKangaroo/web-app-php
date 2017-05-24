@@ -25,7 +25,7 @@
     </script>
 
     <nav class="navbar navbar-toggleable-md fixed-top navbar-light bg-faded">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -34,17 +34,19 @@
             <?php //echo config('appName'); ?>
         </a>
 
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <div class="collapse navbar-collapse" id="navbarDefault">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Locations <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#">Locations</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Contact Us</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-                <a href="/site/login" class="btn btn-primary"> Log In</a>
+                <a href="/site/login" class="btn btn-outline-primary"> Log In</a>
+                &nbsp; 
+                <a href="/site/register" class="btn btn-primary"> Register</a>
             </form>
         </div>
     </nav>
@@ -72,11 +74,11 @@
     </div>
 
     <script src="/themes/wilsons/assets/js/jquery-3.2.1.min.js"></script>
-    <script src="/js/axios.min.js"></script>
-    <script src="/js/kangaroo-api.js"></script>
-    <script src="/themes/wilsons/assets/js/handlebars-v4.0.5.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="/themes/wilsons/assets/js/bootstrap.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/kangaroo-api.js"></script>
     <script src="/themes/wilsons/assets/js/app.js?v=<?= $config['version'] ?>"></script>
 
     <?php //$this->getLayoutScripts()?>

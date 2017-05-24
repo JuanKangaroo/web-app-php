@@ -4,7 +4,7 @@
     {{#each catalog_items}}
     <div class="col-12 col-md-3 col-lg-4">
         <div class="row" data-toggle="modal" data-target="#rewardsRedemptionConfirmModal" 
-            data-reward-id={{id}} data-reward-title="{{title}}" >
+            data-reward-id={{id}} data-reward-title="{{title}}" data-is-tpr="{{partner_reward}}" >
             <div class="col-9">
                 <div class="card" style="border: none;">
                     <img class="card-img-top img-fluid" src="{{images.0.path}}" alt="{{title}}">
