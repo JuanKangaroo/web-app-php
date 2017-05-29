@@ -48,7 +48,10 @@
     
     <div class="main"><!-- id="container" for off canvas menu -->
         <nav class="navbar navbar-toggleable-md fixed-top avbar-inverse bg-inverse">
-            <button class="menu-btn" type="button">&#9776;</button> &nbsp;
+            <button class="menu-btn" type="button">
+                <img src="/themes/wilsons/assets/images/icons/ic_view_headline_white_24px.svg">
+                <!-- &#9776; -->
+            </button> &nbsp;
             <!-- <a class="navbar-brand" href="/">
                 <img src="<?php //echo $config['logoPath'] ?>" height="40" class="d-inline-block align-top" alt="">
                 <?php //echo $config['appName']; ?>
@@ -62,7 +65,7 @@
                 <form class="my-3" style="position: absolute; right: 0; top: 0px;">
                     <div class="dropdown">
                         <a class="dropdown-toggle" href="#" id="navbar_user_profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="/themes/wilsons/assets/images/ic_more_vert_white_24px.svg">
+                            <img src="/themes/wilsons/assets/images/icons/ic_more_vert_white_24px.svg">
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar_user_profile">
                             <a class="dropdown-item" href="#" id="menu_transactions_list">Transactions</a>

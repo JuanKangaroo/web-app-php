@@ -181,8 +181,7 @@ body {
     color: #fff;
     background-color: #292b2c;
     border: none;
-    font-size: 2rem;
-    padding: 0;
+    padding: 10px;
     margin: 0;
 }
 
@@ -222,7 +221,7 @@ body {
 }
 
 .navbar-top .nav-item.active {
-    border-bottom: 1px solid #fff;
+    border-bottom: 2px solid #fff;
 }
 
 .navbar-top .dropdown-toggle::after{

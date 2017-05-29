@@ -135,7 +135,7 @@ function time() {
             token.expires = time() + token.expires_in;//store expires time for token
             localStorage.setObject('user_token', token);//store the token
             //call the previous request that started before refreshing the token
-            KangarooApi.request(options, onSuccess, onError);
+            KangarooApi.client.request(options, onSuccess, onError);
             return;
         }).catch (error => {
             console.log('Refresh Token Error', error);
