@@ -32,7 +32,7 @@
                 location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
             } else if (ajaxOptions.action == 'api_me' && ajaxOptions.method == 'GET') {
                 //fill the page with the info from API
-                // App.buildUserProfile(response.data);
+                App.buildUserProfile(response.data);
                 App.buildBusinessesList(response.data);
             } else if (ajaxOptions.action == 'api_rewards' && ajaxOptions.method == 'GET') {
                 //fill the page with the info from API
@@ -181,10 +181,28 @@
 
     App.buildUserProfile = function(context) {
         // console.log(context); return;
-        var source   = $("#tpl_login").html(); //console.log(source); return;
-        var template = Handlebars.compile(source);
+        var $profile = $('#user-profile');
 
-        $('#user__profile').html(template(context));
+        var fullName = context.profile.first_name + ' ' + context.profile.last_name;
+        
+        $profile.find('#user-profile__name').html(fullName.trim());
+        
+        if (context.profile.email) {
+            $profile.find('#user-profile__email').html(context.profile.email);
+        } else {
+            $profile.find('.js-user-profile__email-item').hide();
+        }
+
+        if (context.profile.phone) {
+            $profile.find('#user-profile__phone').html(context.profile.phone);
+        } else {
+            $profile.find('.js-user-profile__phone-item').hide();
+        }
+
+        // var source   = $("#tpl_login").html(); //console.log(source); return;
+        // var template = Handlebars.compile(source);
+
+        // $('#user__profile').html(template(context));
     };
 
     App.buildBusinessesList = function(context) {

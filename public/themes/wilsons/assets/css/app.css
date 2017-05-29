@@ -171,6 +171,7 @@ body {
 
 .pushy {background: #fff; width: 280px;}
 .pushy ul {list-style: none; padding-left: 0;}
+.pushy a {padding: 15px 15px}
 .pushy a:hover {color: #999;}
 .pushy-left {
     -webkit-transform: translate3d(-280px, 0, 0);
