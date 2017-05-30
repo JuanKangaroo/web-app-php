@@ -249,3 +249,7 @@ body {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
+
+.container-landing {
+    margin: 80px auto 0;
+}

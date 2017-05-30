@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Wallaby\Base\Controller;
 
-class TransactionsController extends Controller
+class TransactionsController extends BaseController
 {
     /**
      *
@@ -14,7 +14,7 @@ class TransactionsController extends Controller
     public function __construct()
     {
         $this->theme = config('theme');
-        $this->layout = 'layouts/app';
+        $this->layout = 'layouts/main';
     }
 
     /**

@@ -73,7 +73,7 @@
     </div>
     
     <div class="main"><!-- id="container" for off canvas menu -->
-        <nav class="navbar navbar-toggleable-md fixed-top avbar-inverse bg-inverse">
+        <nav class="navbar navbar-toggleable-md fixed-top avbar-inverse bg-inverse pl-0">
             <button class="menu-btn" type="button">
                 <i class="fa fa-bars" aria-hidden="true"></i>
                 <!-- <img src="/themes/wilsons/assets/images/icons/ic_view_headline_white_24px.svg"> -->

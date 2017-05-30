@@ -52,6 +52,8 @@
             App.alert('NOT_OK', error.response.data.error.description);
         } else if (error.response.status == 401) {
             App.alert('NOT_OK', error.response.data.message);
+        } else if (error.response.status == 404) {
+            App.alert('NOT_OK', error.response.data.error.description);
         } else if (error.response.status == 422) {
             if (error.response.data.email) {
                 App.alert('NOT_OK', error.response.data.email[0]);
@@ -91,6 +93,45 @@
         api.client.request({ 
             url: App.config.api.endpoints.rewards, 
             method: 'GET',
+            action: 'api_rewards',
+            params: {},
+        }, App.handleResponse, App.handleError);
+    };
+
+    App.verifyCredentials = function (token, email) {
+        App.showSpinner();
+        api.client.request({ 
+            url: App.config.api.endpoints.verify + '/' + token,
+            method: 'PUT',
+            action: 'api_verify_credentials',
+            params: {email: email},
+        }, function success(response, ajaxOptions) {
+            App.hideSpinner();
+            App.alert('OK', 'You have successfully redeemed a partner reward');
+            App.getSubAccountsForm({});
+        }, function fail(error) {
+            App.hideSpinner();
+            if (error.response.status == 400) {
+                App.alert('NOT_OK', error.response.data.error.description);
+            } else if (error.response.status == 401) {
+                App.alert('NOT_OK', error.response.data.message);
+            } else if (error.response.status == 404) {
+                App.alert('NOT_OK', error.response.data.error.description);
+            } else if (error.response.status == 422) {
+                if (error.response.data.email) {
+                    App.alert('NOT_OK', error.response.data.email[0]);
+                } else if (error.response.data.phone) {
+                    App.alert('NOT_OK', error.response.data.phone[0]);
+                }
+            }
+        });
+    };
+
+    App.addSubAccount = function () {
+        App.showSpinner();
+        api.client.request({ 
+            url: App.config.api.endpoints.users, 
+            method: 'PATCH',
             action: 'api_rewards',
             params: {},
         }, App.handleResponse, App.handleError);
@@ -229,6 +270,19 @@
         $('#rewards__list').html(template(context));
     };
 
+    App.getSubAccountsForm = function(context) {
+        $('#profile_subaccounts_form').show();
+        // console.log(context); return;
+        // try{
+        //     var source   = $("#tpl_subaccounts_form").html(); //console.log(source); return;
+        //     var template = Handlebars.compile(source);
+
+        //     $('#profile_subaccounts_form').html(template(context));
+        // } catch (error) {
+        //     console.log(error);
+        // }
+    };
+
     App.scrollTop = function() {
         $("html, body").animate({ scrollTop: "0px" });
     }
@@ -269,23 +323,29 @@
     };
 
     App.handlePage = function () {
-        var redirectTo =  App.config.appBaseUrl + App.config.appHomeUrl;
-        var currentUrl = top.location.href;
+        // var currentUrl = top.location.href;
+        // currentUrl = currentUrl.replace(/\/$/, "");//remove the last / from url
 
-        currentUrl = currentUrl.replace(/\/$/, "");//remove the last / from url
+        var currentUrl = $('body').data('pageUri');
 
         $('.navbar-top').find('.nav-item').removeClass('active');
 
         // console.log('currentUrl', currentUrl, 'App.config.appHomeUrl', App.config.appHomeUrl);
-        if (currentUrl == App.config.appBaseUrl + App.config.appHomeUrl) {
+        if (currentUrl == App.config.appHomeUrl) {
             $('.navbar-top').find('#menu_home').addClass('active');
             App.getAccount(); //home page
-        } else if (currentUrl == App.config.appBaseUrl + App.config.appRewardsUrl) {
+        } else if (currentUrl == App.config.appRewardsUrl) {
             $('.navbar-top').find('#menu_rewards').addClass('active');
             App.getRewards();
-        } else if (currentUrl == App.config.appBaseUrl && App.isAuthenticated()) {
+        } else if (currentUrl == App.isAuthenticated()) {
             //login page and user is authenticated
             location.href = App.config.appBaseUrl + App.config.appHomeUrl;
+        } else if (currentUrl == App.config.appVerifyUrl) {
+            //login page and user is authenticated
+            App.verifyCredentials(
+                $('#app').find('[name=verify_token]').val(),
+                $('#app').find('[name=verify_email]').val(),
+            );
         }
     };
 

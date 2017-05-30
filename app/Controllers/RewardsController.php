@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Wallaby\Base\Controller;
 
-class RewardsController extends Controller
+class RewardsController extends BaseController
 {
     /**
      *
@@ -13,8 +13,10 @@ class RewardsController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
+        
         $this->theme = config('theme');
-        $this->layout = 'layouts/app';
+        $this->layout = 'layouts/main';
     }
 
     /**

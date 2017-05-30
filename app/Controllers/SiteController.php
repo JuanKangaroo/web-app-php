@@ -5,7 +5,7 @@ namespace App\Controllers;
 use Wallaby\Base\Controller;
 // use Models\User;
 
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     // private $model;
 
@@ -18,9 +18,11 @@ class SiteController extends Controller
     {
         // $this->model = new User();
 
+        parent::__construct();
+        
         // set the theme and layout
         $this->theme = config('theme');
-        $this->layout = 'layouts/main';
+        $this->layout = 'layouts/landing';
     }
 
     /**
@@ -70,15 +72,28 @@ class SiteController extends Controller
      *
      * @return void
      */
-    public function actionVerify($token)
+    public function actionVerify()
     {
         $this->title = config('appName') .' - ' . 'Verify';
 
-        var_dump($token); die;
+        if (!isset($_GET['token'], $_GET['email'])) {
+            return $this->render('site/error', [
+                'code' => 400, 
+                'message' => 'Invalid Verification token. Try again.'
+            ]);
+        }
 
         $token = $_GET['token'];
+        $email = $_GET['email'];
 
-        return $this->render('site/verify');
+        if (empty($token) || empty($email)) {
+            return $this->render('site/error', [
+                'code' => 400, 
+                'message' => 'Invalid Verification token. Try again.'
+            ]);
+        }
+
+        return $this->render('site/verify', ['token' => $token, 'email' => $email]);
     }
 
     /**

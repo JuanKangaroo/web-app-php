@@ -25,7 +25,11 @@
 </style>
 <div class="container container__error text-center">
     <div class="row justify-content-md-center">
-        <?php if ($code == 404): ?>
+        <?php if ($code == 400): ?>
+            <i class="fa fa-exclamation-triangle fa-3x"></i> 
+            <h1>Whoops, something went wrong...</h1>
+            <h2><?= $message ?></h2>
+        <?php elseif ($code == 404): ?>
             <i class="fa fa-exclamation-triangle fa-3x"></i> 
             <h1> Sorry, we couldn't find that page</h1>
             <h2>We can't get you there, but here are some options that might help you get back on track:</h2>
@@ -40,6 +44,9 @@
     	<!-- <div class="error">
     		<?php //echo CHtml::encode($message); ?>
     	</div> -->
+    </div>
+
+    <div class="row justify-content-md-center">
         <div class="error-page-options">
             <div><i class="fa fa-home"></i> <a href="/">Go to the Homepage</a>
             <div><i class="fa fa-home"></i> <a href="/contact-us">Contact Support</a>
