@@ -92,7 +92,7 @@
                 <form class="my-3" style="position: absolute; right: 0; top: 0px;">
                     <div class="dropdown">
                         <a class="dropdown-toggle p-3" href="#" id="navbar_user_profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-ellipsis-v" aria-hidden="true" style="color: #fff;"></i>
+                            <i class="fa fa-ellipsis-v" aria-hidden="true" style="font-size: 1.5rem; color: #fff;"></i>
                             <!-- <img src="/themes/wilsons/assets/images/icons/ic_more_vert_white_24px.svg"> -->
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar_user_profile">
