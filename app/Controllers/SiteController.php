@@ -18,8 +18,7 @@ class SiteController extends Controller
     {
         // $this->model = new User();
 
-        // set the layout
-        // $this->layout = 'layouts/main';
+        // set the theme and layout
         $this->theme = config('theme');
         $this->layout = 'layouts/main';
     }
@@ -51,7 +50,6 @@ class SiteController extends Controller
     {
         $this->title = config('appName') .' - ' . 'Login';
 
-        // if (isset($_POST['username'], $_POST['password'])) { }
         return $this->render('site/login');
     }
 
@@ -63,7 +61,24 @@ class SiteController extends Controller
     public function actionRegister()
     {
         $this->title = config('appName') .' - ' . 'Register';
+        
         return $this->render('site/signup');
+    }
+
+    /**
+     * Register
+     *
+     * @return void
+     */
+    public function actionVerify($token)
+    {
+        $this->title = config('appName') .' - ' . 'Verify';
+
+        var_dump($token); die;
+
+        $token = $_GET['token'];
+
+        return $this->render('site/verify');
     }
 
     /**

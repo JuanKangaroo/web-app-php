@@ -182,10 +182,11 @@
     App.buildUserProfile = function(context) {
         // console.log(context); return;
         var $profile = $('#user-profile');
-
-        var fullName = context.profile.first_name + ' ' + context.profile.last_name;
         
-        $profile.find('#user-profile__name').html(fullName.trim());
+        if (context.profile.first_name && context.profile.last_name) {
+            var fullName = context.profile.first_name + ' ' + context.profile.last_name;
+            $profile.find('#user-profile__name').html(fullName.trim());
+        }
         
         if (context.profile.email) {
             $profile.find('#user-profile__email').html(context.profile.email);
