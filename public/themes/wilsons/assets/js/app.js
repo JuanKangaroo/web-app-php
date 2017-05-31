@@ -37,7 +37,7 @@
             } else if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
                 localStorage.setObject('userProfile',response.data.profile);
                 //fill the page with the info from API
-                App.buildUserProfile(response.data);
+                App.buildUserProfile(response.data.profile);
                 App.buildBusinessesList(response.data);
             }  else if (ajaxOptions.action == 'api_user_profile' && ajaxOptions.method == 'GET') {
                 localStorage.setObject('userProfile',response.data.profile);
@@ -257,23 +257,23 @@
         App.spinner.removeAttribute('hidden');
     };
 
-    App.buildUserProfile = function(context) {
+    App.buildUserProfile = function(profile) {
         // console.log(context); return;
         var $profile = $('#user-profile');
         
-        if (context.profile.first_name && context.profile.last_name) {
-            var fullName = context.profile.first_name + ' ' + context.profile.last_name;
+        if (profile.first_name && profile.last_name) {
+            var fullName = profile.first_name + ' ' + profile.last_name;
             $profile.find('#user-profile__name').html(fullName.trim());
         }
         
-        if (context.profile.email) {
-            $profile.find('#user-profile__email').html(context.profile.email);
+        if (profile.email) {
+            $profile.find('#user-profile__email').html(profile.email);
         } else {
             $profile.find('.js-user-profile__email-item').hide();
         }
 
-        if (context.profile.phone) {
-            $profile.find('#user-profile__phone').html(context.profile.phone);
+        if (profile.phone) {
+            $profile.find('#user-profile__phone').html(profile.phone);
         } else {
             $profile.find('.js-user-profile__phone-item').hide();
         }
@@ -374,6 +374,9 @@
             App.getAccount(); //home page
         } else if (currentUrl == App.config.appRewardsUrl) {
             $('.navbar-top').find('#menu_rewards').addClass('active');
+            var userProfile = localStorage.getObject('userProfile');
+            //fill the page with the info from API
+            App.buildUserProfile(userProfile);
             App.getRewards();
         } else if (currentUrl == App.isAuthenticated()) {
             //login page and user is authenticated

@@ -1,18 +1,18 @@
 <script id="tpl_login" type="text/x-handlebars-template">
-{{#if profile}}
+{{#if id}}
     <div class="row">
         <div class="col-12">
             <form class="form">
                 <div class="form-group">
-                    <input type="text" name="first_name" class="form-control form-control-lg" value="{{profile.first_name}}" placeholder="First Name" autofocus="">
+                    <input type="text" name="first_name" class="form-control form-control-lg" value="{{first_name}}" placeholder="First Name" autofocus="">
                 </div>
                 <div class="form-group">
-                    <input type="text" name="last_name" class="form-control form-control-lg" value="{{profile.last_name}}" placeholder="Last Name" autofocus="">
+                    <input type="text" name="last_name" class="form-control form-control-lg" value="{{last_name}}" placeholder="Last Name" autofocus="">
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <!-- <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i></span> -->
-                        <input id="email" type="email" class="form-control form-control-lg" name="email" value="{{profile.email}}" placeholder="E-Mail Address" required="">
+                        <input id="email" type="email" class="form-control form-control-lg" name="email" value="{{email}}" placeholder="E-Mail Address" required="">
                     </div>
                 </div>
                 <div class="form-group">
