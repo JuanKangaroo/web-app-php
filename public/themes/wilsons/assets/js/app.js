@@ -23,17 +23,24 @@
      ****************************************************************************/
 
     App.handleResponse = function(response, ajaxOptions) {
-        App.hideSpinner();
         console.log('action', ajaxOptions.action, 'data', response);
         try {
             if (ajaxOptions.action == 'user_login' && response.token_type == 'Bearer') {
                 location.href = App.config.appBaseUrl + App.config.appHomeUrl;
             } else if (ajaxOptions.action == 'user_signup') {
-                location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
-            } else if (ajaxOptions.action == 'api_me' && ajaxOptions.method == 'GET') {
+                localStorage.setObject('userProfile',response.data);
+                api.login({
+                    username: App.$signupForm.find('#email').val(), 
+                    password: App.$signupForm.find('#password').val(),
+                }, App.handleResponse, App.handleError);
+                // location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
+            } else if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
+                localStorage.setObject('userProfile',response.data.profile);
                 //fill the page with the info from API
                 App.buildUserProfile(response.data);
                 App.buildBusinessesList(response.data);
+            }  else if (ajaxOptions.action == 'api_user_profile' && ajaxOptions.method == 'GET') {
+                localStorage.setObject('userProfile',response.data.profile);
             } else if (ajaxOptions.action == 'api_rewards' && ajaxOptions.method == 'GET') {
                 //fill the page with the info from API
                 App.buildRewardsList(response.data);
@@ -44,6 +51,7 @@
             console.log(e);
             //TODO: show alert message
         }
+        App.hideSpinner();
     };
 
     App.handleError = function(error) {
@@ -81,9 +89,19 @@
     App.getAccount = function () {
         App.showSpinner();
         api.client.request({ 
-            url: App.config.api.endpoints.me, 
+            url: App.config.api.endpoints.account, 
             method: 'GET',
-            action: 'api_me',
+            action: 'api_account',
+            params: {},
+        }, App.handleResponse, App.handleError);
+    };
+
+    App.getUserProfile = function () {
+        App.showSpinner();
+        api.client.request({ 
+            url: App.config.api.endpoints.user_profile, 
+            method: 'GET',
+            action: 'api_user_profile',
             params: {},
         }, App.handleResponse, App.handleError);
     };
@@ -98,16 +116,32 @@
         }, App.handleResponse, App.handleError);
     };
 
-    App.verifyCredentials = function (token, email) {
+    App.verifyCredentials = function (token, email, phone) {
+        var userProfile = localStorage.getObject('userProfile');
+        var params = {token: token};
+
+        if (email) {
+            params.intent = 'verify_email';
+            params.email = email;
+            var successMessage = 'Email successfully verified.';
+        } else {
+            params.intent = 'verify_phone';
+            params.phone = phone;
+            var successMessage = 'Phone number successfully verified.';
+        }
+
         App.showSpinner();
         api.client.request({ 
-            url: App.config.api.endpoints.verify + '/' + token,
-            method: 'PUT',
+            url: App.config.api.endpoints.users + '/'+ userProfile.id,
+            method: 'PATCH',
             action: 'api_verify_credentials',
-            params: {email: email},
+            params: params,
         }, function success(response, ajaxOptions) {
             App.hideSpinner();
-            App.alert('OK', 'You have successfully redeemed a partner reward');
+
+            // $('.alert-success').show().find('#message').html(successMessage);
+            // setTimeout(function(){$('.alert-success').hide();}, 3000);
+
             App.getSubAccountsForm({});
         }, function fail(error) {
             App.hideSpinner();
@@ -122,6 +156,8 @@
                     App.alert('NOT_OK', error.response.data.email[0]);
                 } else if (error.response.data.phone) {
                     App.alert('NOT_OK', error.response.data.phone[0]);
+                } else if (error.response.data.token) {
+                    App.alert('NOT_OK', error.response.data.token[0]);
                 }
             }
         });
@@ -272,6 +308,7 @@
 
     App.getSubAccountsForm = function(context) {
         $('#profile_subaccounts_form').show();
+
         // console.log(context); return;
         // try{
         //     var source   = $("#tpl_subaccounts_form").html(); //console.log(source); return;
@@ -342,10 +379,13 @@
             location.href = App.config.appBaseUrl + App.config.appHomeUrl;
         } else if (currentUrl == App.config.appVerifyUrl) {
             //login page and user is authenticated
-            App.verifyCredentials(
-                $('#app').find('[name=verify_token]').val(),
-                $('#app').find('[name=verify_email]').val(),
-            );
+            
+            App.getSubAccountsForm({});
+            
+            // App.verifyCredentials(
+            //     $('#app').find('[name=verify_token]').val(),
+            //     $('#app').find('[name=verify_email]').val(),
+            // );
         }
     };
 
