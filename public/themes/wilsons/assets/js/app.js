@@ -29,10 +29,14 @@
                 location.href = App.config.appBaseUrl + App.config.appHomeUrl;
             } else if (ajaxOptions.action == 'user_signup') {
                 localStorage.setObject('userProfile',response.data);
+
+                //get access token for user
                 api.login({
                     username: App.$signupForm.find('#email').val(), 
                     password: App.$signupForm.find('#password').val(),
-                }, App.handleResponse, App.handleError);
+                }, function() {
+                    App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
+                }, App.handleError);
                 // location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
             } else if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
                 localStorage.setObject('userProfile',response.data.profile);
@@ -164,14 +168,31 @@
         });
     };
 
-    App.addSubAccount = function () {
+    App.addPosAccount = function (pos_accounts) {
+        var userProfile = localStorage.getObject('userProfile');
         App.showSpinner();
         api.client.request({ 
-            url: App.config.api.endpoints.users, 
+            url: App.config.api.endpoints.users + '/'+ userProfile.id, 
             method: 'PATCH',
-            action: 'api_rewards',
-            params: {},
-        }, App.handleResponse, App.handleError);
+            action: 'api_pos_accounts',
+            params: {intent: "pos_accounts", pos_accounts: pos_accounts},
+        }, function success(response, ajaxOptions) {
+            App.hideSpinner();
+            App.alert('OK', 'Account successfully added');
+        }, function fail(error) {
+            App.hideSpinner();
+            if (error.response.status == 400) {
+                App.alert('NOT_OK', error.response.data.error.description);
+            } else if (error.response.status == 401) {
+                App.alert('NOT_OK', error.response.data.message);
+            } else if (error.response.status == 404) {
+                App.alert('NOT_OK', error.response.data.error.description);
+            } else if (error.response.status == 422) {
+                $.each(error.response.data.pos_accounts, function(index, value){
+                    console.log(value);
+                });
+            }
+        });
     };
 
     /*****************************************************************************
@@ -220,6 +241,27 @@
             action: 'api_redeem_tpr',
             params: {'intent': 'redeem', 'catalog_items': [App.redeemItem]},
         }, App.handleResponse, App.handleError);
+    });
+
+    $('#addAccountsModal').on('show.bs.modal', function (event) {
+        var $button = $(event.relatedTarget); // Button that triggered the modal
+        var posId = $button.data('posId'); // Extract info from data-* attributes
+        var posName = $button.data('posName'); // Extract info from data-* attributes
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var $modal = $(this);
+
+        $modal.find('.modal-title').text('Add your '+ posName +' Account');
+        $modal.find('[name=pos_id]').val(posId);
+    })
+
+    $(document).on('click', '.js-add-pos-account__confirm-btn', function(event) {
+        $('#addAccountsModal').modal('hide');
+        
+        var account = {};
+        //get form data as object
+        $('#add_pos_account__form').serializeArray().map(function(x) { account[x.name] = x.value; });
+
+        App.addPosAccount([account]);
     });
 
     $('#rewardsRedemptionConfirmModal').on('show.bs.modal', function (event) {

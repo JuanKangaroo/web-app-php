@@ -13,7 +13,7 @@
         </div>
     </div> -->
 
-    <div id="profile_subaccounts_form" style="display: none;">
+    <div id="profile_subaccounts_form" class="mb-5" style="display: none;">
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3">
                 <div class="alert alert-info" role="alert">
@@ -27,10 +27,12 @@
                 <div class="text-center">
                     <h4 class="mb-3">Add your Accounts</h4>
 
-                    <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addAccountsModal">
+                    <button class="btn btn-outline-primary" data-toggle="modal" 
+                        data-target="#addAccountsModal" data-pos-id=3 data-pos-name="Home Heat">
                         Home Heat
                     </button>
-                    <button class="btn btn-outline-primary" data-toggle="modal" data-target="#addAccountsModal" >
+                    <button class="btn btn-outline-primary" data-toggle="modal" 
+                        data-target="#addAccountsModal" data-pos-id=4 data-pos-name="Security">
                         Security
                     </button>
                 </div>
@@ -49,7 +51,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form">
+                <form class="form" id="add_pos_account__form">
+                    <input type="hidden" name="pos_id">
                     <div class="form-group">
                         <input type="text" name="account_id" class="form-control form-control-lg" value="" placeholder="Account ID" autofocus="">
                     </div>
@@ -60,7 +63,7 @@
             </div>
             <div class="modal-footer align-self-center">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary js-redeem__confirm-btn">Add Account</button>
+                <button type="button" class="btn btn-primary js-add-pos-account__confirm-btn">Add Account</button>
             </div>
         </div>
     </div>
