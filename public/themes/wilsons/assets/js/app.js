@@ -107,9 +107,10 @@
     };
 
     App.getRewards = function () {
+        var userProfile = localStorage.getObject('userProfile');
         App.showSpinner();
         api.client.request({ 
-            url: App.config.api.endpoints.rewards, 
+            url: App.config.api.endpoints.rewards.replace('{id}', userProfile.id), 
             method: 'GET',
             action: 'api_rewards',
             params: {},
@@ -381,7 +382,7 @@
             //login page and user is authenticated
             
             App.getSubAccountsForm({});
-            
+
             // App.verifyCredentials(
             //     $('#app').find('[name=verify_token]').val(),
             //     $('#app').find('[name=verify_email]').val(),
