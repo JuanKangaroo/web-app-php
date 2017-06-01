@@ -30,12 +30,21 @@
             } else if (ajaxOptions.action == 'user_signup') {
                 localStorage.setObject('userProfile',response.data);
 
+                $.post(App.config.appBaseUrl + '/api/login', {
+                    username: App.$signupForm.find('#email').val(), 
+                    password: App.$signupForm.find('#password').val(),
+                }, function(data) {
+                    // localStorage.setObject('user_token', data);
+                    console.log(data);
+                    App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
+                });
+
                 //get access token for user
                 api.login({
                     username: App.$signupForm.find('#email').val(), 
                     password: App.$signupForm.find('#password').val(),
                 }, function() {
-                    App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
+                    // App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
                 }, App.handleError);
                 // location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
             } else if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
@@ -227,6 +236,7 @@
 
     $(document).on('click', '#login__btn', function(e) {
         e.preventDefault();
+        App.showSpinner();
 
         $.post(App.config.appBaseUrl + '/api/login', {
             username: App.$loginForm.find('#email').val(), 
@@ -244,7 +254,8 @@
 
     $(document).on('click', '#signup_btn', function(e) {
         e.preventDefault();
-
+        App.showSpinner();
+        
         var email = App.$signupForm.find('#email').val();
         if ($.isNumeric(email)) {
             api.signup({
