@@ -29,6 +29,8 @@
                 location.href = App.config.appBaseUrl + App.config.appHomeUrl;
             } else if (ajaxOptions.action == 'user_signup') {
                 localStorage.setObject('userProfile',response.data);
+                
+                App.showSpinner();
 
                 $.post(App.config.appBaseUrl + '/api/login', {
                     username: App.$signupForm.find('#email').val(), 
@@ -255,7 +257,7 @@
     $(document).on('click', '#signup_btn', function(e) {
         e.preventDefault();
         App.showSpinner();
-        
+
         var email = App.$signupForm.find('#email').val();
         if ($.isNumeric(email)) {
             api.signup({
@@ -295,6 +297,8 @@
 
         $modal.find('.modal-title').text('Add your '+ posName +' Account');
         $modal.find('[name=pos_id]').val(posId);
+        $modal.find('[name=account_id]').val('');
+        $modal.find('[name=postal_code]').val('');
     })
 
     $(document).on('click', '.js-add-pos-account__confirm-btn', function(event) {
