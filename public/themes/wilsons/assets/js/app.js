@@ -168,31 +168,55 @@
         });
     };
 
-    App.addPosAccount = function (pos_accounts) {
-        var userProfile = localStorage.getObject('userProfile');
+    App.addPosAccount = function (pos_account) {
         App.showSpinner();
-        api.client.request({ 
-            url: App.config.api.endpoints.users + '/'+ userProfile.id, 
-            method: 'PATCH',
-            action: 'api_pos_accounts',
-            params: {intent: "pos_accounts", pos_accounts: pos_accounts},
-        }, function success(response, ajaxOptions) {
+        $.post(App.config.appBaseUrl + '/api/addPosAccount', pos_account, function(data) {
             App.hideSpinner();
             App.alert('OK', 'Account successfully added');
-        }, function fail(error) {
+        }).fail(function(error){
             App.hideSpinner();
-            if (error.response.status == 400) {
-                App.alert('NOT_OK', error.response.data.error.description);
-            } else if (error.response.status == 401) {
-                App.alert('NOT_OK', error.response.data.message);
-            } else if (error.response.status == 404) {
-                App.alert('NOT_OK', error.response.data.error.description);
-            } else if (error.response.status == 422) {
-                $.each(error.response.data.pos_accounts, function(index, value){
-                    console.log(value);
-                });
+            if (error.status == 400) {
+                App.alert('NOT_OK', error.responseJSON.error.description);
+            } else if (error.status == 401) {
+                App.alert('NOT_OK', error.responseJSON.message);
+            } else if (error.status == 404) {
+                App.alert('NOT_OK', error.responseJSON.error.description);
+            } else if (error.status == 422) {
+                console.log(error.responseJSON['pos_accounts.0.account_id']);
+                if (error.responseJSON['pos_accounts.0.account_id']) {
+                    App.alert('NOT_OK', error.responseJSON['pos_accounts.0.account_id'][0]);
+                } else if (error.responseJSON['pos_accounts.0.pos_id']) {
+                    App.alert('NOT_OK', error.responseJSON['pos_accounts.0.pos_id'][0]);
+                } else if (error.responseJSON['pos_accounts.0.postal_code']) {
+                    App.alert('NOT_OK', error.responseJSON['pos_accounts.0.postal_code'][0]);
+                }
             }
+            console.log(error.responseJSON);
         });
+
+        // var userProfile = localStorage.getObject('userProfile');
+        // api.client.request({ 
+        //     url: App.config.api.endpoints.users + '/'+ userProfile.id, 
+        //     method: 'PATCH',
+        //     action: 'api_pos_accounts',
+        //     params: {intent: "pos_accounts", pos_accounts: [pos_account]},
+        // }, function success(response, ajaxOptions) {
+        //     App.hideSpinner();
+        //     App.alert('OK', 'Account successfully added');
+        // }, function fail(error) {
+        //     App.hideSpinner();
+        //     if (error.response.status == 400) {
+        //         App.alert('NOT_OK', error.response.data.error.description);
+        //     } else if (error.response.status == 401) {
+        //         App.alert('NOT_OK', error.response.data.message);
+        //     } else if (error.response.status == 404) {
+        //         App.alert('NOT_OK', error.response.data.error.description);
+        //     } else if (error.response.status == 422) {
+        //         $.each(error.response.data.pos_accounts, function(index, value){
+        //             console.log(value);
+        //         });
+        //     }
+        // });
     };
 
     /*****************************************************************************
@@ -203,6 +227,14 @@
 
     $(document).on('click', '#login__btn', function(e) {
         e.preventDefault();
+
+        $.post(App.config.appBaseUrl + '/api/login', {
+            username: App.$loginForm.find('#email').val(), 
+            password: App.$loginForm.find('#password').val(),
+        }, function(data) {
+            // localStorage.setObject('user_token', data);
+            console.log(data);
+        });
 
         api.login({
             username: App.$loginForm.find('#email').val(), 
@@ -261,7 +293,7 @@
         //get form data as object
         $('#add_pos_account__form').serializeArray().map(function(x) { account[x.name] = x.value; });
 
-        App.addPosAccount([account]);
+        App.addPosAccount(account);
     });
 
     $('#rewardsRedemptionConfirmModal').on('show.bs.modal', function (event) {

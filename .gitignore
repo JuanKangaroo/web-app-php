@@ -1,4 +1,5 @@
 /vendor
+/storage/sqlite.db
 /config/app.php
 composer.phar
 composer.lock

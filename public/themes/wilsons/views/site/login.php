@@ -1,8 +1,8 @@
 <div class="container-fluid container-landing pt-5">
-    <div class="row justify-content-md-center pb-2">
+    <div class="row justify-content-center pb-2">
         <h3> <img src="<?php echo config('logoPath'); ?>" class="d-inline" height="45px"> </h3>
     </div>
-    <div class="row justify-content-md-center">
+    <div class="row justify-content-center">
         <div class="col-12 col-md-6 col-lg-4">
             <form class="form login">
                 <div class="form-group">
