@@ -47,7 +47,12 @@
                     password: App.$signupForm.find('#password').val(),
                 }, function() {
                     // App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
+
+                    setTimeout(function(){
+                        location.href = KangarooApi.config.appBaseUrl + '/site/verify';
+                    },3000);
                 }, App.handleError);
+
                 // location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
             } else if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
                 localStorage.setObject('userProfile',response.data.profile);
@@ -82,6 +87,8 @@
                 App.alert('NOT_OK', error.response.data.email[0]);
             } else if (error.response.data.phone) {
                 App.alert('NOT_OK', error.response.data.phone[0]);
+            } else if (error.response.data.pin_code) {
+                App.alert('NOT_OK', error.response.data.pin_code[0]);
             }
         }
     };
@@ -183,7 +190,7 @@
         App.showSpinner();
         $.post(App.config.appBaseUrl + '/api/addPosAccount', pos_account, function(data) {
             App.hideSpinner();
-            App.alert('OK', 'Account successfully added');
+            App.alert('OK', 'Account successfully linked');
         }).fail(function(error){
             App.hideSpinner();
             if (error.status == 400) {
@@ -230,6 +237,14 @@
         // });
     };
 
+    App.checkEmailVerified = function(id){
+        $.get(App.config.api.baseUrl + '/users/' + id + '/verified', function(data) {
+            console.log(data);
+
+            App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
+        });
+    };
+    
     /*****************************************************************************
      *
      * Event listeners for UI elements
@@ -238,37 +253,72 @@
 
     $(document).on('click', '#login__btn', function(e) {
         e.preventDefault();
+        var username = App.$loginForm.find('#email').val();
+        var password = App.$loginForm.find('#password').val();
+
+        if (!email || !password) {
+            App.alert('NOT_OK', 'Email and password is required');
+            return;
+        }
+
         App.showSpinner();
 
         $.post(App.config.appBaseUrl + '/api/login', {
-            username: App.$loginForm.find('#email').val(), 
-            password: App.$loginForm.find('#password').val(),
+            username: username, 
+            password: password,
         }, function(data) {
             // localStorage.setObject('user_token', data);
             console.log(data);
         });
 
         api.login({
-            username: App.$loginForm.find('#email').val(), 
-            password: App.$loginForm.find('#password').val(),
+            username: username, 
+            password: password,
         }, App.handleResponse, App.handleError);
+
+        // var params = new URLSearchParams();
+        // params.append('username', username);
+        // params.append('password', password);
+
+        // axios({
+        //     method: 'POST',
+        //     url: App.config.appBaseUrl + '/api/login',
+        //     data: params,
+        //     headers: {'Content-type': 'application/x-www-form-urlencoded'},
+        // }).then(response => {
+        //     console.log(response.data);
+        //     var token = response.data;
+        //     token.expires = time() + token.expires_in;//store expires time for token
+        //     localStorage.setObject('user_token', token);//store the token
+        //     App.handleResponse(token, {action: 'user_login'});
+        // }).catch (error => {
+        //     App.handleError(error);
+        // });
     });
 
     $(document).on('click', '#signup_btn', function(e) {
         e.preventDefault();
-        App.showSpinner();
 
         var email = App.$signupForm.find('#email').val();
+        var password = App.$signupForm.find('#password').val();
+
+        if (!email || !password) {
+            App.alert('NOT_OK', 'Email and password is required');
+            return;
+        }
+
+        App.showSpinner();
+        
         if ($.isNumeric(email)) {
             api.signup({
                 'phone': email,
                 'country_code': 'CA',
-                'pin_code': App.$signupForm.find('#password').val(),
+                'pin_code': password,
             }, App.handleResponse, App.handleError);
         } else {
             api.signup({
                 'email': email,
-                'pin_code': App.$signupForm.find('#password').val(),
+                'pin_code': password,
             }, App.handleResponse, App.handleError);
         }
     });
@@ -299,6 +349,8 @@
         $modal.find('[name=pos_id]').val(posId);
         $modal.find('[name=account_id]').val('');
         $modal.find('[name=postal_code]').val('');
+        
+        // App.checkEmailVerified($('[name=verify_user_id]').val());
     })
 
     $(document).on('click', '.js-add-pos-account__confirm-btn', function(event) {
@@ -307,6 +359,11 @@
         var account = {};
         //get form data as object
         $('#add_pos_account__form').serializeArray().map(function(x) { account[x.name] = x.value; });
+
+        if (!account.account_id || !account.postal_code) {
+            App.alert('NOT_OK', 'Account ID and Postal Code is required');
+            return;
+        }
 
         App.addPosAccount(account);
     });

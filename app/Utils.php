@@ -6,11 +6,11 @@ use App\Models\DB;
 
 class Utils
 {
-
     /**
      * @param $token
+     * @param $id - user id
      */
-    public static function storeToken($token)
+    public static function storeToken($token, $id)
     {
         $db = new DB;
 
@@ -18,17 +18,17 @@ class Utils
         $refreshToken = $token->getRefreshToken();
         $expires = $token->getExpires();
 
-        $db->insertToken($accessToken, $refreshToken, $expires);
+        $db->insertToken($id, $accessToken, $refreshToken, $expires);
     }
 
     /**
      * @param KangarooRewards\OAuth2\Client\Provider\Kangaroo $provider
      * @return mixed
      */
-    public static function retrieveToken($provider)
+    public static function retrieveToken($id, $provider)
     {
         $db = new DB;
-        $dbToken = $db->getToken();
+        $dbToken = $db->getToken($id);
 
         if (!$dbToken) {
             throw new \Exception("Not token found", 1);
@@ -46,11 +46,37 @@ class Utils
                 'refresh_token' => $token->getRefreshToken(),
             ]);
 
-            self::storeToken($newAccessToken);
+            self::storeToken($newAccessToken, $id);
 
             $token = $newAccessToken;
         }
 
         return $token;
+    }
+
+
+    /**
+     * @param $token
+     * @param $id - user id
+     */
+    public static function saveUserToken($id, $token)
+    {
+        $db = new DB;
+
+        $db->saveUserToken($id, $token);
+    }
+
+    /**
+     * @param string $id
+     * @return mixed
+     */
+    public static function findUserToken($id)
+    {
+        $db = new DB;
+        $dbToken = $db->getUserToken($id);
+
+        if (!$dbToken) {
+            throw new \Exception("Not token found", 1);
+        }
     }
 }

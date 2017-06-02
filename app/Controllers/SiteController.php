@@ -76,24 +76,25 @@ class SiteController extends BaseController
     {
         $this->title = config('appName') .' - ' . 'Verify';
 
-        if (!isset($_GET['token'], $_GET['email'])) {
-            return $this->render('site/error', [
-                'code' => 400, 
-                'message' => 'Invalid Verification token. Try again.'
-            ]);
-        }
+        // if (!isset($_GET['token'], $_GET['email'])) {
+        //     return $this->render('site/error', [
+        //         'code' => 400, 
+        //         'message' => 'Invalid Verification token. Try again.'
+        //     ]);
+        // }
 
-        $token = $_GET['token'];
-        $email = $_GET['email'];
+        $token = isset($_GET['token']) ? $_GET['token'] : null;
+        $email = isset($_GET['email']) ? $_GET['email'] : null;
+        $userId = isset($_GET['userId']) ? $_GET['userId'] : null;
 
-        if (empty($token) || empty($email)) {
-            return $this->render('site/error', [
-                'code' => 400, 
-                'message' => 'Invalid Verification token. Try again.'
-            ]);
-        }
+        // if (empty($token) || empty($email)) {
+        //     return $this->render('site/error', [
+        //         'code' => 400, 
+        //         'message' => 'Invalid Verification token. Try again.'
+        //     ]);
+        // }
 
-        return $this->render('site/verify', ['token' => $token, 'email' => $email]);
+        return $this->render('site/verify', ['token' => $token, 'email' => $email, 'userId' => $userId]);
     }
 
     /**

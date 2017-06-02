@@ -46,10 +46,29 @@ class ApiController extends Controller
         ]);
     }
 
+    public function actionSetUserToken()
+    {
+        Utils::saveUserToken($_POST['user_id'], $_POST['token']);
+
+        $this->response(json_encode([
+            'user_id' => $_POST['user_id'],
+            'token' => $_POST['token'],
+        ]));
+    }
+
+    public function actionGetUserToken()
+    {
+        $token = Utils::findUserToken($_GET['user_id']);
+
+        $this->response(json_encode([
+            'user_id' => $_GET['user_id'],
+            'token' => $token,
+        ]));
+    }
+
     public function actionLogin()
     {
         try {
-
             // Try to get an access token (using the authorization code grant)
             $token = $this->provider->getAccessToken('password',[
                 'username' => $_POST['username'],
@@ -57,8 +76,16 @@ class ApiController extends Controller
                 'application_key' => $this->config['headers']['X-Application-Key'],
                 'scope' => $this->config['api']['scope'],
             ]);
+
+            $response = $this->client->get('users/me', [
+                'headers' => array_merge($this->requestHeaders, [
+                    'Authorization' => 'Bearer ' . $token->getToken(),
+                ]),
+            ]);
+
+            $user = json_decode($response->getBody());
             
-            Utils::storeToken($token);
+            Utils::storeToken($token, $user->data->id);
 
             $this->response(json_encode([
                 'access_token' => $token->getToken(),
@@ -67,8 +94,8 @@ class ApiController extends Controller
                 'token_type' => 'Bearer',
             ]));
 
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            var_dump($e->getMessage()); die;
+        } catch (\Exception $e) {
+            $this->response(json_encode(['message' => $e->getMessage()]), $e->getCode());
         }
     }
 

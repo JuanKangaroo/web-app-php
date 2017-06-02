@@ -1,6 +1,7 @@
 <div class="container-fluid container-landing">
     <input type="hidden" name="verify_token" value="<?= $token ?>" >
     <input type="hidden" name="verify_email" value="<?= $email ?>" >
+    <input type="hidden" name="verify_user_id" value="<?= $userId ?>" >
 
     <!-- <div class="row">
         <div class="col-12 col-md-6 offset-md-3">
@@ -24,8 +25,15 @@
                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
                 </div>
 
+                <?php if (!$token): ?>
+                <<!-- div class="alert alert-warning" role="alert" id="verify_email_not_veified">
+                    <h4 class="alert-heading">Your email is not verified.</h4>
+                    <p>Click the verification link to verify your email.</p>
+                </div> -->
+                <?php endif ?>
+
                 <div class="text-center">
-                    <h4 class="mb-3">Add your Accounts</h4>
+                    <h4 class="mb-3">Link Account</h4>
 
                     <button class="btn btn-outline-primary" data-toggle="modal" 
                         data-target="#addAccountsModal" data-pos-id=3 data-pos-name="Home Heat">

@@ -36,9 +36,9 @@
 
         <div class="collapse navbar-collapse" id="navbarDefault">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <!-- <li class="nav-item active">
                     <a class="nav-link" href="#">Locations</a>
-                </li>
+                </li> -->
                 <li class="nav-item active">
                     <a class="nav-link" href="#">Contact Us</a>
                 </li>
