@@ -25,12 +25,10 @@
                     <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
                 </div>
 
-                <?php if (!$token): ?>
-                <<!-- div class="alert alert-warning" role="alert" id="verify_email_not_veified">
+                <div class="alert alert-warning" role="alert" id="verify_email_not_veified">
                     <h4 class="alert-heading">Your email is not verified.</h4>
                     <p>Click the verification link to verify your email.</p>
-                </div> -->
-                <?php endif ?>
+                </div>
 
                 <div class="text-center">
                     <h4 class="mb-3">Link Account</h4>
@@ -43,6 +41,10 @@
                         data-target="#addAccountsModal" data-pos-id=4 data-pos-name="Security">
                         Security
                     </button>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="/home" class="btn btn-outline-info">Go to my Account</a>
                 </div>
             </div>
         </div>

@@ -66,7 +66,13 @@ function time() {
             'headers': headers,
         }, options);
 
-        axios({
+        var axiosInstance = axios.create({
+            baseURL: self.options.url,
+            timeout: 20000,
+            headers: self.options.headers
+        });
+
+        axiosInstance({
             method: self.options.method,
             url: self.options.url,
             data: self.options.params,
@@ -79,6 +85,19 @@ function time() {
             onError(error);
             KangarooApi.log('error', KangarooApi.config.appName, JSON.stringify(error));
         });
+        // axios({
+        //     method: self.options.method,
+        //     url: self.options.url,
+        //     data: self.options.params,
+        //     headers: self.options.headers
+        // }).then(response => {
+        //     // console.log(response.data);
+        //     onSuccess(response.data, self.options);
+        // }).catch (error => {
+        //     // console.log(error); console.log(error.response);
+        //     onError(error);
+        //     KangarooApi.log('error', KangarooApi.config.appName, JSON.stringify(error));
+        // });
     }
 
     /*****************************************************************************

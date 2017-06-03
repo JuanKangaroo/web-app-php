@@ -30,6 +30,17 @@ class SiteController extends BaseController
      *
      * @return void
      */
+    public function actionInstall()
+    {
+        \App\Utils::createTables();
+        echo 'done';
+    }
+
+    /**
+     * Index
+     *
+     * @return void
+     */
     public function actionIndex()
     {
         $this->title = config('appName') .' - ' . 'Loyalty Program';
@@ -85,7 +96,7 @@ class SiteController extends BaseController
 
         $token = isset($_GET['token']) ? $_GET['token'] : null;
         $email = isset($_GET['email']) ? $_GET['email'] : null;
-        $userId = isset($_GET['userId']) ? $_GET['userId'] : null;
+        $userId = isset($_GET['uid']) ? $_GET['uid'] : null;
 
         // if (empty($token) || empty($email)) {
         //     return $this->render('site/error', [

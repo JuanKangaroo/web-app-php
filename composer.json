@@ -21,7 +21,8 @@
         "php": ">=5.6.0",
         "ursuleacv/wallaby": "dev-master",
         "kangaroorewards/oauth2-kangaroo-rewards": "~1.0",
-        "guzzlehttp/guzzle": "^6.0"
+        "guzzlehttp/guzzle": "^6.0",
+        "fpdo/fluentpdo": "1.1.*"
     },
     "autoload": {
         "files": [

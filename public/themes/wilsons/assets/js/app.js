@@ -1,4 +1,4 @@
-;(function($, api, undefined) {
+;(function ($, api, undefined) {
     'use strict';
 
     var App = {
@@ -22,50 +22,32 @@
      *
      ****************************************************************************/
 
-    App.handleResponse = function(response, ajaxOptions) {
-        console.log('action', ajaxOptions.action, 'data', response);
+    App.handleResponse = function (response, ajaxOptions) {
+        console.trace('action', ajaxOptions.action, 'data', response);
         try {
             if (ajaxOptions.action == 'user_login' && response.token_type == 'Bearer') {
                 location.href = App.config.appBaseUrl + App.config.appHomeUrl;
             } else if (ajaxOptions.action == 'user_signup') {
-                localStorage.setObject('userProfile',response.data);
-                
-                App.showSpinner();
-
-                $.post(App.config.appBaseUrl + '/api/login', {
-                    username: App.$signupForm.find('#email').val(), 
-                    password: App.$signupForm.find('#password').val(),
-                }, function(data) {
-                    // localStorage.setObject('user_token', data);
-                    console.log(data);
-                    App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
-                });
-
-                //get access token for user
-                api.login({
-                    username: App.$signupForm.find('#email').val(), 
-                    password: App.$signupForm.find('#password').val(),
-                }, function() {
-                    // App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
-
-                    setTimeout(function(){
-                        location.href = KangarooApi.config.appBaseUrl + '/site/verify';
-                    },3000);
-                }, App.handleError);
-
+                localStorage.setObject('userProfile', response.data);
+                App.afterSignup(response.data);
                 // location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
             } else if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
-                localStorage.setObject('userProfile',response.data.profile);
+                localStorage.setObject('userProfile', response.data.profile);
                 //fill the page with the info from API
                 App.buildUserProfile(response.data.profile);
                 App.buildBusinessesList(response.data);
-            }  else if (ajaxOptions.action == 'api_user_profile' && ajaxOptions.method == 'GET') {
-                localStorage.setObject('userProfile',response.data.profile);
+            } else if (ajaxOptions.action == 'api_user_profile' && ajaxOptions.method == 'GET') {
+                localStorage.setObject('userProfile', response.data.profile);
             } else if (ajaxOptions.action == 'api_rewards' && ajaxOptions.method == 'GET') {
                 //fill the page with the info from API
                 App.buildRewardsList(response.data);
             } else if (ajaxOptions.action == 'api_redeem_tpr' && ajaxOptions.method == 'POST') {
                 App.alert('OK', 'You have successfully redeemed a partner reward');
+            } else if (ajaxOptions.action == 'api_verify_credentials') {
+                $('#verify_email_not_veified').hide();
+                App.alert('OK', 'Email successfully verified');
+            } else if (ajaxOptions.action == 'api_pos_accounts') {
+                App.alert('OK', 'Account successfully linked');
             }
         } catch (e) {
             console.log(e);
@@ -74,7 +56,7 @@
         App.hideSpinner();
     };
 
-    App.handleError = function(error) {
+    App.handleError = function (error) {
         App.hideSpinner();
         if (error.response.status == 400) {
             App.alert('NOT_OK', error.response.data.error.description);
@@ -89,11 +71,40 @@
                 App.alert('NOT_OK', error.response.data.phone[0]);
             } else if (error.response.data.pin_code) {
                 App.alert('NOT_OK', error.response.data.pin_code[0]);
+            } else if (error.response.data.email) {
+                App.alert('NOT_OK', error.response.data.email[0]);
+            } else if (error.response.data.phone) {
+                App.alert('NOT_OK', error.response.data.phone[0]);
+            } else if (error.response.data.token) {
+                App.alert('NOT_OK', error.response.data.token[0]);
             }
         }
     };
 
-    App.alert = function(type, message, delayTime) {
+    App.afterSignup = function(data) {
+        console.log(data);
+        App.showSpinner();
+
+        //get access token for user
+        api.login({
+            username: App.$signupForm.find('#email').val(),
+            password: App.$signupForm.find('#password').val(),
+        }, function (token) {
+            App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
+
+            //Store the toke on the server
+            $.post(App.config.appBaseUrl + '/api/setUserToken', {
+                user_id: data.id,
+                token: JSON.stringify(token),
+            }, function (data) {
+                setTimeout(function () {
+                    location.href = KangarooApi.config.appBaseUrl + '/site/verify';
+                }, 3000);
+            });
+        }, App.handleError);
+    };
+
+    App.alert = function (type, message, delayTime) {
         var delay = 4000;
         var alertContent = '<div class="alert-content"><span>' + message + '</span></div>';
 
@@ -110,8 +121,8 @@
 
     App.getAccount = function () {
         App.showSpinner();
-        api.client.request({ 
-            url: App.config.api.endpoints.account, 
+        api.client.request({
+            url: App.config.api.endpoints.account,
             method: 'GET',
             action: 'api_account',
             params: {},
@@ -120,8 +131,8 @@
 
     App.getUserProfile = function () {
         App.showSpinner();
-        api.client.request({ 
-            url: App.config.api.endpoints.user_profile, 
+        api.client.request({
+            url: App.config.api.endpoints.user_profile,
             method: 'GET',
             action: 'api_user_profile',
             params: {},
@@ -131,8 +142,8 @@
     App.getRewards = function () {
         var userProfile = localStorage.getObject('userProfile');
         App.showSpinner();
-        api.client.request({ 
-            url: App.config.api.endpoints.rewards.replace('{id}', userProfile.id), 
+        api.client.request({
+            url: App.config.api.endpoints.rewards.replace('{id}', userProfile.id),
             method: 'GET',
             action: 'api_rewards',
             params: {},
@@ -140,118 +151,118 @@
     };
 
     App.verifyCredentials = function (token, email, phone) {
+        console.log('verifyCredentials', token, email);
+
         var userProfile = localStorage.getObject('userProfile');
-        var params = {token: token};
+        var params = {
+            token: token
+        };
 
         if (email) {
             params.intent = 'verify_email';
             params.email = email;
-            var successMessage = 'Email successfully verified.';
         } else {
             params.intent = 'verify_phone';
             params.phone = phone;
-            var successMessage = 'Phone number successfully verified.';
         }
 
+        var headers = {};
+        headers = KangarooApi.config.headers;
+        //append access token to the headers
+        var token = App.getAccessToken();
+        headers.Authorization = token.token_type +' '+ token.access_token;
+
         App.showSpinner();
-        api.client.request({ 
-            url: App.config.api.endpoints.users + '/'+ userProfile.id,
+        axios({
+            url: App.config.api.endpoints.users + '/' + userProfile.id,
             method: 'PATCH',
-            action: 'api_verify_credentials',
-            params: params,
-        }, function success(response, ajaxOptions) {
-            App.hideSpinner();
-
-            // $('.alert-success').show().find('#message').html(successMessage);
-            // setTimeout(function(){$('.alert-success').hide();}, 3000);
-
-            App.getSubAccountsForm({});
-        }, function fail(error) {
-            App.hideSpinner();
-            if (error.response.status == 400) {
-                App.alert('NOT_OK', error.response.data.error.description);
-            } else if (error.response.status == 401) {
-                App.alert('NOT_OK', error.response.data.message);
-            } else if (error.response.status == 404) {
-                App.alert('NOT_OK', error.response.data.error.description);
-            } else if (error.response.status == 422) {
-                if (error.response.data.email) {
-                    App.alert('NOT_OK', error.response.data.email[0]);
-                } else if (error.response.data.phone) {
-                    App.alert('NOT_OK', error.response.data.phone[0]);
-                } else if (error.response.data.token) {
-                    App.alert('NOT_OK', error.response.data.token[0]);
-                }
-            }
+            data: params,
+            headers: headers
+        }).then(response => {
+            App.handleResponse(response.data, {action: 'api_verify_credentials'});
+        }).catch (error => {
+            App.handleError(error);
         });
+
+        // api.client.request({
+        //     url: App.config.api.endpoints.users + '/' + userProfile.id,
+        //     method: 'PATCH',
+        //     action: 'api_verify_credentials',
+        //     params: params,
+        // }, App.handleResponse, App.handleError);
     };
 
     App.addPosAccount = function (pos_account) {
         App.showSpinner();
-        $.post(App.config.appBaseUrl + '/api/addPosAccount', pos_account, function(data) {
-            App.hideSpinner();
-            App.alert('OK', 'Account successfully linked');
-        }).fail(function(error){
-            App.hideSpinner();
-            if (error.status == 400) {
-                App.alert('NOT_OK', error.responseJSON.error.description);
-            } else if (error.status == 401) {
-                App.alert('NOT_OK', error.responseJSON.message);
-            } else if (error.status == 404) {
-                App.alert('NOT_OK', error.responseJSON.error.description);
-            } else if (error.status == 422) {
-                console.log(error.responseJSON['pos_accounts.0.account_id']);
-                if (error.responseJSON['pos_accounts.0.account_id']) {
-                    App.alert('NOT_OK', error.responseJSON['pos_accounts.0.account_id'][0]);
-                } else if (error.responseJSON['pos_accounts.0.pos_id']) {
-                    App.alert('NOT_OK', error.responseJSON['pos_accounts.0.pos_id'][0]);
-                } else if (error.responseJSON['pos_accounts.0.postal_code']) {
-                    App.alert('NOT_OK', error.responseJSON['pos_accounts.0.postal_code'][0]);
-                }
-            }
-            console.log(error.responseJSON);
-        });
-
-        // var userProfile = localStorage.getObject('userProfile');
-        // api.client.request({ 
-        //     url: App.config.api.endpoints.users + '/'+ userProfile.id, 
-        //     method: 'PATCH',
-        //     action: 'api_pos_accounts',
-        //     params: {intent: "pos_accounts", pos_accounts: [pos_account]},
-        // }, function success(response, ajaxOptions) {
-        //     App.hideSpinner();
-        //     App.alert('OK', 'Account successfully added');
-        // }, function fail(error) {
-        //     App.hideSpinner();
-        //     if (error.response.status == 400) {
-        //         App.alert('NOT_OK', error.response.data.error.description);
-        //     } else if (error.response.status == 401) {
-        //         App.alert('NOT_OK', error.response.data.message);
-        //     } else if (error.response.status == 404) {
-        //         App.alert('NOT_OK', error.response.data.error.description);
-        //     } else if (error.response.status == 422) {
-        //         $.each(error.response.data.pos_accounts, function(index, value){
-        //             console.log(value);
-        //         });
-        //     }
-        // });
+        var userProfile = localStorage.getObject('userProfile');
+        api.client.request({
+            url: App.config.api.endpoints.users + '/' + userProfile.id,
+            method: 'PATCH',
+            action: 'api_pos_accounts',
+            params: {
+                intent: "pos_accounts",
+                pos_accounts: [pos_account]
+            },
+        }, App.handleResponse, App.handleError);
     };
 
-    App.checkEmailVerified = function(id){
-        $.get(App.config.api.baseUrl + '/users/' + id + '/verified', function(data) {
-            console.log(data);
-
-            App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
-        });
+    App.getAccessToken = function() {
+        var token = localStorage.getObject('user_token');
+        return token;
     };
-    
+
+    App.checkEmailVerified = function (event) {
+        
+
+        // App.showSpinner();
+        // api.client.request({
+        //     url: App.config.api.endpoints.users + '/' + id,
+        //     method: 'GET',
+        //     action: 'api_check_email_status',
+        //     params: {},
+        // }, App.handleResponse, App.handleError);
+    };
+
+    App.verifyEmailIfNotVerified = function () {
+        console.log('verifyEmailIfNotVerified');
+        var userToken = localStorage.getObject('user_token');
+        var userProfile = localStorage.getObject('userProfile');
+
+        //Get
+        var emailToken = $('#app').find('[name=verify_token]').val();
+        var userId = $('#app').find('[name=verify_user_id]').val();
+        var emailToVerify = $('#app').find('[name=verify_email]').val();
+
+        if (userToken && userProfile) {
+            // console.log('before checkEmailVerified with token from localStorage');
+        } else if (userId) {
+            //no access token, but have email token
+            //get the token from the server
+            $.get(App.config.appBaseUrl + '/api/getUserToken', {
+                'user_id': userId
+            }, function (data) {
+                console.log('get token form the server');
+                localStorage.setObject('user_token', data.token);
+                userToken = data.token;
+            });
+        }
+
+        if (emailToken && userToken) {
+            console.log('before verifyCredentials');
+            App.verifyCredentials(
+                emailToken,
+                emailToVerify,
+            );
+        }
+    }
+
     /*****************************************************************************
      *
      * Event listeners for UI elements
      *
      ****************************************************************************/
 
-    $(document).on('click', '#login__btn', function(e) {
+    $(document).on('click', '#login__btn', function (e) {
         e.preventDefault();
         var username = App.$loginForm.find('#email').val();
         var password = App.$loginForm.find('#password').val();
@@ -263,40 +274,21 @@
 
         App.showSpinner();
 
-        $.post(App.config.appBaseUrl + '/api/login', {
-            username: username, 
-            password: password,
-        }, function(data) {
-            // localStorage.setObject('user_token', data);
-            console.log(data);
-        });
+        // $.post(App.config.appBaseUrl + '/api/login', {
+        //     username: username, 
+        //     password: password,
+        // }, function(data) {
+        //     // localStorage.setObject('user_token', data);
+        //     console.log(data);
+        // });
 
         api.login({
-            username: username, 
+            username: username,
             password: password,
         }, App.handleResponse, App.handleError);
-
-        // var params = new URLSearchParams();
-        // params.append('username', username);
-        // params.append('password', password);
-
-        // axios({
-        //     method: 'POST',
-        //     url: App.config.appBaseUrl + '/api/login',
-        //     data: params,
-        //     headers: {'Content-type': 'application/x-www-form-urlencoded'},
-        // }).then(response => {
-        //     console.log(response.data);
-        //     var token = response.data;
-        //     token.expires = time() + token.expires_in;//store expires time for token
-        //     localStorage.setObject('user_token', token);//store the token
-        //     App.handleResponse(token, {action: 'user_login'});
-        // }).catch (error => {
-        //     App.handleError(error);
-        // });
     });
 
-    $(document).on('click', '#signup_btn', function(e) {
+    $(document).on('click', '#signup_btn', function (e) {
         e.preventDefault();
 
         var email = App.$signupForm.find('#email').val();
@@ -308,7 +300,7 @@
         }
 
         App.showSpinner();
-        
+
         if ($.isNumeric(email)) {
             api.signup({
                 'phone': email,
@@ -323,42 +315,80 @@
         }
     });
 
-    $(document).on('click', '#logout', function(e) {
+    $(document).on('click', '#logout', function (e) {
         api.logout();
     });
 
-    $(document).on('click', '.js-redeem__confirm-btn', function(e) {
+    $(document).on('click', '.js-redeem__confirm-btn', function (e) {
         $('#rewardsRedemptionConfirmModal').modal('hide');
         App.showSpinner();
-        api.client.request({ 
-            url: App.config.api.endpoints.transactions, 
+        api.client.request({
+            url: App.config.api.endpoints.transactions,
             method: 'POST',
             action: 'api_redeem_tpr',
-            params: {'intent': 'redeem', 'catalog_items': [App.redeemItem]},
+            params: {
+                'intent': 'redeem',
+                'catalog_items': [App.redeemItem]
+            },
         }, App.handleResponse, App.handleError);
     });
 
     $('#addAccountsModal').on('show.bs.modal', function (event) {
+        var userProfile = localStorage.getObject('userProfile');
+        var token = App.getAccessToken();
+        var headers = {};
+        headers = KangarooApi.config.headers;
+        //append access token to the headers
+        headers.Authorization = token.token_type +' '+ token.access_token;
+
         var $button = $(event.relatedTarget); // Button that triggered the modal
         var posId = $button.data('posId'); // Extract info from data-* attributes
         var posName = $button.data('posName'); // Extract info from data-* attributes
         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
         var $modal = $(this);
 
-        $modal.find('.modal-title').text('Add your '+ posName +' Account');
+        var userIdUrl = $('#app').find('[name=verify_user_id]').val();
+        var userId = userIdUrl ? userIdUrl : userProfile.id;
+        
+        $modal.find('.modal-title').text('Add your ' + posName + ' Account');
         $modal.find('[name=pos_id]').val(posId);
         $modal.find('[name=account_id]').val('');
         $modal.find('[name=postal_code]').val('');
-        
-        // App.checkEmailVerified($('[name=verify_user_id]').val());
+
+        App.showSpinner();
+        axios({
+            url: App.config.api.endpoints.users + '/' + userId,
+            method: 'GET',
+            headers: headers
+        }).then(response => {
+            App.hideSpinner();
+            console.log('response.data.email_verified', response.data.data.email_verified);
+            if(response.data.data.email_verified) {
+                $('#verify_email_not_veified').hide();
+            } else {
+                $('#verify_email_not_veified').show();
+                event.stopPropagation();
+                $modal.modal('hide');
+                App.alert('NOT_OK', 'Your email is not verified. Click on the verificatin link to verify your email.')
+                return false;
+            }
+        }).catch (error => {
+            $modal.modal('hide');
+            event.stopPropagation();
+            App.handleError(error);
+            return false;
+        });
+        // App.checkEmailVerified(event);
     })
 
-    $(document).on('click', '.js-add-pos-account__confirm-btn', function(event) {
+    $(document).on('click', '.js-add-pos-account__confirm-btn', function (event) {
         $('#addAccountsModal').modal('hide');
-        
+
         var account = {};
         //get form data as object
-        $('#add_pos_account__form').serializeArray().map(function(x) { account[x.name] = x.value; });
+        $('#add_pos_account__form').serializeArray().map(function (x) {
+            account[x.name] = x.value;
+        });
 
         if (!account.account_id || !account.postal_code) {
             App.alert('NOT_OK', 'Account ID and Postal Code is required');
@@ -377,7 +407,10 @@
         // modal.find('.modal-title').text('New message to ' + recipient);
         $modal.find('#reward_title').html(rewardTitle);
 
-        App.redeemItem = {id: rewardId, quantity: 1};
+        App.redeemItem = {
+            id: rewardId,
+            quantity: 1
+        };
     });
 
     /*****************************************************************************
@@ -389,29 +422,29 @@
     /*
      * Gets a template
      */
-    App.getTemplate = function(url) {
-        $.get(url, function(template) {
+    App.getTemplate = function (url) {
+        $.get(url, function (template) {
             $('#target').html(template);
         });
     };
 
-    App.hideSpinner = function() {
+    App.hideSpinner = function () {
         App.spinner.setAttribute('hidden', true);
     };
 
-    App.showSpinner = function() {
+    App.showSpinner = function () {
         App.spinner.removeAttribute('hidden');
     };
 
-    App.buildUserProfile = function(profile) {
+    App.buildUserProfile = function (profile) {
         // console.log(context); return;
         var $profile = $('#user-profile');
-        
+
         if (profile.first_name && profile.last_name) {
             var fullName = profile.first_name + ' ' + profile.last_name;
             $profile.find('#user-profile__name').html(fullName.trim());
         }
-        
+
         if (profile.email) {
             $profile.find('#user-profile__email').html(profile.email);
         } else {
@@ -430,30 +463,32 @@
         // $('#user__profile').html(template(context));
     };
 
-    App.buildBusinessesList = function(context) {
+    App.buildBusinessesList = function (context) {
 
         var intlData = {
             locales: 'en-US'
         }
 
         // console.log(context); return;
-        var source   = $("#tpl_businesses").html(); //console.log(source); return;
+        var source = $("#tpl_businesses").html(); //console.log(source); return;
         var template = Handlebars.compile(source);
 
         $('#business__list').html(template(context, {
-            data: {intl: intlData}
+            data: {
+                intl: intlData
+            }
         }));
     };
 
-    App.buildRewardsList = function(context) {
+    App.buildRewardsList = function (context) {
         // console.log(context); return;
-        var source   = $("#tpl_rewards").html(); //console.log(source); return;
+        var source = $("#tpl_rewards").html(); //console.log(source); return;
         var template = Handlebars.compile(source);
 
         $('#rewards__list').html(template(context));
     };
 
-    App.getSubAccountsForm = function(context) {
+    App.showSubAccountsForm = function (context) {
         $('#profile_subaccounts_form').show();
 
         // console.log(context); return;
@@ -467,8 +502,10 @@
         // }
     };
 
-    App.scrollTop = function() {
-        $("html, body").animate({ scrollTop: "0px" });
+    App.scrollTop = function () {
+        $("html, body").animate({
+            scrollTop: "0px"
+        });
     }
 
     App.isAuthenticated = function () {
@@ -481,7 +518,7 @@
         return false;
     };
 
-    App.init = function() {
+    App.init = function () {
         App.hideSpinner();
 
         this.redirectIfAuthenticated();
@@ -489,19 +526,19 @@
         this.handlePage();
     };
 
-    App.redirectIfAuthenticated = function() {
-        var redirectToHome =  App.config.appBaseUrl + App.config.appHomeUrl;
-        var redirectToRegister =  App.config.appBaseUrl + App.config.appRegisterUrl;
+    App.redirectIfAuthenticated = function () {
+        var redirectToHome = App.config.appBaseUrl + App.config.appHomeUrl;
+        var redirectToRegister = App.config.appBaseUrl + App.config.appRegisterUrl;
         var currentUrl = top.location.href;
 
-        currentUrl = currentUrl.replace(/\/$/, "");//remove the last / from url
+        currentUrl = currentUrl.replace(/\/$/, ""); //remove the last / from url
 
         console.log('currentUrl', currentUrl, 'App.config.appHomeUrl', redirectToHome);
 
         // if (App.isAuthenticated() && currentUrl != redirectTo) {
         //     location.href = redirectTo;
         // } else 
-        if(!App.isAuthenticated() && !$.inArray(currentUrl, [redirectToHome, redirectToRegister ])) {
+        if (!App.isAuthenticated() && !$.inArray(currentUrl, [redirectToHome, redirectToRegister])) {
             location.href = App.config.appBaseUrl;
         }
     };
@@ -529,13 +566,10 @@
             location.href = App.config.appBaseUrl + App.config.appHomeUrl;
         } else if (currentUrl == App.config.appVerifyUrl) {
             //login page and user is authenticated
-            
-            App.getSubAccountsForm({});
 
-            // App.verifyCredentials(
-            //     $('#app').find('[name=verify_token]').val(),
-            //     $('#app').find('[name=verify_email]').val(),
-            // );
+            App.showSubAccountsForm({});
+
+            App.verifyEmailIfNotVerified();
         }
     };
 
@@ -550,7 +584,7 @@
 })(jQuery, KangarooApi);
 
 
-$( document ).ready(function(){
+$(document).ready(function () {
     // console.log('Ready');
     // App.ready();
 });

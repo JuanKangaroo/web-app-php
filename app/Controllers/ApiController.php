@@ -48,11 +48,11 @@ class ApiController extends Controller
 
     public function actionSetUserToken()
     {
-        Utils::saveUserToken($_POST['user_id'], $_POST['token']);
+        $token = Utils::saveUserToken($_POST['user_id'], $_POST['token']);
 
         $this->response(json_encode([
             'user_id' => $_POST['user_id'],
-            'token' => $_POST['token'],
+            'token' => $token,
         ]));
     }
 
