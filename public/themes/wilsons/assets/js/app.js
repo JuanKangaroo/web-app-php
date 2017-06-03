@@ -368,12 +368,10 @@
             } else {
                 $('#verify_email_not_veified').show();
                 event.stopPropagation();
-                $modal.modal('hide');
                 App.alert('NOT_OK', 'Your email is not verified. Click on the verificatin link to verify your email.')
                 return false;
             }
         }).catch (error => {
-            $modal.modal('hide');
             event.stopPropagation();
             App.handleError(error);
             return false;
