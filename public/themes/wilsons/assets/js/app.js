@@ -333,7 +333,7 @@
         }, App.handleResponse, App.handleError);
     });
 
-    $('#addAccountsModal').on('show.bs.modal', function (event) {
+    $('.js-add-pos-account__btn').on('click', function (event) {
         var userProfile = localStorage.getObject('userProfile');
         var token = App.getAccessToken();
         var headers = {};
@@ -341,11 +341,11 @@
         //append access token to the headers
         headers.Authorization = token.token_type +' '+ token.access_token;
 
-        var $button = $(event.relatedTarget); // Button that triggered the modal
-        var posId = $button.data('posId'); // Extract info from data-* attributes
-        var posName = $button.data('posName'); // Extract info from data-* attributes
+        var $button = $(this); // Button that triggered the modal
+        var posId = $(this).data('posId'); // Extract info from data-* attributes
+        var posName = $(this).data('posName'); // Extract info from data-* attributes
         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-        var $modal = $(this);
+        var $modal = $('#addAccountsModal');
 
         var userIdUrl = $('#app').find('[name=verify_user_id]').val();
         var userId = userIdUrl ? userIdUrl : userProfile.id;
@@ -365,14 +365,13 @@
             console.log('response.data.email_verified', response.data.data.email_verified);
             if(response.data.data.email_verified) {
                 $('#verify_email_not_veified').hide();
+                $modal.modal('show');
             } else {
                 $('#verify_email_not_veified').show();
-                event.stopPropagation();
                 App.alert('NOT_OK', 'Your email is not verified. Click on the verificatin link to verify your email.')
                 return false;
             }
         }).catch (error => {
-            event.stopPropagation();
             App.handleError(error);
             return false;
         });

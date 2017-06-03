@@ -33,12 +33,12 @@
                 <div class="text-center">
                     <h4 class="mb-3">Link Account</h4>
 
-                    <button class="btn btn-outline-primary" data-toggle="modal" 
-                        data-target="#addAccountsModal" data-pos-id=3 data-pos-name="Home Heat">
+                    <button class="btn btn-outline-primary js-add-pos-account__btn" 
+                        data-pos-id=3 data-pos-name="Home Heat">
                         Home Heat
                     </button>
-                    <button class="btn btn-outline-primary" data-toggle="modal" 
-                        data-target="#addAccountsModal" data-pos-id=4 data-pos-name="Security">
+                    <button class="btn btn-outline-primary js-add-pos-account__btn" 
+                        data-pos-id=4 data-pos-name="Security">
                         Security
                     </button>
                 </div>
