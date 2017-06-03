@@ -6,11 +6,11 @@
     <div class="row">
     {{#each businesses}}
         <div class="col-12 col-md-4">
-            <div class="card" style="border: none;">
-                <img class="card-img-top img-fluid mx-auto" src="{{logo}}" alt="{{name}}" style="max-width: 100px;">
-                <div class="card-block">
+            <div class="card mb-3" style="border: none;">
+                <img class="card-img-top img-fluid mx-auto" src="{{logo}}" alt="{{name}}" style="max-width: 200px;">
+                <!-- <div class="card-block">
                     <h4 class="card-title">{{formatNumber balance.points}} points</h4>
-                </div>
+                </div> -->
             </div>
         </div>
     {{/each}}
