@@ -115,6 +115,23 @@
         </svg>
     </div>
 
+    <div class="modal fade" id="detailViewModal" tabindex="-1" role="dialog" aria-labelledby="detailViewLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg detail-view" role="document">
+            <div class="modal-content">
+                <div class="modal-header justify-content-start">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span>&leftarrow; </span>
+                    </button>
+                    <h5 class="modal-title pl-3" id="detailViewLabel"> Add your Accounts</h5>
+                    <button type="button" class="close" data-dismiss="modal" style="position: absolute; right: 10px;">
+                        <span>&times; </span>
+                    </button>
+                </div>
+                <div class="modal-body" style="overflow: auto;"></div>
+            </div>
+        </div>
+    </div>
+
     <?php
         require_once __DIR__ . '/../templates/userProfile.tpl';
         require_once __DIR__ . '/../templates/businesses.tpl';

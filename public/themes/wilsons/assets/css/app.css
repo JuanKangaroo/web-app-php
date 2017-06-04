@@ -253,3 +253,14 @@ body {
 .container-landing {
     margin: 80px auto 0;
 }
+
+.modal-dialog.detail-view {
+    margin: 0 auto;
+    max-width: 100%;
+    height: 100%;
+}
+
+.modal-dialog.detail-view .modal-content{
+    border-radius: 0;
+    height: 100%;
+}

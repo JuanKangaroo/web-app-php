@@ -48,6 +48,8 @@
                 App.alert('OK', 'Email successfully verified');
             } else if (ajaxOptions.action == 'api_pos_accounts') {
                 App.alert('OK', 'Account successfully linked');
+            } else if (ajaxOptions.action == 'api_get_transactions') {
+                App.buildTransactionsList(response);
             }
         } catch (e) {
             console.log(e);
@@ -254,7 +256,17 @@
                 emailToVerify,
             );
         }
-    }
+    };
+
+    App.getTransactions = function() {
+        App.showSpinner();
+        var userProfile = localStorage.getObject('userProfile');
+        api.client.request({
+            url: App.config.api.endpoints.users + '/' + userProfile.id + '/transactions',
+            method: 'GET',
+            action: 'api_get_transactions',
+        }, App.handleResponse, App.handleError);
+    };
 
     /*****************************************************************************
      *
@@ -410,6 +422,11 @@
         };
     });
 
+    $('#menu_transactions_list').on('click', function(){
+        $('#detailViewModal').modal('show');
+        App.getTransactions();
+    });
+
     /*****************************************************************************
      *
      * Methods for dealing with the UI and App logic
@@ -497,6 +514,25 @@
         // } catch (error) {
         //     console.log(error);
         // }
+    };
+
+    App.buildTransactionsList = function (response) {
+        var list = '<table class="table table-striped">';
+        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        
+        for (var i = 0; i < response.data.length; i++) {
+            var trx = response.data[i];
+            var d = new Date(trx.created_at);
+            var createdAt = months[d.getMonth()] +' ' + d.getDate() + ', ' +d.getHours()+':'+d.getMinutes();
+
+            list += '<tr>\
+                        <td>' + createdAt + '</td>\
+                        <td>' +trx.name+ '</td>\
+                        <td>' +trx.points+ '</td>\
+                    </tr>';
+        }
+        list += '</table>';
+        $('#detailViewModal').find('.modal-body').html(list);
     };
 
     App.scrollTop = function () {
