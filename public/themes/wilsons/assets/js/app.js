@@ -181,6 +181,7 @@
         //     App.handleError(error);
         // });
 
+        App.showSpinner();
         api.client.request({
             url: App.config.api.baseUrl + '/verify',
             method: 'POST',
@@ -325,7 +326,7 @@
         var userProfile = localStorage.getObject('userProfile');
         var token = App.getAccessToken();
         var headers = {};
-        headers = KangarooApi.config.headers;
+        headers = App.config.headers;
         //append access token to the headers
         headers.Authorization = token.token_type +' '+ token.access_token;
 
@@ -342,6 +343,25 @@
         $modal.find('[name=pos_id]').val(posId);
         $modal.find('[name=account_id]').val('');
         $modal.find('[name=postal_code]').val('');
+
+        // App.showSpinner();
+        // api.client.request({
+        //     url: App.config.api.endpoints.users + '/' + userId,
+        //     method: 'GET',
+        //     action: 'api_verify_credentials',
+        //     params: data,
+        // }, function(response) {
+        //     App.hideSpinner();
+        //     console.log('response.data.email_verified', response.data.data.email_verified);
+        //     if(response.data.data.email_verified) {
+        //         $('#verify_email_not_veified').hide();
+        //         $modal.modal('show');
+        //     } else {
+        //         $('#verify_email_not_veified').show();
+        //         App.alert('NOT_OK', 'Your email is not verified. Click on the verificatin link to verify your email.')
+        //         return false;
+        //     }
+        // }, App.handleError);
 
         App.showSpinner();
         axios({
@@ -363,7 +383,7 @@
             App.handleError(error);
             return false;
         });
-        // App.checkEmailVerified(event);
+        App.checkEmailVerified(event);
     })
 
     $(document).on('click', '.js-add-pos-account__confirm-btn', function (event) {
@@ -495,7 +515,8 @@
     App.buildTransactionsList = function (response) {
         var list = '<table class="table table-striped">';
         var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-        
+        var $modal = $('#detailViewModal');
+
         for (var i = 0; i < response.data.length; i++) {
             var trx = response.data[i];
             var d = new Date(trx.created_at);
@@ -507,8 +528,11 @@
                         <td>' +trx.points+ '</td>\
                     </tr>';
         }
+
         list += '</table>';
-        $('#detailViewModal').find('.modal-body').html(list);
+        
+        $modal.find('.modal-title').text('Transactions');
+        $modal.find('.modal-body').html(list);
     };
 
     App.scrollTop = function () {

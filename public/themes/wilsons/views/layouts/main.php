@@ -122,8 +122,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span>&leftarrow; </span>
                     </button>
-                    <h5 class="modal-title pl-3" id="detailViewLabel"> Add your Accounts</h5>
-                    <button type="button" class="close" data-dismiss="modal" style="position: absolute; right: 10px;">
+                    <h5 class="modal-title pl-3" id="detailViewLabel"></h5>
+                    <button type="button" class="close p-3" data-dismiss="modal" style="position: absolute; right: 10px;">
                         <span>&times; </span>
                     </button>
                 </div>
