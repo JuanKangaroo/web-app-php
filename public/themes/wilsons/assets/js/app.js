@@ -155,43 +155,38 @@
     App.verifyCredentials = function (token, email, phone) {
         console.log('verifyCredentials', token, email);
 
-        var userProfile = localStorage.getObject('userProfile');
-        var params = {
-            token: token
-        };
-
         if (email) {
-            params.intent = 'verify_email';
-            params.email = email;
+            var data = {
+                intent: 'verify_email',
+                email: email,
+                token: token,
+            };
         } else {
-            params.intent = 'verify_phone';
-            params.phone = phone;
+            var data = {
+                intent: 'verify_phone',
+                email: phone,
+                token: token,
+            };
         }
 
-        var headers = {};
-        headers = KangarooApi.config.headers;
-        //append access token to the headers
-        var token = App.getAccessToken();
-        headers.Authorization = token.token_type +' '+ token.access_token;
+        // App.showSpinner();
+        // axios({
+        //     url: App.config.api.baseUrl + '/verify',
+        //     method: 'POST',
+        //     data: data,
+        //     headers: App.config.headers
+        // }).then(response => {
+        //     App.handleResponse(response.data, {action: 'api_verify_credentials'});
+        // }).catch (error => {
+        //     App.handleError(error);
+        // });
 
-        App.showSpinner();
-        axios({
-            url: App.config.api.endpoints.users + '/' + userProfile.id,
-            method: 'PATCH',
-            data: params,
-            headers: headers
-        }).then(response => {
-            App.handleResponse(response.data, {action: 'api_verify_credentials'});
-        }).catch (error => {
-            App.handleError(error);
-        });
-
-        // api.client.request({
-        //     url: App.config.api.endpoints.users + '/' + userProfile.id,
-        //     method: 'PATCH',
-        //     action: 'api_verify_credentials',
-        //     params: params,
-        // }, App.handleResponse, App.handleError);
+        api.client.request({
+            url: App.config.api.baseUrl + '/verify',
+            method: 'POST',
+            action: 'api_verify_credentials',
+            params: data,
+        }, App.handleResponse, App.handleError);
     };
 
     App.addPosAccount = function (pos_account) {
@@ -227,34 +222,15 @@
 
     App.verifyEmailIfNotVerified = function () {
         console.log('verifyEmailIfNotVerified');
-        var userToken = localStorage.getObject('user_token');
-        var userProfile = localStorage.getObject('userProfile');
 
-        //Get
+        //Get verification token and credetials to verify
         var emailToken = $('#app').find('[name=verify_token]').val();
-        var userId = $('#app').find('[name=verify_user_id]').val();
         var emailToVerify = $('#app').find('[name=verify_email]').val();
+        var phoneToVerify = $('#app').find('[name=verify_phone]').val();
 
-        if (userToken && userProfile) {
-            // console.log('before checkEmailVerified with token from localStorage');
-        } else if (userId) {
-            //no access token, but have email token
-            //get the token from the server
-            $.get(App.config.appBaseUrl + '/api/getUserToken', {
-                'user_id': userId
-            }, function (data) {
-                console.log('get token form the server');
-                localStorage.setObject('user_token', data.token);
-                userToken = data.token;
-            });
-        }
-
-        if (emailToken && userToken) {
+        if (emailToken) {
             console.log('before verifyCredentials');
-            App.verifyCredentials(
-                emailToken,
-                emailToVerify,
-            );
+            App.verifyCredentials(emailToken, emailToVerify, phoneToVerify);
         }
     };
 
