@@ -62,7 +62,7 @@ class ApiController extends Controller
 
         $this->response(json_encode([
             'user_id' => $_GET['user_id'],
-            'token' => $token,
+            'token' => stripslashes($token),
         ]));
     }
 

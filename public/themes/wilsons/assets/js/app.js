@@ -16,6 +16,34 @@
         HandlebarsIntl.registerWith(Handlebars);
     }
 
+    if (window.Handlebars) {
+        Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+            switch (operator) {
+                case '==':
+                    return (v1 == v2) ? options.fn(this) : options.inverse(this);
+                case '===':
+                    return (v1 === v2) ? options.fn(this) : options.inverse(this);
+                case '!=':
+                    return (v1 != v2) ? options.fn(this) : options.inverse(this);
+                case '!==':
+                    return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+                case '<':
+                    return (v1 < v2) ? options.fn(this) : options.inverse(this);
+                case '<=':
+                    return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+                case '>':
+                    return (v1 > v2) ? options.fn(this) : options.inverse(this);
+                case '>=':
+                    return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+                case '&&':
+                    return (v1 && v2) ? options.fn(this) : options.inverse(this);
+                case '||':
+                    return (v1 || v2) ? options.fn(this) : options.inverse(this);
+                default:
+                    return options.inverse(this);
+            }
+        });
+    }
     /*****************************************************************************
      *
      * Methods for dealing with the API (API Requests, handle response)
@@ -46,6 +74,8 @@
             } else if (ajaxOptions.action == 'api_verify_credentials') {
                 $('#verify_email_not_veified').hide();
                 App.alert('OK', 'Email successfully verified');
+                localStorage.setObject('userProfile', response.data);
+                App.getTokenFromServer(response.data);
             } else if (ajaxOptions.action == 'api_pos_accounts') {
                 App.alert('OK', 'Account successfully linked');
             } else if (ajaxOptions.action == 'api_get_transactions') {
@@ -121,6 +151,22 @@
         App.scrollTop();
     };
 
+    App.getTokenFromServer = function (userProfile) {
+        var userToken = localStorage.getObject('user_token');
+
+        if (!userToken) {
+            //no access token, but have email token
+            //get the token from the server
+            $.get(App.config.appBaseUrl + '/api/getUserToken', {
+                'user_id': userProfile.id
+            }, function (data) {
+                console.log('get token form the server');
+                var token = JSON.parse(data.token);
+                localStorage.setObject('user_token', token);
+            });
+        }
+    };
+
     App.getAccount = function () {
         App.showSpinner();
         api.client.request({
@@ -169,25 +215,17 @@
             };
         }
 
-        // App.showSpinner();
-        // axios({
-        //     url: App.config.api.baseUrl + '/verify',
-        //     method: 'POST',
-        //     data: data,
-        //     headers: App.config.headers
-        // }).then(response => {
-        //     App.handleResponse(response.data, {action: 'api_verify_credentials'});
-        // }).catch (error => {
-        //     App.handleError(error);
-        // });
-
         App.showSpinner();
-        api.client.request({
+        axios({
             url: App.config.api.baseUrl + '/verify',
             method: 'POST',
-            action: 'api_verify_credentials',
-            params: data,
-        }, App.handleResponse, App.handleError);
+            data: data,
+            headers: App.config.headers
+        }).then(response => {
+            App.handleResponse(response.data, {action: 'api_verify_credentials'});
+        }).catch (error => {
+            App.handleError(error);
+        });
     };
 
     App.addPosAccount = function (pos_account) {
@@ -344,13 +382,33 @@
         $modal.find('[name=account_id]').val('');
         $modal.find('[name=postal_code]').val('');
 
+        App.showSpinner();
+        api.client.request({
+            url: App.config.api.endpoints.users + '/' + userId,
+            method: 'GET',
+            action: 'api_check_verified',
+        }, function(response) {
+            App.hideSpinner();
+            console.log('response.data.email_verified', response.data.email_verified);
+            if(response.data.email_verified) {
+                $('#verify_email_not_veified').hide();
+                $modal.modal('show');
+            } else {
+                $('#verify_email_not_veified').show();
+                App.alert('NOT_OK', 'Your email is not verified. Click on the verificatin link to verify your email.')
+                return false;
+            }
+        }, function(error) {
+            console.log(error);
+            // App.handleError
+        });
+
         // App.showSpinner();
-        // api.client.request({
+        // axios({
         //     url: App.config.api.endpoints.users + '/' + userId,
         //     method: 'GET',
-        //     action: 'api_verify_credentials',
-        //     params: data,
-        // }, function(response) {
+        //     headers: headers
+        // }).then(response => {
         //     App.hideSpinner();
         //     console.log('response.data.email_verified', response.data.data.email_verified);
         //     if(response.data.data.email_verified) {
@@ -361,29 +419,11 @@
         //         App.alert('NOT_OK', 'Your email is not verified. Click on the verificatin link to verify your email.')
         //         return false;
         //     }
-        // }, App.handleError);
-
-        App.showSpinner();
-        axios({
-            url: App.config.api.endpoints.users + '/' + userId,
-            method: 'GET',
-            headers: headers
-        }).then(response => {
-            App.hideSpinner();
-            console.log('response.data.email_verified', response.data.data.email_verified);
-            if(response.data.data.email_verified) {
-                $('#verify_email_not_veified').hide();
-                $modal.modal('show');
-            } else {
-                $('#verify_email_not_veified').show();
-                App.alert('NOT_OK', 'Your email is not verified. Click on the verificatin link to verify your email.')
-                return false;
-            }
-        }).catch (error => {
-            App.handleError(error);
-            return false;
-        });
-        App.checkEmailVerified(event);
+        // }).catch (error => {
+        //     App.handleError(error);
+        //     return false;
+        // });
+        // App.checkEmailVerified(event);
     })
 
     $(document).on('click', '.js-add-pos-account__confirm-btn', function (event) {
@@ -407,8 +447,20 @@
         var $button = $(event.relatedTarget); // Button that triggered the modal
         var rewardId = $button.data('rewardId'); // Extract info from data-* attributes
         var rewardTitle = $button.data('rewardTitle'); // Extract info from data-* attributes
+        var isTpr = $button.data('isTpr');
         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
         var $modal = $(this);
+
+        if (!isTpr) {
+            event.stopPropagation();
+            var bsModal = $(this).data('bs.modal');
+            bsModal["_isShown"] = false;
+            bsModal["_isTransitioning"] = false;
+            $(this).data('bs.modal', bsModal);
+            App.alert('NOT_OK', 'This is not a partner reward');
+            return false;
+        }
+
         // modal.find('.modal-title').text('New message to ' + recipient);
         $modal.find('#reward_title').html(rewardTitle);
 
@@ -474,6 +526,28 @@
     };
 
     App.buildBusinessesList = function (context) {
+
+        // var template = '<p class="lead">My Points Balance</p>\
+        //                 <p class="display-4 mb-5">'+Number(context.balance.points).toLocaleString()+'</p>';
+
+        // template += '<div class="row">';
+         
+        // var item = '';
+        // for (var i = context.businesses.length - 1; i >= 0; i--) {
+        //     var business = context.businesses[i];
+        //     item = '<div class="col-12 col-md-4">\
+        //                 <div class="card mb-3" style="border: none;">\
+        //                     <img class="card-img-top img-fluid mx-auto" \
+        //                         src="'+business.logo+'" \
+        //                         alt="'+business.name+'" style="max-width: 200px;">\
+        //                 </div>\
+        //             </div>';
+        //     template += item;
+        // }
+
+        // template += '</div>';
+
+        $('#business__list').html(template);
 
         var intlData = {
             locales: 'en-US'
