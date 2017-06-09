@@ -120,6 +120,8 @@
             } else if (error.response.data.token) {
                 App.alert('NOT_OK', error.response.data.token[0]);
             }
+        } else if (error.response.status >= 500) {
+            App.alert('NOT_OK', error.response.data.error.description);
         }
     };
 
