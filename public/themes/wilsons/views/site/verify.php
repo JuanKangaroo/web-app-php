@@ -1,7 +1,6 @@
 <div class="container-fluid container-landing">
     <input type="hidden" name="verify_token" value="<?= $token ?>" >
     <input type="hidden" name="verify_email" value="<?= $email ?>" >
-    <input type="hidden" name="verify_user_id" value="<?= $userId ?>" >
 
     <!-- <div class="row">
         <div class="col-12 col-md-6 offset-md-3">
@@ -34,11 +33,11 @@
                     <h4 class="mb-3">Link Account</h4>
 
                     <button class="btn btn-outline-primary js-add-pos-account__btn" 
-                        data-pos-id=3 data-pos-name="Home Heat">
+                        data-pos-id="infosys" data-pos-name="Home Heat">
                         Home Heat
                     </button>
                     <button class="btn btn-outline-primary js-add-pos-account__btn" 
-                        data-pos-id=4 data-pos-name="Security">
+                        data-pos-id="sedona" data-pos-name="Security">
                         Security
                     </button>
                 </div>

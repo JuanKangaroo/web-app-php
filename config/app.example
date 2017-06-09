@@ -14,12 +14,10 @@
         
         'appName' => 'My App Name',
         'appBaseUrl' => 'http://localhost',
-        'appHomeUrl' => '/home',
-        'appRewardsUrl' => '/rewards',
-        'appRegisterUrl' => '/site/register',
-        'appLoginUrl' => '/site/login',
-        'loggerUrl' => 'http://localhost/site/logger',
         'theme' => 'default',
+        'version' => 'v1',
+        'kangarooUrl' => 'https://www.kangaroorewards.com',
+        'loggerUrl' => 'https://www.kangaroorewards.com/site/logger',
         'logoPath' => '/themes/default/assets/images/logo.jpg',
 
         /*

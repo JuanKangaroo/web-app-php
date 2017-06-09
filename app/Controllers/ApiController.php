@@ -99,35 +99,35 @@ class ApiController extends Controller
         }
     }
 
-    public function actionAddPosAccount()
-    {
-        try {
-            $token = Utils::retrieveToken($this->provider);
+    // public function actionAddPosAccount()
+    // {
+    //     try {
+    //         $token = Utils::retrieveToken($this->provider);
 
-            $response = $this->client->patch('users/111', [
-                'headers' => array_merge($this->requestHeaders, [
-                    'Authorization' => 'Bearer ' . $token->getToken(),
-                ]),
-                'json' => [
-                    'intent' => 'pos_accounts',
-                    'pos_accounts' => [[
-                        'pos_id' => $_POST['pos_id'],
-                        'account_id' => $_POST['account_id'],
-                        'postal_code' => $_POST['postal_code'],
-                    ]]
-                ],
-            ]);
+    //         $response = $this->client->patch('users/111', [
+    //             'headers' => array_merge($this->requestHeaders, [
+    //                 'Authorization' => 'Bearer ' . $token->getToken(),
+    //             ]),
+    //             'json' => [
+    //                 'intent' => 'pos_accounts',
+    //                 'pos_accounts' => [[
+    //                     'pos_id' => $_POST['pos_id'],
+    //                     'account_id' => $_POST['account_id'],
+    //                     'postal_code' => $_POST['postal_code'],
+    //                 ]]
+    //             ],
+    //         ]);
 
-            $this->response($response->getBody());
+    //         $this->response($response->getBody());
 
-        } catch (\Exception $e) {
-            if ($e->hasResponse()) {
-                $this->response($e->getResponse()->getBody(), $e->getCode());
-            }
-            echo '<pre>'; print_r($e); die;
-            // echo '<pre>'; print_r($e->getMessage()); die;
-        }
-    }
+    //     } catch (\Exception $e) {
+    //         if ($e->hasResponse()) {
+    //             $this->response($e->getResponse()->getBody(), $e->getCode());
+    //         }
+    //         echo '<pre>'; print_r($e); die;
+    //         // echo '<pre>'; print_r($e->getMessage()); die;
+    //     }
+    // }
 
     private function response($body = '', $status = 200, $contentType = 'application/json')
     {

@@ -96,7 +96,6 @@ class SiteController extends BaseController
 
         $token = isset($_GET['token']) ? $_GET['token'] : null;
         $email = isset($_GET['email']) ? $_GET['email'] : null;
-        $userId = isset($_GET['uid']) ? $_GET['uid'] : null;
 
         // if (empty($token) || empty($email)) {
         //     return $this->render('site/error', [
@@ -105,7 +104,7 @@ class SiteController extends BaseController
         //     ]);
         // }
 
-        return $this->render('site/verify', ['token' => $token, 'email' => $email, 'userId' => $userId]);
+        return $this->render('site/verify', ['token' => $token, 'email' => $email]);
     }
 
     /**

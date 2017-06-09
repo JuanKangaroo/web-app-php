@@ -54,7 +54,7 @@
         console.trace('action', ajaxOptions.action, 'data', response);
         try {
             if (ajaxOptions.action == 'user_login' && response.token_type == 'Bearer') {
-                location.href = App.config.appBaseUrl + App.config.appHomeUrl;
+                location.href = App.config.appBaseUrl + '/home';
             } else if (ajaxOptions.action == 'user_signup') {
                 localStorage.setObject('userProfile', response.data);
                 App.afterSignup(response.data);
@@ -74,9 +74,11 @@
             } else if (ajaxOptions.action == 'api_verify_credentials') {
                 $('#verify_email_not_veified').hide();
                 App.alert('OK', 'Email successfully verified');
+
+                //store the user profile in local storage
                 localStorage.setObject('userProfile', response.data);
-                App.getTokenFromServer(response.data);
-            } else if (ajaxOptions.action == 'api_pos_accounts') {
+                // App.getTokenFromServer(response.data);
+            } else if (ajaxOptions.action == 'add_pos_account') {
                 App.alert('OK', 'Account successfully linked');
             } else if (ajaxOptions.action == 'api_get_transactions') {
                 App.buildTransactionsList(response);
@@ -88,12 +90,20 @@
         App.hideSpinner();
     };
 
-    App.handleError = function (error) {
+    App.handleError = function (error, ajaxOptions) {
+        var userProfile = App.getLocalUserProfile();
+
         App.hideSpinner();
         if (error.response.status == 400) {
             App.alert('NOT_OK', error.response.data.error.description);
         } else if (error.response.status == 401) {
             App.alert('NOT_OK', error.response.data.message);
+        } else if (error.response.status == 404 && 
+            ajaxOptions.action == 'api_verify_credentials' && userProfile && userProfile.email_verified) {
+
+            $('#verify_email_not_veified').hide();
+            App.alert('OK', 'Email successfully verified');
+            // App.alert('NOT_OK', error.response.data.error.description);
         } else if (error.response.status == 404) {
             App.alert('NOT_OK', error.response.data.error.description);
         } else if (error.response.status == 422) {
@@ -114,7 +124,7 @@
     };
 
     App.afterSignup = function(data) {
-        console.log(data);
+        // console.log(data);
         App.showSpinner();
 
         //get access token for user
@@ -124,15 +134,18 @@
         }, function (token) {
             App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
 
+            setTimeout(function () {
+                location.href = KangarooApi.config.appBaseUrl + '/site/verify';
+            }, 3000);
             //Store the toke on the server
-            $.post(App.config.appBaseUrl + '/api/setUserToken', {
-                user_id: data.id,
-                token: JSON.stringify(token),
-            }, function (data) {
-                setTimeout(function () {
-                    location.href = KangarooApi.config.appBaseUrl + '/site/verify';
-                }, 3000);
-            });
+            // $.post(App.config.appBaseUrl + '/api/setUserToken', {
+            //     user_id: data.id,
+            //     token: JSON.stringify(token),
+            // }, function (data) {
+            //     setTimeout(function () {
+            //         location.href = KangarooApi.config.appBaseUrl + '/site/verify';
+            //     }, 3000);
+            // });
         }, App.handleError);
     };
 
@@ -151,21 +164,22 @@
         App.scrollTop();
     };
 
-    App.getTokenFromServer = function (userProfile) {
-        var userToken = localStorage.getObject('user_token');
+    //NO need
+    // App.getTokenFromServer = function (userProfile) {
+    //     var userToken = localStorage.getObject('user_token');
 
-        if (!userToken) {
-            //no access token, but have email token
-            //get the token from the server
-            $.get(App.config.appBaseUrl + '/api/getUserToken', {
-                'user_id': userProfile.id
-            }, function (data) {
-                console.log('get token form the server');
-                var token = JSON.parse(data.token);
-                localStorage.setObject('user_token', token);
-            });
-        }
-    };
+    //     if (!userToken) {
+    //         //no access token, but have email token
+    //         //get the token from the server
+    //         $.get(App.config.appBaseUrl + '/api/getUserToken', {
+    //             'user_id': userProfile.id
+    //         }, function (data) {
+    //             console.log('get token form the server');
+    //             var token = JSON.parse(data.token);
+    //             localStorage.setObject('user_token', token);
+    //         });
+    //     }
+    // };
 
     App.getAccount = function () {
         App.showSpinner();
@@ -188,7 +202,7 @@
     };
 
     App.getRewards = function () {
-        var userProfile = localStorage.getObject('userProfile');
+        var userProfile = App.getLocalUserProfile();
         App.showSpinner();
         api.client.request({
             url: App.config.api.endpoints.rewards.replace('{id}', userProfile.id),
@@ -215,6 +229,8 @@
             };
         }
 
+        //Call directly API without authentication
+
         App.showSpinner();
         axios({
             url: App.config.api.baseUrl + '/verify',
@@ -224,39 +240,70 @@
         }).then(response => {
             App.handleResponse(response.data, {action: 'api_verify_credentials'});
         }).catch (error => {
-            App.handleError(error);
+            App.handleError(error, {action: 'api_verify_credentials'});
         });
     };
 
-    App.addPosAccount = function (pos_account) {
+    App.addPosAccount = function (posAccount) {
         App.showSpinner();
-        var userProfile = localStorage.getObject('userProfile');
-        api.client.request({
-            url: App.config.api.endpoints.users + '/' + userProfile.id,
-            method: 'PATCH',
-            action: 'api_pos_accounts',
-            params: {
-                intent: "pos_accounts",
-                pos_accounts: [pos_account]
+        var userProfile = App.getLocalUserProfile();
+
+        App.showSpinner();
+        axios({
+            url: App.config.kangarooUrl + '/site/addPosAccount',
+            method: 'POST',
+            data: {
+                user_id: userProfile.id,
+                pos_account: posAccount
             },
-        }, App.handleResponse, App.handleError);
+            headers: App.config.headers
+        }).then(response => {
+            App.handleResponse(response.data, {action: 'add_pos_account'});
+        }).catch (error => {
+            App.handleError(error, {action: 'add_pos_account'});
+        });
+
+        // api.client.request({
+        //     url: App.config.api.endpoints.users + '/' + userProfile.id,
+        //     method: 'PATCH',
+        //     action: 'api_pos_accounts',
+        //     params: {
+        //         intent: "pos_accounts",
+        //         pos_accounts: [pos_account]
+        //     },
+        // }, App.handleResponse, App.handleError);
     };
 
-    App.getAccessToken = function() {
+    App.getLocalAccessToken = function() {
         var token = localStorage.getObject('user_token');
         return token;
     };
 
-    App.checkEmailVerified = function (event) {
-        
+    App.getLocalUserProfile = function() {
+        return localStorage.getObject('userProfile');
+    };
 
-        // App.showSpinner();
-        // api.client.request({
-        //     url: App.config.api.endpoints.users + '/' + id,
-        //     method: 'GET',
-        //     action: 'api_check_email_status',
-        //     params: {},
-        // }, App.handleResponse, App.handleError);
+    App.checkEmailVerified = function () {
+        var userProfile = App.getLocalUserProfile();
+        var $modal = $('#addAccountsModal');
+
+        App.showSpinner();
+        api.client.request({
+            url: App.config.api.endpoints.users + '/' + userProfile.id,
+            method: 'GET',
+            action: 'api_check_verified',
+        }, function(response) {
+            App.hideSpinner();
+            console.log('response.data.email_verified', response.data.email_verified);
+            if(response.data.email_verified) {
+                $('#verify_email_not_veified').hide();
+                $modal.modal('show');
+            } else {
+                $('#verify_email_not_veified').show();
+                App.alert('NOT_OK', 'Your email is not verified. Click on the verificatin link to verify your email.')
+                return false;
+            }
+        }, App.handleError);
     };
 
     App.verifyEmailIfNotVerified = function () {
@@ -270,12 +317,14 @@
         if (emailToken) {
             console.log('before verifyCredentials');
             App.verifyCredentials(emailToken, emailToVerify, phoneToVerify);
+        } else {
+            console.log('No Email Verification Token found');
         }
     };
 
     App.getTransactions = function() {
         App.showSpinner();
-        var userProfile = localStorage.getObject('userProfile');
+        var userProfile = App.getLocalUserProfile();
         api.client.request({
             url: App.config.api.endpoints.users + '/' + userProfile.id + '/transactions',
             method: 'GET',
@@ -361,69 +410,27 @@
     });
 
     $('.js-add-pos-account__btn').on('click', function (event) {
-        var userProfile = localStorage.getObject('userProfile');
-        var token = App.getAccessToken();
-        var headers = {};
-        headers = App.config.headers;
-        //append access token to the headers
-        headers.Authorization = token.token_type +' '+ token.access_token;
-
+        var userProfile = App.getLocalUserProfile();
+        var userToken = App.getLocalAccessToken();
+        
         var $button = $(this); // Button that triggered the modal
         var posId = $(this).data('posId'); // Extract info from data-* attributes
         var posName = $(this).data('posName'); // Extract info from data-* attributes
         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
         var $modal = $('#addAccountsModal');
 
-        var userIdUrl = $('#app').find('[name=verify_user_id]').val();
-        var userId = userIdUrl ? userIdUrl : userProfile.id;
-        
         $modal.find('.modal-title').text('Add your ' + posName + ' Account');
         $modal.find('[name=pos_id]').val(posId);
         $modal.find('[name=account_id]').val('');
         $modal.find('[name=postal_code]').val('');
 
-        App.showSpinner();
-        api.client.request({
-            url: App.config.api.endpoints.users + '/' + userId,
-            method: 'GET',
-            action: 'api_check_verified',
-        }, function(response) {
-            App.hideSpinner();
-            console.log('response.data.email_verified', response.data.email_verified);
-            if(response.data.email_verified) {
-                $('#verify_email_not_veified').hide();
-                $modal.modal('show');
-            } else {
-                $('#verify_email_not_veified').show();
-                App.alert('NOT_OK', 'Your email is not verified. Click on the verificatin link to verify your email.')
-                return false;
-            }
-        }, function(error) {
-            console.log(error);
-            // App.handleError
-        });
-
-        // App.showSpinner();
-        // axios({
-        //     url: App.config.api.endpoints.users + '/' + userId,
-        //     method: 'GET',
-        //     headers: headers
-        // }).then(response => {
-        //     App.hideSpinner();
-        //     console.log('response.data.email_verified', response.data.data.email_verified);
-        //     if(response.data.data.email_verified) {
-        //         $('#verify_email_not_veified').hide();
-        //         $modal.modal('show');
-        //     } else {
-        //         $('#verify_email_not_veified').show();
-        //         App.alert('NOT_OK', 'Your email is not verified. Click on the verificatin link to verify your email.')
-        //         return false;
-        //     }
-        // }).catch (error => {
-        //     App.handleError(error);
-        //     return false;
-        // });
-        // App.checkEmailVerified(event);
+        if (userToken) {
+            App.checkEmailVerified();
+        } else if(userProfile && userProfile.email_verified) {
+            $modal.modal('show');
+        } else {
+            console.log('No Access Token or User Profile found or Email not verified');
+        }
     })
 
     $(document).on('click', '.js-add-pos-account__confirm-btn', function (event) {
@@ -634,13 +641,11 @@
     };
 
     App.redirectIfAuthenticated = function () {
-        var redirectToHome = App.config.appBaseUrl + App.config.appHomeUrl;
-        var redirectToRegister = App.config.appBaseUrl + App.config.appRegisterUrl;
+        var redirectToHome = App.config.appBaseUrl + '/home';
+        var redirectToRegister = App.config.appBaseUrl + '/site/register';
         var currentUrl = top.location.href;
 
         currentUrl = currentUrl.replace(/\/$/, ""); //remove the last / from url
-
-        console.log('currentUrl', currentUrl, 'App.config.appHomeUrl', redirectToHome);
 
         // if (App.isAuthenticated() && currentUrl != redirectTo) {
         //     location.href = redirectTo;
@@ -658,20 +663,19 @@
 
         $('.navbar-top').find('.nav-item').removeClass('active');
 
-        // console.log('currentUrl', currentUrl, 'App.config.appHomeUrl', App.config.appHomeUrl);
-        if (currentUrl == App.config.appHomeUrl) {
+        if (currentUrl == '/home') {
             $('.navbar-top').find('#menu_home').addClass('active');
             App.getAccount(); //home page
-        } else if (currentUrl == App.config.appRewardsUrl) {
+        } else if (currentUrl == '/rewards') {
             $('.navbar-top').find('#menu_rewards').addClass('active');
-            var userProfile = localStorage.getObject('userProfile');
+            var userProfile = App.getLocalUserProfile();
             //fill the page with the info from API
             App.buildUserProfile(userProfile);
             App.getRewards();
         } else if (currentUrl == App.isAuthenticated()) {
             //login page and user is authenticated
-            location.href = App.config.appBaseUrl + App.config.appHomeUrl;
-        } else if (currentUrl == App.config.appVerifyUrl) {
+            location.href = App.config.appBaseUrl + '/home';
+        } else if (currentUrl == '/site/verify') {
             //login page and user is authenticated
 
             App.showSubAccountsForm({});

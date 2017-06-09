@@ -82,7 +82,7 @@ function time() {
             onSuccess(response.data, self.options);
         }).catch (error => {
             // console.log(error); console.log(error.response);
-            onError(error);
+            onError(error, self.options);
             KangarooApi.log('error', KangarooApi.config.appName, JSON.stringify(error));
         });
         // axios({
