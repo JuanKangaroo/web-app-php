@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $this->title ?: htmlspecialchars($this->title)?></title>
     <?php //$this->getLayoutStyles()?>
+    <script> <?php $config = require ROOT . '/config/app.php'; ?>
+        var config = <?php echo json_encode($config) ?>
+    </script>
     <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/app.css?v=<?= $config['version'] ?>">
     <!-- TODO add manifest here -->
@@ -20,10 +23,6 @@
 </head>
 
 <body data-page-uri=<?= $this->pageUri; ?> >
-    <script> <?php $config = require ROOT . '/config/app.php'; ?>
-        var config = <?php echo json_encode($config) ?>
-    </script>
-
     <nav class="navbar navbar-toggleable-md fixed-top navbar-light bg-faded">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
