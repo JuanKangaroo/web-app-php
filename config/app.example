@@ -13,9 +13,9 @@
         */
         
         'appName' => 'My App Name',
-        'appBaseUrl' => 'http://localhost',
+        'appBaseUrl' => 'http://localhost', // no trailing slash
         'theme' => 'default',
-        'version' => 'v1',
+        'version' => 'v1.0.0',
         'kangarooUrl' => 'https://www.kangaroorewards.com',
         'loggerUrl' => 'https://www.kangaroorewards.com/site/logger',
         'logoPath' => '/themes/default/assets/images/logo.jpg',
@@ -30,7 +30,7 @@
         */
         
         'headers' => [
-            'X-Application-Key' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImJ1c2luZXNzSWQiO',
+            'X-Application-Key' => '{YOUR X-Application-Key here}',
             'Accept' => 'application/vnd.kangaroorewards.api.v1+json;',
             'Content-Type' => 'application/json',
         ],
@@ -51,12 +51,14 @@
             'client_id' => '{YOUR CLIENT ID}',
             'client_secret' => '{YOUR CLIENT SECRET}',
             'scope' => '*',
+            'callback' => 'http://localhost',
             'endpoints' => [
                 'token' => $apiBaseUrl . '/oauth/token',
-                'me' => $apiBaseUrl . '/users/me?include[]=businesses&include[]=balance&include[]=catalog_items',
+                'user_profile' => $apiBaseUrl . '/users/me',
+                'account' => $apiBaseUrl . '/users/me?include[]=businesses&include[]=balance&include[]=catalog_items',
                 'users' => $apiBaseUrl . '/users',
-                'rewards' => $apiBaseUrl . '/users/rewards',
-                'transactions' => $apiBaseUrl . '/users/transactions',
+                'rewards' => $apiBaseUrl . '/users/{id}/rewards',
+                'transactions' => $apiBaseUrl . '/users/{id}/transactions',
             ],
         ],
     ];

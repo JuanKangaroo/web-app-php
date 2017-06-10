@@ -169,6 +169,8 @@ body {
 
 /*  ---------------------------------  MESSAGES  ----------------------------*/
 
+/*  ---------------------------------  OVERRIDES  ----------------------------*/
+
 .pushy {background: #fff; width: 280px;}
 .pushy ul {list-style: none; padding-left: 0;}
 .pushy a {padding: 15px 15px}
@@ -229,6 +231,19 @@ body {
 .navbar-top .dropdown-toggle::after{
     border: none;
 }
+
+.btn-primary {
+    background-color: #0055a5;
+    border-color: #0055a5;
+}
+
+.btn-outline-primary {
+    color: #0055a5;
+    border-color: #0055a5;
+}
+
+/*  ---------------------------------  OVERRIDES  ----------------------------*/
+
 
 .landing-banner {
     position: relative;
