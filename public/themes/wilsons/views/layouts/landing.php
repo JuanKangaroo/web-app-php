@@ -9,7 +9,7 @@
     <title><?= $this->title ?: htmlspecialchars($this->title)?></title>
     <?php //$this->getLayoutStyles()?>
     <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/app.css">
+    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/app.css?v=<?= $config['version'] ?>">
     <!-- TODO add manifest here -->
     <!-- <link rel="manifest" href="manifest.json"> -->
     <!-- Add to home screen for Safari on iOS -->
