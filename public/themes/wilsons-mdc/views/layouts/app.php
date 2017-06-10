@@ -9,7 +9,7 @@
     <title><?= $this->title ?: htmlspecialchars($this->title)?></title>
     <?php //$this->getLayoutStyles()?>
     <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/app.css">
+    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/app.css?v=<?= $config['version'] ?>">
     <!-- TODO add manifest here -->
     <!-- <link rel="manifest" href="manifest.json"> -->
     <!-- Add to home screen for Safari on iOS -->
@@ -82,7 +82,7 @@
     <script src="/themes/wilsons/assets/js/handlebars-v4.0.5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="/themes/wilsons/assets/js/bootstrap.min.js"></script>
-    <script src="/themes/wilsons/assets/js/app.js"></script>
+    <script src="/themes/wilsons/assets/js/app.js?v=<?= $config['version'] ?>"></script>
     <?php //$this->getLayoutScripts()?>
 </body>
 </html>
