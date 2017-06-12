@@ -39,7 +39,7 @@
                     <a class="nav-link" href="#">Locations</a>
                 </li> -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Contact Us</a>
+                    <a class="nav-link" href="/site/contact">Contact Us</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">

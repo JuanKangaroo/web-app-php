@@ -484,6 +484,11 @@
         App.getTransactions();
     });
 
+    $('#menu_contact_us').on('click', function(){
+        $('#detailViewModal').modal('show');
+        App.getTransactions();
+    });
+
     /*****************************************************************************
      *
      * Methods for dealing with the UI and App logic

@@ -97,7 +97,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar_user_profile">
                             <a class="dropdown-item" href="#" id="menu_transactions_list">Transactions</a>
-                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#" id="menu_contact_us">Contact Us</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" id="logout">Log Out</a>
                         </div>

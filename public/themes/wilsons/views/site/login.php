@@ -23,7 +23,7 @@
             </form>
 
             <div class="text-center">
-                <a href="">Having trouble logging in?</a>
+                <a href="/site/forgotPassword">Having trouble logging in?</a>
             </div>
 
             <hr>

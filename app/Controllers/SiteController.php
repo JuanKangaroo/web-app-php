@@ -67,6 +67,18 @@ class SiteController extends BaseController
     }
 
     /**
+     * Index
+     *
+     * @return void
+     */
+    public function actionForgotPassword()
+    {
+        $this->title = config('appName') .' - ' . 'Forgot Password';
+
+        return $this->render('site/reset');
+    }
+
+    /**
      * Register
      *
      * @return void
@@ -105,6 +117,18 @@ class SiteController extends BaseController
         // }
 
         return $this->render('site/verify', ['token' => $token, 'email' => $email]);
+    }
+
+    public function actionContact()
+    {
+        $this->title = config('appName') .' - ' . 'Contact Us';
+
+        return $this->render('site/contact');
+    }
+
+    public function actionAjaxContact()
+    {
+        return $this->renderPartial('site/contact');
     }
 
     /**

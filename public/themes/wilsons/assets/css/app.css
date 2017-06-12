@@ -242,6 +242,11 @@ body {
     border-color: #0055a5;
 }
 
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #0055a5;
+    border-color: #0055a5;
+}
 /*  ---------------------------------  OVERRIDES  ----------------------------*/
 
 
