@@ -485,8 +485,16 @@
     });
 
     $('#menu_contact_us').on('click', function(){
-        $('#detailViewModal').modal('show');
-        App.getTransactions();
+        var $modal = $('#detailViewModal');
+
+        $modal.modal('show');
+
+        App.showSpinner();
+        $.get(App.config.appBaseUrl + '/site/ajaxContact', function (data) {
+            $modal.find('.modal-title').text('Contact Us');
+            $modal.find('.modal-body').html(data);
+            App.hideSpinner();
+        });
     });
 
     /*****************************************************************************

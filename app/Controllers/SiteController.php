@@ -128,7 +128,7 @@ class SiteController extends BaseController
 
     public function actionAjaxContact()
     {
-        return $this->renderPartial('site/contact');
+        return $this->renderPartial('site/_contact');
     }
 
     /**
