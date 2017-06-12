@@ -1,6 +1,8 @@
 <div class="container-fluid container-landing pt-5">
     <div class="row justify-content-center pb-2">
-        <h3> Need help with your password? </h3>
+        <div class="col-12 col-md-6 col-lg-4">
+            <h3> Need help with your password? </h3>
+        </div>
     </div>
     <div class="row justify-content-center">
         <div class="col-12 col-md-6 col-lg-4">
