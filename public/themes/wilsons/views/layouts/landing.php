@@ -23,13 +23,13 @@
 </head>
 
 <body data-page-uri=<?= $this->pageUri; ?> >
-    <nav class="navbar navbar-toggleable-md fixed-top navbar-light bg-faded">
+    <nav class="navbar navbar-toggleable-md fixed-top navbar-light" style="background-color: #fff;">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <a class="navbar-brand" href="/">
-            <img src="<?php echo $config['logoPath'] ?>" height="40" class="d-inline-block align-top" alt="" style="max-width: 200px;">
+            <img src="<?php echo $config['logoPath'] ?>" height="50" class="d-inline-block align-top" alt="" style="max-width: 200px;">
             <?php //echo config('appName'); ?>
         </a>
 
