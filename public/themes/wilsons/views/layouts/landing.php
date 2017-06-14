@@ -23,7 +23,7 @@
 </head>
 
 <body data-page-uri=<?= $this->pageUri; ?> >
-    <nav class="navbar navbar-toggleable-md fixed-top navbar-light" style="background-color: #fff;">
+    <nav class="navbar navbar-toggleable-md fixed-top navbar-light" style="background-color: #fff; border-bottom: 1px solid #ddd;">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
