@@ -18,13 +18,13 @@
             <div class="col-12 col-md-6 offset-md-3">
                 <div class="alert alert-info" role="alert">
                     <h4 class="alert-heading">Welcome <?= $email ?></h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
-                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</p>
+                    <p>Wilsons is a leading fuel supplier in Atlantic Canada. 
+                    We strive to provide a premium level of customer service and high value products to our customers.</p>
+                    <p class="mb-0">Along with our home comfort services, retail gas stations and convenience stores we 
+                    offer a full range of residential and commercial security solutions.</p>
                 </div>
 
-                <div class="alert alert-warning" role="alert" id="verify_email_not_veified">
+                <div class="alert alert-warning" role="alert" id="verify_email_not_veified" style="display: none;">
                     <h4 class="alert-heading">Your email is not verified.</h4>
                     <p>Click the verification link to verify your email.</p>
                 </div>

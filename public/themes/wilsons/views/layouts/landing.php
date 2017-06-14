@@ -29,7 +29,7 @@
         </button>
 
         <a class="navbar-brand" href="/">
-            <img src="<?php echo $config['logoPath'] ?>" height="40" class="d-inline-block align-top" alt="">
+            <img src="<?php echo $config['logoPath'] ?>" height="40" class="d-inline-block align-top" alt="" style="max-width: 200px;">
             <?php //echo config('appName'); ?>
         </a>
 

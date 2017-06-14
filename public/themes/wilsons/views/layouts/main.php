@@ -76,13 +76,7 @@
         <nav class="navbar navbar-toggleable-md fixed-top avbar-inverse bg-inverse pl-0">
             <button class="menu-btn" type="button">
                 <i class="fa fa-bars" aria-hidden="true"></i>
-                <!-- <img src="/themes/wilsons/assets/images/icons/ic_view_headline_white_24px.svg"> -->
-                <!-- &#9776; -->
             </button> &nbsp;
-            <!-- <a class="navbar-brand" href="/">
-                <img src="<?php //echo $config['logoPath'] ?>" height="40" class="d-inline-block align-top" alt="">
-                <?php //echo $config['appName']; ?>
-            </a> -->
 
             <div class="navbar-top w-100"> <!-- collapse navbar-collapse -->
                 <ul class="navbar-nav mr-auto">
@@ -97,6 +91,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar_user_profile">
                             <a class="dropdown-item" href="#" id="menu_transactions_list">Transactions</a>
+                            <a class="dropdown-item" href="#" id="menu_add_accounts">Add Accounts</a>
                             <a class="dropdown-item" href="#" id="menu_contact_us">Contact Us</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" id="logout">Log Out</a>

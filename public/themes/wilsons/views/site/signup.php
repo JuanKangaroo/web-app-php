@@ -14,7 +14,7 @@
                 <div class="form-group ">
                     <div class="input-group">
                         <!-- <span class="input-group-addon"><i class="fa fa-key fa-fw" aria-hidden="true"></i></span> -->
-                        <input id="password" type="password" class="form-control form-control-lg" name="password" placeholder="Password" required="">
+                        <input id="password" type="password" class="form-control form-control-lg" name="password" placeholder="Password" required="" maxlength="4">
                     </div>
                 </div>
                 <div class="form-group">

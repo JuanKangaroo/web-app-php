@@ -484,6 +484,10 @@
         App.getTransactions();
     });
 
+    $('#menu_add_accounts').on('click', function(){
+        window.location.href = '/site/verify'
+    });
+
     $('#menu_contact_us').on('click', function(){
         var $modal = $('#detailViewModal');
 
