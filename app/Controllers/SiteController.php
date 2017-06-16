@@ -131,6 +131,11 @@ class SiteController extends BaseController
         return $this->renderPartial('site/_contact');
     }
 
+    public function actionAjaxProfile()
+    {
+        return $this->renderPartial('site/_profile');
+    }
+
     /**
      * actionError
      *

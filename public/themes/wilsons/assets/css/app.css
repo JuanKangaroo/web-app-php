@@ -247,6 +247,37 @@ body {
     background-color: #0055a5;
     border-color: #0055a5;
 }
+
+/*  ---------------------------------  Overides Datetime picker  ----------------------------*/
+
+.bootstrap-datetimepicker-widget table td.day {
+    height: 30px!important;
+    line-height: 30px!important;
+    width: 70px!important;
+}
+
+.bootstrap-datetimepicker-widget table th.picker-switch{
+    height: 40px!important;
+}
+
+.time-input .bootstrap-datetimepicker-widget.dropdown-menu{
+    width: 12em!important;
+}
+
+.form .time-input .btn-primary {
+    min-width: 50px!important;
+}
+
+/*  --------------- Countries phone  ----------------------------*/
+
+.intl-tel-input .selected-flag .iti-flag {display: none;}
+.intl-tel-input .selected-flag .arrow {display: none;}
+.country-list .flag-box .iti-flag {display: none;}
+.intl-tel-input .country-list .flag-box {width: initial!important;}
+.intl-tel-input {width: 100%;}
+.intl-tel-input.separate-dial-code .selected-dial-code{ padding-left: 0!important; text-align: center; }
+
+.intl-tel-input .selected-flag .iti-country-code {font-size: 1.2rem;}
 /*  ---------------------------------  OVERRIDES  ----------------------------*/
 
 
@@ -283,4 +314,23 @@ body {
 .modal-dialog.detail-view .modal-content{
     border-radius: 0;
     height: 100%;
+}
+
+
+.user-profile-container {
+    margin: 25px auto;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.user-profile-container img {
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
 }

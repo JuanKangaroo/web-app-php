@@ -27,35 +27,36 @@
 <body data-page-uri=<?= $this->pageUri; ?> >
     <!-- Pushy Menu -->
     <nav class="pushy pushy-left">
-        <div class="pushy-content pt-2" id="user-profile">
-            <img class="rounded-circle mx-auto d-block" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2275%22%20height%3D%2275%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2075%2075%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15c2c765ee0%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15c2c765ee0%22%3E%3Crect%20width%3D%2275%22%20height%3D%2275%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2220%22%20y%3D%2242%22%3E75x75%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+        <div class="pushy-content pt-2" id="drawer">
+            <img class="rounded-circle mx-auto d-block js-drawer__showUserProfile" id="drawerUserPhoto" style="width: 75px;"
+                src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2275%22%20height%3D%2275%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2075%2075%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_15c2c765ee0%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A10pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_15c2c765ee0%22%3E%3Crect%20width%3D%2275%22%20height%3D%2275%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2220%22%20y%3D%2242%22%3E75x75%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E">
 
-            <p class="lead mb-0 text-center" id="user-profile__name"></p>
+            <p class="lead mb-0 text-center js-drawer__showUserProfile" id="drawerUserName"></p>
 
             <div class="dropdown-divider"></div>
 
             <!-- <div class="list-group">
                 <a href="" class="list-group-item">
                     <i class="fa fa-envelope-o fa-2x fa-fw" aria-hidden="true"></i>
-                    <span id="user-profile__email"></span>
+                    <span id="drawerUserEmail"></span>
                 </a>
                 <a href="" class="list-group-item">
                     <i class="fa fa-mobile fa-2x fa-fw" aria-hidden="true"></i>
-                    <span id="user-profile__email"></span>
+                    <span id="drawerUserPhone"></span>
                 </a>
             </div> -->
 
             <ul>
-                <li class="pushy-link js-user-profile__email-item">
+                <li class="pushy-link js-drawer__userEmailItem">
                     <a href="#">
                         <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
-                        <span id="user-profile__email"></span>
+                        <span id="drawerUserEmail"></span>
                     </a>
                 </li>
-                <li class="pushy-link js-user-profile__phone-item">
+                <li class="pushy-link js-drawer__userPhoneItem">
                     <a href="#">
                         <i class="fa fa-mobile fa-fw" aria-hidden="true"></i>
-                        <span id="user-profile__email" style="font-size: larger;"></span>
+                        <span id="drawerUserPhone" style="font-size: larger;"></span>
                     </a>
                 </li>
                 <li class="pushy-link"><a href="#" id="logout">Log Out</a></li>
@@ -133,6 +134,9 @@
         require_once __DIR__ . '/../templates/rewards.tpl';
     ?>
     
+    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/bootstrap-datetimepicker-4.17.47.min.css">
+    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/intl-tel-input/build/css/intlTelInput.css">
+    
     <script src="/themes/wilsons/assets/js/jquery-3.2.1.min.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
@@ -143,6 +147,11 @@
     <script src="/themes/wilsons/assets/js/handlebars-intl.min.js"></script>
     <script src="/themes/wilsons/assets/js/pushy.min.js"></script>
     <script src="/themes/wilsons/assets/js/app.js?v=<?= $config['version'] ?>"></script>
+    <script src="/themes/wilsons/assets/js/moment-2.18.1.min.js"></script>
+    <script src="/themes/wilsons/assets/js/bootstrap-datetimepicker-4.17.47.min.js"></script>
+    <script src="/themes/wilsons/assets/intl-tel-input/build/js/intlTelInput.js"></script>
+    <script src="/themes/wilsons/assets/intl-tel-input/lib/libphonenumber/build/utils.js"></script>
+
     <?php //$this->getLayoutScripts()?>
 </body>
 </html>

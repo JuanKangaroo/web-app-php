@@ -44,6 +44,18 @@
             }
         });
     }
+
+    var datePickerIcons = {
+        time: 'fa fa-clock-o',
+        date: 'fa fa-calendar',
+        up: 'fa fa-chevron-up',
+        down: 'fa fa-chevron-down',
+        previous: 'fa fa-chevron-left',
+        next: 'fa fa-chevron-right',
+        today: 'glyphicon glyphicon-screenshot',
+        clear: 'fa fa-trash',
+        close: 'fa fa-times'
+    };
     /*****************************************************************************
      *
      * Methods for dealing with the API (API Requests, handle response)
@@ -62,10 +74,14 @@
             } else if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
                 localStorage.setObject('userProfile', response.data.profile);
                 //fill the page with the info from API
-                App.buildUserProfile(response.data.profile);
+                App.buildUserProfileDrawer(response.data.profile);
                 App.buildBusinessesList(response.data);
             } else if (ajaxOptions.action == 'api_user_profile' && ajaxOptions.method == 'GET') {
                 localStorage.setObject('userProfile', response.data.profile);
+            }  else if (ajaxOptions.action == 'api_update_profile') {
+                localStorage.setObject('userProfile', response.data);
+                $('#detailViewModal').modal('hide');
+                App.alert('OK', 'Profile successfully saved.');
             } else if (ajaxOptions.action == 'api_rewards' && ajaxOptions.method == 'GET') {
                 //fill the page with the info from API
                 App.buildRewardsList(response.data);
@@ -334,6 +350,29 @@
         }, App.handleResponse, App.handleError);
     };
 
+    App.showUserProfile = function() {
+        var $modal = $('#detailViewModal');
+
+        $modal.find('.modal-body').empty();
+        $modal.find('.modal-title').text('Profile');
+        $modal.modal('show');
+
+        $('body').removeClass('pushy-open-left');
+
+        App.showSpinner();
+        
+        api.client.request({
+            url: App.config.api.endpoints.users + '/' + App.getUserId(),
+            method: 'GET',
+            action: 'api_show_user_profile',
+        }, App.buildUserProfileEdit, App.handleError);
+    };
+
+    App.getUserId = function () {
+        var userProfile = App.getLocalUserProfile();
+        return userProfile.id;
+    };
+
     /*****************************************************************************
      *
      * Event listeners for UI elements
@@ -480,7 +519,10 @@
     });
 
     $('#menu_transactions_list').on('click', function(){
-        $('#detailViewModal').modal('show');
+        var $modal = $('#detailViewModal');
+        $modal.find('.modal-body').empty();
+        $modal.find('.modal-title').empty();
+        $modal.modal('show');
         App.getTransactions();
     });
 
@@ -491,6 +533,8 @@
     $('#menu_contact_us').on('click', function(){
         var $modal = $('#detailViewModal');
 
+        $modal.find('.modal-body').empty();
+        $modal.find('.modal-title').empty();
         $modal.modal('show');
 
         App.showSpinner();
@@ -499,6 +543,20 @@
             $modal.find('.modal-body').html(data);
             App.hideSpinner();
         });
+    });
+
+    $('.js-drawer__showUserProfile').on('click', function(){
+        App.showUserProfile();
+    });
+
+    $(document).on('click', '#userProfileCancel', function(event){
+        event.preventDefault();
+        $('#detailViewModal').modal('hide');
+    });
+
+    $(document).on('click', '#userProfileSave', function(event){
+        event.preventDefault();
+        App.saveUserProfile();
     });
 
     /*****************************************************************************
@@ -524,31 +582,135 @@
         App.spinner.removeAttribute('hidden');
     };
 
-    App.buildUserProfile = function (profile) {
+    App.buildUserProfileDrawer = function (profile) {
         // console.log(context); return;
-        var $profile = $('#user-profile');
+        var $profile = $('#drawer');
 
         if (profile.first_name && profile.last_name) {
             var fullName = profile.first_name + ' ' + profile.last_name;
-            $profile.find('#user-profile__name').html(fullName.trim());
+            $profile.find('#drawerUserName').html(fullName.trim());
         }
 
         if (profile.email) {
-            $profile.find('#user-profile__email').html(profile.email);
+            $profile.find('#drawerUserEmail').html(profile.email);
         } else {
-            $profile.find('.js-user-profile__email-item').hide();
+            $profile.find('.js-drawer__userEmailItem').hide();
         }
 
         if (profile.phone) {
-            $profile.find('#user-profile__phone').html(profile.phone);
+            $profile.find('#drawerUserPhone').html(profile.phone);
         } else {
-            $profile.find('.js-user-profile__phone-item').hide();
+            $profile.find('.js-drawer__userPhoneItem').hide();
         }
 
-        // var source   = $("#tpl_login").html(); //console.log(source); return;
-        // var template = Handlebars.compile(source);
+        if (profile.profile_photo) {
+            $('#drawerUserPhoto').attr('src', profile.profile_photo);
+        } else {
+            $('#drawerUserPhoto').attr('src', 'http://lorempixel.com/75/75');
+        }
+    };
 
-        // $('#user__profile').html(template(context));
+    App.buildUserProfileEdit = function(response) {
+        App.hideSpinner();
+
+        var userProfile = response.data;
+        var $modal = $('#detailViewModal');
+        var $userPhone = $("#userPhone");
+
+        try {
+
+            var birthDate = moment(userProfile.birth_date);// console.log(birthDate);
+            userProfile.birth_date = birthDate.format('MMM DD');// format before assign to input
+
+            var source   = $("#tpl_userProfile").html(); //console.log(source); return;
+            var template = Handlebars.compile(source);
+            
+            //select a value in dropdown
+            Handlebars.registerHelper('selected', function (input, value) {
+                return input === value ? 'selected' : '';
+            });
+
+            // update modal body with template
+            $modal.find('.modal-body').html(template(userProfile));
+            
+            $('#userBirthDate').datetimepicker({
+                format: 'MMM DD',
+                icons: datePickerIcons,
+            });
+
+            // User Phone number 
+            $userPhone.intlTelInput({
+                onlyCountries: ['ca', 'us',],
+                separateDialCode: true,
+                selectedCountry: userProfile.country_code,
+                initialCountry: userProfile.country_code,
+                // utilsScript: "/themes/wilsons/assets/js//utils.js"
+            });
+
+            $userPhone.on('keyup',function() {
+                var countryCode = $userPhone.intlTelInput("getSelectedCountryData").iso2;
+                $('#userPhoneCountryCode').val(countryCode.toUpperCase());
+            });
+
+            // User Profile Image
+            $("#userProfileImage").click(function(e) {
+                $("#profileImageUpload").click();
+            });
+
+            $("#profileImageUpload").change(function(){
+                App.profileImgPreview(this);
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    App.profileImgPreview = function(uploader) {
+        if ( uploader.files && uploader.files[0] ){
+            $('#userProfileImage').attr('src', 
+                window.URL.createObjectURL(uploader.files[0])
+            );
+
+            App.uploadUserPhoto(uploader.files[0]);
+        }
+    }
+
+    App.uploadUserPhoto = function(file) {
+        var fd = new FormData();
+        fd.append('file', file);
+
+        axios({
+            url: App.config.kangarooUrl + '/site/UploadPhoto',
+            method: 'POST',
+            data: fd,
+            headers: {'Content-Type': 'multipart/form-data' },
+        }).then(function (response) {
+            $('#userProfileImageHidden').val(response.data.profile_photo);
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    App.saveUserProfile = function() {
+        var formData = {};
+        
+        //get form data as object
+        $('#userProfileForm').serializeArray().map(function (x) {
+            formData[x.name] = x.value;
+        });
+
+        if (formData.phone && !formData.country_code) {
+            formData.country_code = 'CA';
+        }
+
+        App.showSpinner();
+        api.client.request({
+            url: App.config.api.endpoints.users + '/' + App.getUserId(),
+            method: 'PATCH',
+            action: 'api_update_profile',
+            params: formData,
+        }, App.handleResponse, App.handleError);
     };
 
     App.buildBusinessesList = function (context) {
@@ -689,7 +851,7 @@
             $('.navbar-top').find('#menu_rewards').addClass('active');
             var userProfile = App.getLocalUserProfile();
             //fill the page with the info from API
-            App.buildUserProfile(userProfile);
+            App.buildUserProfileDrawer(userProfile);
             App.getRewards();
         } else if (currentUrl == App.isAuthenticated()) {
             //login page and user is authenticated
