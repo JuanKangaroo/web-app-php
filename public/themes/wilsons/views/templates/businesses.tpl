@@ -8,7 +8,7 @@
             {{#each businesses}}
                 <div class="col-12 col-md-3">
                     <div class="card mb-3" style="border: none;">
-                        <img class="card-img-top img-fluid mx-auto" src="{{logo}}" alt="{{name}}" style="max-width: 200px;">
+                        <img class="card-img-top img-fluid mx-auto" src="{{logo.large}}" alt="{{name}}" style="max-width: 200px;">
                     </div>
                 </div>
             {{/each}}
@@ -18,7 +18,7 @@
         {{#each businesses}}
             <div class="col-12 col-md-4">
                 <div class="card mb-3" style="border: none;">
-                    <img class="card-img-top img-fluid mx-auto" src="{{logo}}" alt="{{name}}" style="max-width: 200px;">
+                    <img class="card-img-top img-fluid mx-auto" src="{{logo.large}}" alt="{{name}}" style="max-width: 200px;">
                     <!-- <div class="card-block">
                         <h4 class="card-title">{{formatNumber balance.points}} points</h4>
                     </div> -->
