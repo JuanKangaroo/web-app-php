@@ -10,10 +10,10 @@
     <script> <?php $config = require ROOT . '/config/app.php'; ?>
         var config = <?php echo json_encode($config) ?>
     </script>
-    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/pushy.css">
-    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/app.css?v=<?= $config['version'] ?>">
-    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/pushy.css">
+    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/app.css?v=<?= $config['version'] ?>">
+    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/font-awesome.min.css">
 
     <!-- TODO add manifest here -->
     <!-- <link rel="manifest" href="manifest.json"> -->
@@ -47,6 +47,11 @@
             </div> -->
 
             <ul>
+                <li class="pushy-link js-drawer__changePinItem">
+                    <a href="#">
+                        <i class="fa fa-key fa-fw" aria-hidden="true"></i> Change PIN
+                    </a>
+                </li>
                 <li class="pushy-link js-drawer__userEmailItem">
                     <a href="#">
                         <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
@@ -82,6 +87,7 @@
             <div class="navbar-top w-100"> <!-- collapse navbar-collapse -->
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active" id="menu_home"><a class="nav-link" href="/home">My Memberships</a></li>
+                    <li class="nav-item" id="menu_coupons"><a class="nav-link" href="/coupons">Coupons</a></li>
                     <li class="nav-item" id="menu_rewards"><a class="nav-link" href="/rewards">Rewards</a></li>
                 </ul>
                 <form class="my-3" style="position: absolute; right: 0; top: 0px;">
@@ -92,7 +98,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar_user_profile">
                             <a class="dropdown-item" href="#" id="menu_transactions_list">Transactions</a>
-                            <a class="dropdown-item" href="#" id="menu_add_accounts">Add Accounts</a>
+                            <!-- <a class="dropdown-item" href="#" id="menu_add_accounts">Add Accounts</a> -->
                             <a class="dropdown-item" href="#" id="menu_contact_us">Contact Us</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#" id="logout">Log Out</a>
@@ -132,25 +138,31 @@
         require_once __DIR__ . '/../templates/userProfile.tpl';
         require_once __DIR__ . '/../templates/businesses.tpl';
         require_once __DIR__ . '/../templates/rewards.tpl';
+        require_once __DIR__ . '/../templates/coupons.tpl';
+        require_once __DIR__ . '/../templates/couponDetail.tpl';
+        require_once __DIR__ . '/../templates/businessDetail.tpl';
     ?>
     
-    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/bootstrap-datetimepicker-4.17.47.min.css">
-    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/intl-tel-input/build/css/intlTelInput.css">
-    
-    <script src="/themes/wilsons/assets/js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/bootstrap-datetimepicker-4.17.47.min.css">
+    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/intl-tel-input/build/css/intlTelInput.css">
+    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/perfect-scrollbar.min.css">
+
+    <script src="/themes/cabjm/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="/themes/cabjm/assets/js/perfect-scrollbar.min.js"></script>
+
     <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="/themes/wilsons/assets/js/bootstrap.min.js"></script>
+    <script src="/themes/cabjm/assets/js/bootstrap.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/kangaroo-api.js"></script>
-    <script src="/themes/wilsons/assets/js/handlebars-v4.0.5.js"></script>
-    <script src="/themes/wilsons/assets/js/handlebars-intl.min.js"></script>
-    <script src="/themes/wilsons/assets/js/pushy.min.js"></script>
-    <script src="/themes/wilsons/assets/js/app.js?v=<?= $config['version'] ?>"></script>
-    <script src="/themes/wilsons/assets/js/moment-2.18.1.min.js"></script>
-    <script src="/themes/wilsons/assets/js/bootstrap-datetimepicker-4.17.47.min.js"></script>
-    <script src="/themes/wilsons/assets/intl-tel-input/build/js/intlTelInput.js"></script>
-    <script src="/themes/wilsons/assets/intl-tel-input/lib/libphonenumber/build/utils.js"></script>
+    <script src="/themes/cabjm/assets/js/handlebars-v4.0.5.js"></script>
+    <script src="/themes/cabjm/assets/js/handlebars-intl.min.js"></script>
+    <script src="/themes/cabjm/assets/js/pushy.min.js"></script>
+    <script src="/themes/cabjm/assets/js/app.js?v=<?= $config['version'] ?>"></script>
+    <script src="/themes/cabjm/assets/js/moment-2.18.1.min.js"></script>
+    <script src="/themes/cabjm/assets/js/bootstrap-datetimepicker-4.17.47.min.js"></script>
+    <script src="/themes/cabjm/assets/intl-tel-input/build/js/intlTelInput.js"></script>
+    <script src="/themes/cabjm/assets/intl-tel-input/lib/libphonenumber/build/utils.js"></script>
 
     <?php //$this->getLayoutScripts()?>
 </body>

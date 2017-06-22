@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use Wallaby\Base\Controller;
 
-class RewardsController extends BaseController
+class CouponsController extends BaseController
 {
     /**
      *
@@ -26,7 +26,7 @@ class RewardsController extends BaseController
      */
     public function actionIndex()
     {
-        $this->title = config('appName') .' - ' . 'Rewards';
-        return $this->render('rewards/index', []);
+        $this->title = config('appName') .' - ' . 'Coupons';
+        return $this->render('coupons/index', []);
     }
 }
