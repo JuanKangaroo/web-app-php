@@ -334,3 +334,18 @@ body {
     height: 150px;
     cursor: pointer;
 }
+
+.container-wrapper {
+    background-color: rgba(29, 36, 42, 0.5);
+    padding: 0.1em 0 1em 0em;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.box-wrapper{
+    max-height: 180px;
+}
+
+.box-wrapper .image, .box-wrapper .image img{
+    max-width: 290px;
+}

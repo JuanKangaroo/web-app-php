@@ -1,5 +1,5 @@
 <div class="container-fluid pt-3 text-center">
-    <h2><?php echo config('appName'); ?></h2>
+    <!-- <h2><?php //echo config('appName'); ?></h2> -->
 </div>
 
 <div class="container-fluid pt-3">

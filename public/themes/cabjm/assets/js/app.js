@@ -85,12 +85,13 @@
             } else if (ajaxOptions.action == 'api_rewards' && ajaxOptions.method == 'GET') {
                 //fill the page with the info from API
                 App.buildRewardsList(response.data);
+            } else if (ajaxOptions.action == 'api_coupons' && ajaxOptions.method == 'GET') {
+                App.buildCouponsList(response.data);
             } else if (ajaxOptions.action == 'api_redeem_tpr' && ajaxOptions.method == 'POST') {
                 App.alert('OK', 'You have successfully redeemed a partner reward');
             } else if (ajaxOptions.action == 'api_verify_credentials') {
                 $('#verify_email_not_veified').hide();
                 App.alert('OK', 'Email successfully verified');
-
                 //store the user profile in local storage
                 localStorage.setObject('userProfile', response.data);
                 // App.getTokenFromServer(response.data);
@@ -98,6 +99,11 @@
                 App.alert('OK', 'Account successfully linked');
             } else if (ajaxOptions.action == 'api_get_transactions') {
                 App.buildTransactionsList(response);
+            } else if (ajaxOptions.action == 'api_coupon_detail') {
+                console.log(response.data);
+                App.buildCouponDetail(response);
+            } else if (ajaxOptions.action == 'api_business_detail') {
+                App.buildBusinessDetail(response);
             }
         } catch (e) {
             console.log(e);
@@ -373,6 +379,16 @@
         return userProfile.id;
     };
 
+    App.getCoupons = function () {
+        App.showSpinner();
+        api.client.request({
+            url: App.config.api.endpoints.coupons,
+            method: 'GET',
+            action: 'api_coupons',
+            params: {},
+        }, App.handleResponse, App.handleError);
+    };
+
     /*****************************************************************************
      *
      * Event listeners for UI elements
@@ -559,6 +575,26 @@
         App.saveUserProfile();
     });
 
+    $(document).on('click', '.js-coupon-detail', function (e) {
+        App.showSpinner();
+        api.client.request({
+            url: App.config.api.endpoints.coupon_detail.replace('{offerid}', $(this).data('couponId')),
+            method: 'GET',
+            action: 'api_coupon_detail',
+            params: {},
+        }, App.handleResponse, App.handleError);
+    });
+
+    $(document).on('click', '.js-business-detail', function (e) {
+        App.showSpinner();
+        api.client.request({
+            url: App.config.api.endpoints.business_detail.replace('{businessid}', $(this).data('businessId')),
+            method: 'GET',
+            action: 'api_business_detail',
+            params: {},
+        }, App.handleResponse, App.handleError);
+    });
+
     /*****************************************************************************
      *
      * Methods for dealing with the UI and App logic
@@ -735,7 +771,7 @@
 
         // template += '</div>';
 
-        $('#business__list').html(template);
+        //$('#business__list').html(template);
 
         var intlData = {
             locales: 'en-US'
@@ -758,6 +794,29 @@
         var template = Handlebars.compile(source);
 
         $('#rewards__list').html(template(context));
+    };
+
+    App.buildCouponsList = function (context) {
+        var source = $("#tpl_coupons").html();
+        var template = Handlebars.compile(source);
+
+        $('#coupons__list').html(template(context));
+    };
+
+    App.buildCouponDetail = function (context) {
+        var $modal = $('#detailViewModal');
+        var source = $("#tpl_coupon_detail").html();
+        var template = Handlebars.compile(source); 
+        $modal.find('.modal-body').html(template(context.data));
+        $modal.modal('show');
+    };
+
+    App.buildBusinessDetail = function (context) {
+        var $modal = $('#detailViewModal');
+        var source = $("#tpl_business_detail").html();
+        var template = Handlebars.compile(source);
+        $modal.find('.modal-body').html(template(context.data));
+        $modal.modal('show');
     };
 
     App.showSubAccountsForm = function (context) {
@@ -815,9 +874,7 @@
 
     App.init = function () {
         App.hideSpinner();
-
         this.redirectIfAuthenticated();
-
         this.handlePage();
     };
 
@@ -839,9 +896,7 @@
     App.handlePage = function () {
         // var currentUrl = top.location.href;
         // currentUrl = currentUrl.replace(/\/$/, "");//remove the last / from url
-
         var currentUrl = $('body').data('pageUri');
-
         $('.navbar-top').find('.nav-item').removeClass('active');
 
         if (currentUrl == '/home') {
@@ -853,14 +908,19 @@
             //fill the page with the info from API
             App.buildUserProfileDrawer(userProfile);
             App.getRewards();
+        } else if (currentUrl == '/coupons') {
+            $('.navbar-top').find('#menu_coupons').addClass('active');
+            var userProfile = App.getLocalUserProfile();
+            //fill the page with the info from API
+            App.buildUserProfileDrawer(userProfile);
+            App.getCoupons();
         } else if (currentUrl == App.isAuthenticated()) {
             //login page and user is authenticated
             location.href = App.config.appBaseUrl + '/home';
         } else if (currentUrl == '/site/verify') {
+            console.log('entro aca');
             //login page and user is authenticated
-
             App.showSubAccountsForm({});
-
             App.verifyEmailIfNotVerified();
         }
     };
@@ -870,11 +930,8 @@
      * Code required to start the App
      *
      ************************************************************************/
-
     App.init();
-
 })(jQuery, KangarooApi);
-
 
 $(document).ready(function () {
     // console.log('Ready');

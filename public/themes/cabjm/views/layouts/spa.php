@@ -87,6 +87,7 @@
             <div class="navbar-top w-100"> <!-- collapse navbar-collapse -->
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active" id="menu_home"><a class="nav-link" href="/home">My Memberships</a></li>
+                    <li class="nav-item" id="menu_coupons"><a class="nav-link" href="/coupons">Coupons</a></li>
                     <li class="nav-item" id="menu_rewards"><a class="nav-link" href="/rewards">Rewards</a></li>
                 </ul>
                 <form class="my-3" style="position: absolute; right: 0; top: 0px;">
@@ -119,6 +120,7 @@
         require_once __DIR__ . '/../templates/userProfile.tpl';
         require_once __DIR__ . '/../templates/businesses.tpl';
         require_once __DIR__ . '/../templates/rewards.tpl';
+        require_once __DIR__ . '/../templates/coupons.tpl';
     ?>
     
     <script src="/themes/wilsons/assets/js/jquery-3.2.1.min.js"></script>

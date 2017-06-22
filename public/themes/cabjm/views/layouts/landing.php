@@ -11,8 +11,8 @@
     <script> <?php $config = require ROOT . '/config/app.php'; ?>
         var config = <?php echo json_encode($config) ?>
     </script>
-    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/themes/wilsons/assets/css/app.css?v=<?= $config['version'] ?>">
+    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/app.css?v=<?= $config['version'] ?>">
     <!-- TODO add manifest here -->
     <!-- <link rel="manifest" href="manifest.json"> -->
     <!-- Add to home screen for Safari on iOS -->
@@ -72,13 +72,13 @@
         </svg>
     </div>
 
-    <script src="/themes/wilsons/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="/themes/cabjm/assets/js/jquery-3.2.1.min.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="/themes/wilsons/assets/js/bootstrap.min.js"></script>
+    <script src="/themes/cabjm/assets/js/bootstrap.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/kangaroo-api.js"></script>
-    <script src="/themes/wilsons/assets/js/app.js?v=<?= $config['version'] ?>"></script>
+    <script src="/themes/cabjm/cabjm/js/app.js?v=<?= $config['version'] ?>"></script>
 
     <?php //$this->getLayoutScripts()?>
 </body>
