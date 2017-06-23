@@ -616,6 +616,10 @@
         var userProfile = response.data;
         var $modal = $('#detailViewModal');
         var $userPhone = $("#userPhone");
+        
+        if (!userProfile.country_code) {
+            userProfile.country_code = 'CA';
+        }
 
         try {
 
@@ -639,7 +643,7 @@
             });
 
             // User Phone number 
-            $userPhone.intlTelInput({
+            $("#userPhone").intlTelInput({
                 onlyCountries: ['ca', 'us',],
                 separateDialCode: true,
                 selectedCountry: userProfile.country_code,

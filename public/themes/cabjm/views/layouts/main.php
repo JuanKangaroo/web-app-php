@@ -10,10 +10,10 @@
     <script> <?php $config = require ROOT . '/config/app.php'; ?>
         var config = <?php echo json_encode($config) ?>
     </script>
-    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/pushy.css">
-    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/app.css?v=<?= $config['version'] ?>">
-    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/pushy.css">
+    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/app.css?v=<?= $config['version'] ?>">
+    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/font-awesome.min.css">
 
     <!-- TODO add manifest here -->
     <!-- <link rel="manifest" href="manifest.json"> -->
@@ -146,28 +146,27 @@
         
     ?>
     
-    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/bootstrap-datetimepicker-4.17.47.min.css">
-    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/intl-tel-input/build/css/intlTelInput.css">
-    <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/bootstrap-datetimepicker-4.17.47.min.css">
+    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/intl-tel-input/build/css/intlTelInput.css">
+    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/perfect-scrollbar.min.css">
 
-    <script src="/themes/cabjm/assets/js/jquery-3.2.1.min.js"></script>
-    <script src="/themes/cabjm/assets/js/perfect-scrollbar.min.js"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/js/perfect-scrollbar.min.js"></script>
 
     <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="/themes/cabjm/assets/js/bootstrap.min.js"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/js/bootstrap.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/kangaroo-api.js"></script>
-    <script src="/themes/cabjm/assets/js/handlebars-v4.0.5.js"></script>
-    <script src="/themes/cabjm/assets/js/handlebars-intl.min.js"></script>
-    <script src="/themes/cabjm/assets/js/pushy.min.js"></script>
-    <script src="/themes/cabjm/assets/js/app.js?v=<?= $config['version'] ?>"></script>
-    <script src="/themes/cabjm/assets/js/moment-2.18.1.min.js"></script>
-    <script src="/themes/cabjm/assets/js/bootstrap-datetimepicker-4.17.47.min.js"></script>
-    <script src="/themes/cabjm/assets/intl-tel-input/build/js/intlTelInput.js"></script>
-    <script src="/themes/cabjm/assets/intl-tel-input/lib/libphonenumber/build/utils.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNPO6qb8BTuQDtV3DzTv_ibSc8eLIoxEs&amp;callback=initMap" async="" defer=""></script> -->
+
+    <script src="/themes/<?= $config['theme'] ?>/assets/js/handlebars-v4.0.5.js"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/js/handlebars-intl.min.js"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/js/pushy.min.js"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/js/app.js?v=<?= $config['version'] ?>"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/js/moment-2.18.1.min.js"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/js/bootstrap-datetimepicker-4.17.47.min.js"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/intl-tel-input/build/js/intlTelInput.js"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/intl-tel-input/lib/libphonenumber/build/utils.js"></script>
 
     <?php //$this->getLayoutScripts()?>
 </body>
