@@ -23,23 +23,19 @@
 </head>
 
 <body data-page-uri=<?= $this->pageUri; ?> >
-    <nav class="navbar navbar-toggleable-md fixed-top navbar-light" style="background-color: #fff; border-bottom: 1px solid #ddd;">
+    <nav class="navbar navbar-toggleable-md fixed-top navbar-light" style="background-color: transparent; border-bottom: 1px solid rgba(255,255,255,0.2);">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <a class="navbar-brand" href="/">
-            <img src="<?php echo $config['logoPath'] ?>" height="50" class="d-inline-block align-top" alt="" style="max-width: 200px;">
-            <?php //echo config('appName'); ?>
+            <img src="<?= $config['logoPath']?>" height="50" class="d-inline-block align-top" alt="" style="max-width: 200px;">
         </a>
 
         <div class="collapse navbar-collapse" id="navbarDefault">
             <ul class="navbar-nav mr-auto">
-                <!-- <li class="nav-item active">
-                    <a class="nav-link" href="#">Locations</a>
-                </li> -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="/site/contact">Contact Us</a>
+                    <a class="nav-link" href="/site/contact" style="color: #fff">Contact Us</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -56,15 +52,19 @@
         </h1>
     </header> -->
 
+    <section class="landing__hero-image w-100 h-100">
+        <div id="app" class="main">
+            <?= $content?>
+        </div>
+    </section>
+
     <div class="message__container--fixed" id="message__container">
         <div class="c-message message__success" style="display: none"></div>
         <div class="c-message message__error" style="display: none"></div>
         <div class="c-message message__info" style="display: none"></div>
     </div>
     
-    <div id="app" class="main">
-        <?= $content?>
-    </div>
+    
 
     <div class="loader">
         <svg viewBox="0 0 32 32" width="32" height="32">

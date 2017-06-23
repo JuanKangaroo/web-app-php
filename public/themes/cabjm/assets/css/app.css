@@ -11,6 +11,11 @@ body {
     color: #878787;
 }
 
+.landing__hero-image{
+    background-image: url(../images/hero.jpg);
+    background-size: cover;
+    background-position: center;
+}
 .header {
     width: 100%;
     height: 56px;
