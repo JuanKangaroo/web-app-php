@@ -90,7 +90,7 @@
             } else if (ajaxOptions.action == 'api_redeem_tpr' && ajaxOptions.method == 'POST') {
                 App.alert('OK', 'You have successfully redeemed a partner reward');
             } else if (ajaxOptions.action == 'api_verify_credentials') {
-                $('#verify_email_not_veified').hide();
+                $('#verify_email_not_verified').hide();
                 App.alert('OK', 'Email successfully verified');
                 //store the user profile in local storage
                 localStorage.setObject('userProfile', response.data);
@@ -104,6 +104,9 @@
                 App.buildCouponDetail(response);
             } else if (ajaxOptions.action == 'api_business_detail') {
                 App.buildBusinessDetail(response);
+            } else if (ajaxOptions.action == 'api_update_pin') {
+                App.alert('OK', 'Pin Code successfully saved');
+                $('#detailViewModal').modal('hide');
             }
         } catch (e) {
             console.log(e);
@@ -612,14 +615,14 @@
         App.addChangeEmail(event);
     });
 
-    $(document).on('click', '#userEmailCancel', function(event){
+    $(document).on('click', '#addChangeEmailCancel', function(event){
         event.preventDefault();
         $('#detailViewModal').modal('hide');
     });
 
-    $(document).on('click', '#userEmailSave', function(event){
+    $(document).on('click', '#addChangeEmailSave', function(event){
         event.preventDefault();
-        App.saveChangePin();
+        App.saveAddChangeEmail();
     });
 
 
@@ -796,6 +799,42 @@
             params: formData,
         }, App.handleResponse, App.handleError);
     };
+    
+    App.saveChangePin = function() {
+        var formData = {};
+        
+        //get form data as object
+        $('#changePinForm').serializeArray().map(function (x) {
+            formData[x.name] = x.value;
+        });
+
+        console.log(formData);
+
+        App.showSpinner();
+        api.client.request({
+            url: App.config.api.endpoints.users + '/' + App.getUserId(),
+            method: 'PATCH',
+            action: 'api_update_pin',
+            params: formData,
+        }, App.handleResponse, App.handleError);
+    };
+
+    App.saveAddChangeEmail = function() {
+        var formData = {};
+        
+        //get form data as object
+        $('#addChangeEmailForm').serializeArray().map(function (x) {
+            formData[x.name] = x.value;
+        });
+
+        App.showSpinner();
+        api.client.request({
+            url: App.config.api.endpoints.users + '/' + App.getUserId(),
+            method: 'PATCH',
+            action: 'api_add_change_email',
+            params: formData,
+        }, App.handleResponse, App.handleError);
+    };
 
     App.buildBusinessesList = function (context) {
 
@@ -864,6 +903,7 @@
         var source = $("#tpl_business_detail").html();
         var template = Handlebars.compile(source);
         $modal.find('.modal-body').html(template(context.data));
+        App.initMap(context.data.branches);
         $modal.modal('show');
     };
 
@@ -972,6 +1012,103 @@
             App.verifyEmailIfNotVerified();
         }
     };
+
+    App.initMap = function (branch) {
+        for (var i = 0; i < branch.length; i++) {
+            App.handleData(branch[i]);
+        }
+    };
+
+    App.handleData = function (branch) {
+        var businessId = event;
+        var bounds = new google.maps.LatLngBounds();
+        var mapOptions = {
+            //center: new google.maps.LatLng(-34.397, 150.644),
+            zoom: 8,
+            //center: myLatlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+        //getting the lat and long 
+        var address = branch.address.street.replace(new RegExp("\\\\", "g"), "")+', '+branch.address.city+', '+branch.address.region+', '+branch.address.country;
+        
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+            'address': address
+        }, function(results, status) {
+
+            if(branch.address.lat==null)
+                var lat = results[0].geometry.location.lat();
+            else
+                var lat = branch.address.lat;
+
+            if(branch.address.long==null)
+                var lon = results[0].geometry.location.lng();
+            else
+                var lon = branch.address.long;
+
+            var branchLatLng = new google.maps.LatLng(lat,lon);
+            var marker = new google.maps.Marker({
+                position: branchLatLng,
+               // icon:image,
+                map: map,
+                title: branch.name,
+                zIndex: 1
+            });
+
+            bounds.extend(marker.position);
+
+            var phone = '';
+            if (phone=='') {
+                phone = '<a href="'+branch.web_site+'" style="font-size:12px; font-weight: 500; color: #54c1e2; ">'+branch.web_site+'</a>';
+            }
+           
+            var contentString = '<div id="content">'+
+              '<div id="siteNotice">'+
+              '</div>'+
+              '<div id="bodyContent">'+
+                  '<div style="font-size:14px; font-weight: 500; color: #000">'+
+                        branch.address.street.replace(new RegExp("\\\\", "g"), "") +
+                  '</div>'+
+                  '<div style="font-size:14px; font-weight: 500; color: #54c1e2; ">'+
+                        phone +
+                  '</div>'+
+              '</div>'+
+              '</div>';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString,
+                maxWidth: 300
+            });
+
+             google.maps.event.addListener(marker, 'click', function() {
+                infowindow.open(map,marker);
+            });
+
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                var branchAddress = App.buildBranchAddress(branch);
+            });
+
+            map.fitBounds(bounds);
+            var zoom = map.getZoom();
+            map.setZoom(zoom > 10 ? 10 : zoom);
+        });//geocode result,status
+    }
+
+    //called on map item hover, change address regarding the hovered business
+    App.buildBranchAddress = function (branch) {
+        var branchAddress = '';
+
+        branchAddress+= branch.address.street.replace(new RegExp("\\\\", "g"), "") + '<br>';
+        branchAddress+=branch.address.city+ '<br>';
+        branchAddress+=branch.address.region+ '<br>';
+        branchAddress+=branch.address.country + '<br>';
+        
+        return branchAddress;
+    }
+
 
     /************************************************************************
      *

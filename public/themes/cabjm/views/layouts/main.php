@@ -167,6 +167,7 @@
     <script src="/themes/<?= $config['theme'] ?>/assets/js/bootstrap-datetimepicker-4.17.47.min.js"></script>
     <script src="/themes/<?= $config['theme'] ?>/assets/intl-tel-input/build/js/intlTelInput.js"></script>
     <script src="/themes/<?= $config['theme'] ?>/assets/intl-tel-input/lib/libphonenumber/build/utils.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<?= $config['googlePlacesKey'] ?>" async defer></script>
 
     <?php //$this->getLayoutScripts()?>
 </body>

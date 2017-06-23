@@ -349,3 +349,9 @@ body {
 .box-wrapper .image, .box-wrapper .image img{
     max-width: 290px;
 }
+
+.map-container {
+    width: 97%;
+    height: 500px;
+    margin-top: 20px;
+}

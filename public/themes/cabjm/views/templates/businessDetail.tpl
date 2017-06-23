@@ -42,7 +42,7 @@
                 <ul class="icons align-left text-white">
                     <li style="display: block; width: 100%;">
                         <h6>{{about}}</h6>
-                        <div id="map-canvas" class="map-container" data-business-id="{{../../branches}}"></div>
+                        <div id="map-canvas" class="map-container"></div> <!-- data-business-id="{{../../branches}}" -->
                     </li>
                 </ul>
             </div>
