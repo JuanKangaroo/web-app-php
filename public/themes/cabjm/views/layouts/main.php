@@ -141,6 +141,9 @@
         require_once __DIR__ . '/../templates/coupons.tpl';
         require_once __DIR__ . '/../templates/couponDetail.tpl';
         require_once __DIR__ . '/../templates/businessDetail.tpl';
+        require_once __DIR__ . '/../templates/changePin.tpl';
+        require_once __DIR__ . '/../templates/addChangeEmail.tpl';
+        
     ?>
     
     <link rel="stylesheet" type="text/css" href="/themes/cabjm/assets/css/bootstrap-datetimepicker-4.17.47.min.css">
@@ -163,6 +166,8 @@
     <script src="/themes/cabjm/assets/js/bootstrap-datetimepicker-4.17.47.min.js"></script>
     <script src="/themes/cabjm/assets/intl-tel-input/build/js/intlTelInput.js"></script>
     <script src="/themes/cabjm/assets/intl-tel-input/lib/libphonenumber/build/utils.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNPO6qb8BTuQDtV3DzTv_ibSc8eLIoxEs&amp;callback=initMap" async="" defer=""></script> -->
 
     <?php //$this->getLayoutScripts()?>
 </body>

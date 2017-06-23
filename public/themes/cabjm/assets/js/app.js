@@ -374,6 +374,25 @@
         }, App.buildUserProfileEdit, App.handleError);
     };
 
+    App.changePin = function() {
+        var $modal = $('#detailViewModal');
+        var source = $("#tpl_change_pin").html();
+        $modal.find('.modal-body').html(source);
+        $modal.find('.modal-title').text('Change PIN Code');
+        $modal.modal('show');
+        $('body').removeClass('pushy-open-left');
+    };
+
+    App.addChangeEmail = function(event) {
+        var $modal = $('#detailViewModal');
+        var source = $("#tpl_add_change_email").html();
+        $modal.find('.modal-body').html(source);
+        $modal.find('.modal-title').text('');
+        $modal.modal('show');
+        $('body').removeClass('pushy-open-left');
+    };
+
+
     App.getUserId = function () {
         var userProfile = App.getLocalUserProfile();
         return userProfile.id;
@@ -574,6 +593,35 @@
         event.preventDefault();
         App.saveUserProfile();
     });
+
+    $('.js-drawer__changePinItem').on('click', function(){
+        App.changePin();
+    });
+
+    $(document).on('click', '#changePinCancel', function(event){
+        event.preventDefault();
+        $('#detailViewModal').modal('hide');
+    });
+
+    $(document).on('click', '#changePinSave', function(event){
+        event.preventDefault();
+        App.saveChangePin();
+    });
+
+    $('.js-drawer__userEmailItem').on('click', function(event){
+        App.addChangeEmail(event);
+    });
+
+    $(document).on('click', '#userEmailCancel', function(event){
+        event.preventDefault();
+        $('#detailViewModal').modal('hide');
+    });
+
+    $(document).on('click', '#userEmailSave', function(event){
+        event.preventDefault();
+        App.saveChangePin();
+    });
+
 
     $(document).on('click', '.js-coupon-detail', function (e) {
         App.showSpinner();
