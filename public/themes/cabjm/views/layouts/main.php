@@ -141,6 +141,9 @@
         require_once __DIR__ . '/../templates/coupons.tpl';
         require_once __DIR__ . '/../templates/couponDetail.tpl';
         require_once __DIR__ . '/../templates/businessDetail.tpl';
+        require_once __DIR__ . '/../templates/changePin.tpl';
+        require_once __DIR__ . '/../templates/addChangeEmail.tpl';
+        
     ?>
     
     <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/bootstrap-datetimepicker-4.17.47.min.css">
@@ -155,6 +158,7 @@
     <script src="/themes/<?= $config['theme'] ?>/assets/js/bootstrap.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/kangaroo-api.js"></script>
+
     <script src="/themes/<?= $config['theme'] ?>/assets/js/handlebars-v4.0.5.js"></script>
     <script src="/themes/<?= $config['theme'] ?>/assets/js/handlebars-intl.min.js"></script>
     <script src="/themes/<?= $config['theme'] ?>/assets/js/pushy.min.js"></script>
@@ -163,6 +167,7 @@
     <script src="/themes/<?= $config['theme'] ?>/assets/js/bootstrap-datetimepicker-4.17.47.min.js"></script>
     <script src="/themes/<?= $config['theme'] ?>/assets/intl-tel-input/build/js/intlTelInput.js"></script>
     <script src="/themes/<?= $config['theme'] ?>/assets/intl-tel-input/lib/libphonenumber/build/utils.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<?= $config['googlePlacesKey'] ?>" async defer></script>
 
     <?php //$this->getLayoutScripts()?>
 </body>

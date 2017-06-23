@@ -5,7 +5,11 @@
         <div class="row justify-content-center">
             <h2>{{name}}</h2>
         </div>
+    </div>
+</div>
 
+<div class="row justify-content-center">
+    <div class="col-12">
         {{#if offers}}
             <div class="mt-5 container-wrapper pl-2 pr-2" >
                 <h4 class="text-center text-white">COUPONS YOU MAY LIKE</h4>
@@ -38,6 +42,7 @@
                 <ul class="icons align-left text-white">
                     <li style="display: block; width: 100%;">
                         <h6>{{about}}</h6>
+                        <div id="map-canvas" class="map-container"></div> <!-- data-business-id="{{../../branches}}" -->
                     </li>
                 </ul>
             </div>
