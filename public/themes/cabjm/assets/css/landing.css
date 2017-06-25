@@ -1,0 +1,207 @@
+html{
+    background: url(../images/hero.jpg) no-repeat center center fixed; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    /*padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;*/
+    color: #878787;
+    
+}
+
+body{overflow-y: auto;}
+
+.loader {
+    left: 50%;
+    top: 50%;
+    position: fixed;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 1051;
+}
+
+.loader #spinner {
+    box-sizing: border-box;
+    stroke: #673AB7;
+    stroke-width: 3px;
+    -webkit-transform-origin: 50%;
+    transform-origin: 50%;
+    -webkit-animation: line 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite, rotate 1.6s linear infinite;
+    animation: line 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite, rotate 1.6s linear infinite;
+}
+
+@-webkit-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    to {
+        -webkit-transform: rotate(450deg);
+        transform: rotate(450deg);
+    }
+}
+
+@keyframes rotate {
+    from {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    to {
+        -webkit-transform: rotate(450deg);
+        transform: rotate(450deg);
+    }
+}
+
+@-webkit-keyframes line {
+    0% {
+        stroke-dasharray: 2, 85.964;
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    50% {
+        stroke-dasharray: 65.973, 21.9911;
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dasharray: 2, 85.964;
+        stroke-dashoffset: -65.973;
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes line {
+    0% {
+        stroke-dasharray: 2, 85.964;
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    50% {
+        stroke-dasharray: 65.973, 21.9911;
+        stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dasharray: 2, 85.964;
+        stroke-dashoffset: -65.973;
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+}
+
+/*  ---------------------------------  MESSAGES  ----------------------------*/
+.message__container--fixed{
+    position: absolute;
+    width: 100%;
+    top: 35%;
+    z-index: 1051;
+}
+
+.c-message {
+    text-transform: none;
+    text-align: center;    
+    color: #313334;
+    cursor: pointer;
+    z-index: 1052; /*to be on top of modal 1050*/
+    position: relative;
+    /*padding: 1em 0.8em;*/
+    font-size: 1.2em;
+
+    background: #fff;
+    max-width: 400px;
+    margin: auto;
+    margin-bottom: 5px;
+
+    height: 150px;
+    border: solid 1px #ccc;
+    border-radius: 20px;
+}
+
+.alert-content{
+    width: 280px;
+    position: absolute;
+    right: 20px;
+    height: 100%;
+    display: table;
+}
+
+.alert-content span{
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.message__error {
+    background: #fff url(../images/cancel-red-bttn.png);
+    background-size: 65px;
+    background-position: 20px;
+    background-repeat: no-repeat;
+}
+.message__info {
+    padding: 1em 0.8em;
+    border-left: 10px solid #5ec3dc;
+}
+.message__success{
+    background: #fff url(../images/success-green-bttn.png);
+    background-size: 75px;
+    background-position: 20px;
+    background-repeat: no-repeat;
+}
+
+/*  ---------------------------------  MESSAGES  ----------------------------*/
+
+/*.btn-primary {
+    background-color: #0055a5;
+    border-color: #0055a5;
+}
+*/
+.btn-outline-primary {
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+/*.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #ffffff;
+    border-color: #ffffff;
+}*/
+
+/*  ---------------------------------  Overides Datetime picker  ----------------------------*/
+
+.bootstrap-datetimepicker-widget table td.day {
+    height: 30px!important;
+    line-height: 30px!important;
+    width: 70px!important;
+}
+
+.bootstrap-datetimepicker-widget table th.picker-switch{
+    height: 40px!important;
+}
+
+.time-input .bootstrap-datetimepicker-widget.dropdown-menu{
+    width: 12em!important;
+}
+
+.form .time-input .btn-primary {
+    min-width: 50px!important;
+}
+
+/*  --------------- Countries phone  ----------------------------*/
+
+.intl-tel-input .selected-flag .iti-flag {display: none;}
+.intl-tel-input .selected-flag .arrow {display: none;}
+.country-list .flag-box .iti-flag {display: none;}
+.intl-tel-input .country-list .flag-box {width: initial!important;}
+.intl-tel-input {width: 100%;}
+.intl-tel-input.separate-dial-code .selected-dial-code{ padding-left: 0!important; text-align: center; }
+
+.intl-tel-input .selected-flag .iti-country-code {font-size: 1.2rem;}
+/*  ---------------------------------  OVERRIDES  ----------------------------*/
+
+.container-landing {margin-top: 100px;}
+.container-landing a:not(.btn){color: #fff;}
+
+.container-landing.contact {background-color: rgba(255, 255, 255, 0.69);}
+
+.main {position: absolute;}

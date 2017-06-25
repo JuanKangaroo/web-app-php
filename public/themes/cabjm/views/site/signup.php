@@ -1,5 +1,5 @@
-<div class="container-fluid pt-3" style="margin: 100px auto 0;">
-    <div class="row justify-content-center">
+<div class="container-fluid container-landing">
+    <div class="row justify-content-center pb-2">
         <h2><img src="<?php echo config('logoPath'); ?>" class="d-inline" height="45px"></h2>
     </div>
     <div class="row justify-content-center">

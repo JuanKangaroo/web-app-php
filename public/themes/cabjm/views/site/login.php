@@ -1,4 +1,4 @@
-<div class="container-fluid container-landing pt-5">
+<div class="container-fluid container-landing">
     <div class="row justify-content-center pb-2">
         <h3> <img src="<?php echo config('logoPath'); ?>" class="d-inline" height="45px"> </h3>
     </div>

@@ -1,6 +1,6 @@
-<div class="container" style="padding-top: 10%;">
+<div class="container container-landing">
     <div class="row pt-5 pb-5">
-        <div class="col text-center" style="color: #fff;">
+        <div class="col-12 col-md-6" style="color: #fff;">
             <h1>Rewards You Want, at the Places You Love</h1>
             <p class="lead">Earn rewards and get points for doing what you do best: being a loyal customer.</p>
 

@@ -1,4 +1,4 @@
-<div class="container pt-5">
+<div class="container container-landing contact p-5">
     <h3>Contact Us</h3>
     <p class="lead">
         Wilsons is a leading fuel supplier in Atlantic Canada. We strive to provide a premium level of customer service and high value products to our customers.

@@ -12,7 +12,7 @@
         var config = <?php echo json_encode($config) ?>
     </script>
     <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/app.css?v=<?= $config['version'] ?>">
+    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/landing.css?v=<?= $config['version'] ?>">
     <!-- TODO add manifest here -->
     <!-- <link rel="manifest" href="manifest.json"> -->
     <!-- Add to home screen for Safari on iOS -->
@@ -22,7 +22,7 @@
     <meta name="msapplication-TileColor" content="#2F3BA2">
 </head>
 
-<body data-page-uri=<?= $this->pageUri; ?> >
+<body  data-page-uri=<?= $this->pageUri; ?> >
     <nav class="navbar navbar-toggleable-md fixed-top navbar-light" style="background-color: transparent; border-bottom: 1px solid rgba(255,255,255,0.2);">
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -52,11 +52,11 @@
         </h1>
     </header> -->
 
-    <section class="landing__hero-image w-100 h-100">
-        <div id="app" class="main">
+    <!-- <section class="landing__hero-image w-100 h-100"> -->
+        <div id="app" class="main w-100 h-100">
             <?= $content?>
         </div>
-    </section>
+    <!-- </section> -->
 
     <div class="message__container--fixed" id="message__container">
         <div class="c-message message__success" style="display: none"></div>
