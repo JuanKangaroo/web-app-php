@@ -24,8 +24,7 @@
     <meta name="msapplication-TileColor" content="#2F3BA2">
 </head>
 
-<body data-page-uri=<?= $this->pageUri; ?> class="body-bkg-image">
-    <div class="body-layer">
+<body data-page-uri=<?= $this->pageUri; ?> class="body-bkg-image" style="opacity: 1;">
     <!-- Pushy Menu -->
     <nav class="pushy pushy-left">
         <div class="pushy-content pt-2" id="drawer">
@@ -171,6 +170,5 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=<?= $config['googlePlacesKey'] ?>" async defer></script>
 
     <?php //$this->getLayoutScripts()?>
-    </div>
 </body>
 </html>

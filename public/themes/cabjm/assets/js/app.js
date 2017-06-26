@@ -103,7 +103,7 @@
                 console.log(response.data);
                 App.buildCouponDetail(response);
             } else if (ajaxOptions.action == 'api_business_detail') {
-                App.buildBusinessDetail(response);
+                App.buildBusinessDetail(response.data);
             } else if (ajaxOptions.action == 'api_update_pin') {
                 App.alert('OK', 'Pin Code successfully saved');
                 $('#detailViewModal').modal('hide');
@@ -411,6 +411,16 @@
         }, App.handleResponse, App.handleError);
     };
 
+    App.getBusinessDetail = function(id) {
+         App.showSpinner();
+        api.client.request({
+            url: App.config.api.endpoints.business_detail.replace('{businessid}', id),
+            method: 'GET',
+            action: 'api_business_detail',
+            params: {},
+        }, App.handleResponse, App.handleError);
+    }
+
     /*****************************************************************************
      *
      * Event listeners for UI elements
@@ -637,13 +647,13 @@
     });
 
     $(document).on('click', '.js-business-detail', function (e) {
-        App.showSpinner();
+/*      App.showSpinner();
         api.client.request({
             url: App.config.api.endpoints.business_detail.replace('{businessid}', $(this).data('businessId')),
             method: 'GET',
             action: 'api_business_detail',
             params: {},
-        }, App.handleResponse, App.handleError);
+        }, App.handleResponse, App.handleError);*/
     });
 
     /*****************************************************************************
@@ -899,12 +909,15 @@
     };
 
     App.buildBusinessDetail = function (context) {
-        var $modal = $('#detailViewModal');
+        //location.href = App.config.appBaseUrl + '/business/detail';
+        //var $modal = $('#detailViewModal');
+
         var source = $("#tpl_business_detail").html();
         var template = Handlebars.compile(source);
-        $modal.find('.modal-body').html(template(context.data));
+        $('#business__detail').html(template(context));
+        /*$modal.find('.modal-body').html(template(context.data));
         App.initMap(context.data.branches);
-        $modal.modal('show');
+        $modal.modal('show');*/
     };
 
     App.showSubAccountsForm = function (context) {
@@ -1005,11 +1018,15 @@
         } else if (currentUrl == App.isAuthenticated()) {
             //login page and user is authenticated
             location.href = App.config.appBaseUrl + '/home';
-        } else if (currentUrl == '/site/verify') {
+        } else if (currentUrl == '/business/detail') {
             console.log('entro aca');
             //login page and user is authenticated
-            App.showSubAccountsForm({});
-            App.verifyEmailIfNotVerified();
+            console.log(location.search);
+            var urlParams = getUrlParams(location.search); console.log(urlParams);
+
+            var id = urlParams['id'];
+            App.getBusinessDetail(id);
+            //App.verifyEmailIfNotVerified();
         }
     };
 
@@ -1110,6 +1127,27 @@
     }
 
 
+    var getUrlParams = function(search_string) {
+
+      var parse = function(params, pairs) {
+        var pair = pairs[0];
+        var parts = pair.split('=');
+        var key = decodeURIComponent(parts[0]);
+        var value = decodeURIComponent(parts.slice(1).join('='));
+
+        // Handle multiple parameters of the same name
+        if (typeof params[key] === "undefined") {
+          params[key] = value;
+        } else {
+          params[key] = [].concat(params[key], value);
+        }
+
+        return pairs.length == 1 ? params : parse(params, pairs.slice(1))
+      }
+
+      // Get rid of leading ?
+      return search_string.length == 0 ? {} : parse({}, search_string.substr(1).split('&'));
+    }
     /************************************************************************
      *
      * Code required to start the App
