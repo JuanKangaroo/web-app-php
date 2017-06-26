@@ -238,21 +238,36 @@ body {
 }
 
 .btn-primary {
-    background-color: #0055a5;
-    border-color: #0055a5;
+    background-color: #262b8c;
+    border-color: #262b8c;
 }
 
 .btn-outline-primary {
-    color: #0055a5;
-    border-color: #0055a5;
+    color: #262b8c;
+    border-color: #262b8c;
 }
 
 .btn-outline-primary:hover {
     color: #fff;
-    background-color: #0055a5;
-    border-color: #0055a5;
+    background-color: #262b8c;
+    border-color: #262b8c;
 }
 
+.form-control::-webkit-input-placeholder {
+    color: #ccc;
+}
+
+.form-control::-moz-placeholder {
+    color: #cc;
+}
+
+.form-control:-ms-input-placeholder {
+    color: #ccc;
+}
+
+.form-control::placeholder {
+    color: #ccc;
+}
 /*  ---------------------------------  Overides Datetime picker  ----------------------------*/
 
 .bootstrap-datetimepicker-widget table td.day {
