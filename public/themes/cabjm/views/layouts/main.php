@@ -24,7 +24,8 @@
     <meta name="msapplication-TileColor" content="#2F3BA2">
 </head>
 
-<body data-page-uri=<?= $this->pageUri; ?> >
+<body data-page-uri=<?= $this->pageUri; ?> class="body-bkg-image">
+    <div class="body-layer">
     <!-- Pushy Menu -->
     <nav class="pushy pushy-left">
         <div class="pushy-content pt-2" id="drawer">
@@ -88,7 +89,7 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active" id="menu_home"><a class="nav-link" href="/home">My Memberships</a></li>
                     <li class="nav-item" id="menu_coupons"><a class="nav-link" href="/coupons">Coupons</a></li>
-                    <li class="nav-item" id="menu_rewards"><a class="nav-link" href="/rewards">Rewards</a></li>
+                    <!-- <li class="nav-item" id="menu_rewards"><a class="nav-link" href="/rewards">Rewards</a></li> -->
                 </ul>
                 <form class="my-3" style="position: absolute; right: 0; top: 0px;">
                     <div class="dropdown">
@@ -170,5 +171,6 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=<?= $config['googlePlacesKey'] ?>" async defer></script>
 
     <?php //$this->getLayoutScripts()?>
+    </div>
 </body>
 </html>
