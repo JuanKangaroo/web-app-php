@@ -7,13 +7,13 @@
             <form class="form login">
                 <div class="form-group">
                     <div class="input-group">
-                        <!-- <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i></span> -->
+                        <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i></span>
                         <input id="email" type="email" class="form-control form-control-lg" name="email" value="" placeholder="Email" required="" autofocus="">
                     </div>
                 </div>
                 <div class="form-group ">
                     <div class="input-group">
-                        <!-- <span class="input-group-addon"><i class="fa fa-key fa-fw" aria-hidden="true"></i></span> -->
+                        <span class="input-group-addon"><i class="fa fa-key fa-fw" aria-hidden="true"></i></span>
                         <input id="password" type="password" class="form-control form-control-lg" name="password" placeholder="Password" required="" maxlength="4">
                     </div>
                 </div>

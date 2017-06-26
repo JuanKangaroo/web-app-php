@@ -95,65 +95,39 @@ body{overflow-y: auto;}
 .message__container--fixed{
     position: absolute;
     width: 100%;
-    top: 35%;
+    /*top: 35%;*/
+    top: 0px;
     z-index: 1051;
-}
-
-.c-message {
-    text-transform: none;
-    text-align: center;    
-    color: #313334;
-    cursor: pointer;
-    z-index: 1052; /*to be on top of modal 1050*/
-    position: relative;
-    /*padding: 1em 0.8em;*/
-    font-size: 1.2em;
-
-    background: #fff;
-    max-width: 400px;
+    max-width: 460px;
     margin: auto;
-    margin-bottom: 5px;
-
-    height: 150px;
-    border: solid 1px #ccc;
-    border-radius: 20px;
+    left: 0;
+    right: 0;
 }
 
-.alert-content{
-    width: 280px;
-    position: absolute;
-    right: 20px;
-    height: 100%;
-    display: table;
-}
+.alert-success { background-color: #1f6a26; color: #fff; border: none; }
+.alert-error { background-color: #e82028; color: #fff; border: none; }
+.alert-info { background-color: #337ab7; color: #fff; border: none; }
 
-.alert-content span{
-    vertical-align: middle;
-    display: table-cell;
-}
-
-.message__error {
-    background: #fff url(../images/cancel-red-bttn.png);
-    background-size: 65px;
-    background-position: 20px;
-    background-repeat: no-repeat;
-}
-.message__info {
-    padding: 1em 0.8em;
-    border-left: 10px solid #5ec3dc;
-}
-.message__success{
-    background: #fff url(../images/success-green-bttn.png);
-    background-size: 75px;
-    background-position: 20px;
-    background-repeat: no-repeat;
-}
+.alert-container {display: table; top: -25px; position: relative;}
+.alert .message__icon {width: 50px;}
+.alert .message__icon, .alert .message__content{display: table-cell;}
 
 /*  ---------------------------------  MESSAGES  ----------------------------*/
 
-/*.btn-primary {
-    background-color: #0055a5;
-    border-color: #0055a5;
+.btn-primary {
+    background-color: #2d3494;
+    border-color: #2d3494;
+}
+
+/*.btn-primary.active, .btn-primary:active, .show>.btn-primary.dropdown-toggle {
+    background-color: #025aa5;
+    border-color: #2d3494;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #025aa5;
+    border-color: #01549b;
 }
 */
 .btn-outline-primary {
@@ -205,3 +179,15 @@ body{overflow-y: auto;}
 .landing-text-box {background-color: rgba(255, 255, 255, 0.69);}
 
 .main {position: absolute;}
+
+.container-landing .input-group-addon {
+    color: #464a4c;
+    text-align: center;
+    background-color: rgba(236, 238, 239, 0.44);
+    border: none; /*1px solid rgba(0,0,0,.01);*/
+}
+
+
+.container-landing .form-control {
+    border: none;
+}

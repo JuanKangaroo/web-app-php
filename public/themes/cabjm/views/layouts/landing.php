@@ -13,6 +13,8 @@
     </script>
     <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/landing.css?v=<?= $config['version'] ?>">
+    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/font-awesome.min.css">
+    
     <!-- TODO add manifest here -->
     <!-- <link rel="manifest" href="manifest.json"> -->
     <!-- Add to home screen for Safari on iOS -->
@@ -58,14 +60,8 @@
         </div>
     <!-- </section> -->
 
-    <div class="message__container--fixed" id="message__container">
-        <div class="c-message message__success" style="display: none"></div>
-        <div class="c-message message__error" style="display: none"></div>
-        <div class="c-message message__info" style="display: none"></div>
-    </div>
+    <div class="message__container--fixed" id="message__container"></div>
     
-    
-
     <div class="loader">
         <svg viewBox="0 0 32 32" width="32" height="32">
             <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
@@ -78,7 +74,7 @@
     <script src="/themes/<?= $config['theme'] ?>/assets/js/bootstrap.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/kangaroo-api.js"></script>
-    <script src="/themes/<?= $config['theme'] ?>/assets/js/app.js?v=<?= $config['version'] ?>"></script>
+    <script src="/themes/<?= $config['theme'] ?>/assets/js/landing.js?v=<?= $config['version'] ?>"></script>
 
     <?php //$this->getLayoutScripts()?>
 </body>
