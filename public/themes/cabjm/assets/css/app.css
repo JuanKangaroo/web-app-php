@@ -356,7 +356,8 @@ body {
 }
 
 .container-wrapper {
-    background-color: rgba(29, 36, 42, 0.5);
+    /*background-color: rgba(29, 36, 42, 0.5);*/
+    background-color: rgba(0, 0, 0, 0.2)!important;
     padding: 0.1em 0 1em 0em;
     border-radius: 5px;
     margin-bottom: 20px;
@@ -371,7 +372,7 @@ body {
 }
 
 .map-container {
-    width: 97%;
+    width: 100%;
     height: 500px;
     margin-top: 20px;
 }
@@ -403,8 +404,8 @@ body {
 }
 
 .offer_triangle__container {
-    width: 25%;
-    height: 42%;
+    width: 37%;
+    height: 50%;
     position: absolute;
     top: 0;
     right: 0;

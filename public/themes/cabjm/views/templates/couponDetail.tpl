@@ -8,9 +8,9 @@
                     <img class="card-img-top img-fluid" src="/themes/cabjm/assets/images/nologo.png" alt="{{title}}">
                 {{/if}}
             </div>
-            <div class="card-block py-1 px-0">
-                <p class="card-text mb-0 text-left h5">{{title}}</p>
-                <p class="card-text text-left h7">{{branch_name}}</p>
+            <div class="card-block py-1 px-0 mt-3">
+                <p class="card-text mb-1 text-left h5">{{title}}</p>
+                <p class="card-text mb-4 text-left h7">{{branch_name}}</p>
                 <p class="card-text mb-0 text-left h7">{{description}}</p>
             </div>
         </div>

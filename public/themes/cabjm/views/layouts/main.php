@@ -24,7 +24,7 @@
     <meta name="msapplication-TileColor" content="#2F3BA2">
 </head>
 
-<body data-page-uri=<?= $this->pageUri; ?> class="body-bkg-image" style="opacity: 1;">
+<body data-page-uri=<?= $this->pageUri; ?> class="body-bkg-image">
     <!-- Pushy Menu -->
     <nav class="pushy pushy-left">
         <div class="pushy-content pt-2" id="drawer">
