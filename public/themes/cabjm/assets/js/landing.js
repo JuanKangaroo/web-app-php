@@ -112,7 +112,7 @@
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\
                     <div class="alert-container w-100">\
                         <div class="message__icon align-middle">\
-                            <i class="fa fa-times-circle fa-2x fa-fw"></i>\
+                            <i class="fa fa-check-circle fa-2x fa-fw"></i>\
                         </div>\
                         <div class="message__content align-middle">'+message+'</div>\
                     </div>\
@@ -147,7 +147,6 @@
     };
 
     App.verifyCredentials = function (token, email, phone) {
-        console.log('verifyCredentials', token, email);
 
         if (email) {
             var data = {
@@ -167,7 +166,7 @@
 
         App.showSpinner();
         axios({
-            url: App.config.api.baseUrl + '/verify',
+            url: App.config.api.baseUrl + '/rpc/verify',
             method: 'POST',
             data: data,
             headers: App.config.headers
@@ -211,7 +210,6 @@
     };
 
     App.verifyEmailIfNotVerified = function () {
-        console.log('verifyEmailIfNotVerified');
 
         //Get verification token and credetials to verify
         var emailToken = $('#app').find('[name=verify_token]').val();
@@ -219,7 +217,6 @@
         var phoneToVerify = $('#app').find('[name=verify_phone]').val();
 
         if (emailToken) {
-            console.log('before verifyCredentials');
             App.verifyCredentials(emailToken, emailToVerify, phoneToVerify);
         } else {
             console.log('No Email Verification Token found');
@@ -353,9 +350,8 @@
             //login page and user is authenticated
             location.href = App.config.appBaseUrl + '/home';
         } else if (currentUrl == '/site/verify') {
-            console.log('entro aca');
+            $('#profile_subaccounts_form').show();
             //login page and user is authenticated
-            App.showSubAccountsForm({});
             App.verifyEmailIfNotVerified();
         }
     };

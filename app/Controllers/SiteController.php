@@ -99,24 +99,17 @@ class SiteController extends BaseController
     {
         $this->title = config('appName') .' - ' . 'Verify';
 
-        // if (!isset($_GET['token'], $_GET['email'])) {
-        //     return $this->render('site/error', [
-        //         'code' => 400, 
-        //         'message' => 'Invalid Verification token. Try again.'
-        //     ]);
-        // }
-
         $token = isset($_GET['token']) ? $_GET['token'] : null;
         $email = isset($_GET['email']) ? $_GET['email'] : null;
+        $phone = isset($_GET['phone']) ? $_GET['phone'] : null;
+        $action = isset($_GET['action']) ? $_GET['action'] : null;
 
-        // if (empty($token) || empty($email)) {
-        //     return $this->render('site/error', [
-        //         'code' => 400, 
-        //         'message' => 'Invalid Verification token. Try again.'
-        //     ]);
-        // }
-
-        return $this->render('site/verify', ['token' => $token, 'email' => $email]);
+        return $this->render('site/verify', [
+            'token' => $token,
+            'email' => $email,
+            'phone' => $phone,
+            'action' => $action,
+        ]);
     }
 
     public function actionContact()
