@@ -15,8 +15,8 @@
                     {{#each offers}}
                         <div class="col-12 col-md-6 col-lg-4 mb-3">
                             <div class="card pointer js-coupon-detail" data-coupon-id={{id}}>
-                                {{#if images.0.path}}
-                                    <img class="card-img-top img-fluid rounded" src="{{images.0.path}}" alt="{{name}}">
+                                {{#if images.0.medium}}
+                                    <img class="card-img-top img-fluid rounded" src="{{images.0.medium}}" alt="{{name}}">
                                 {{else}}
                                     <img class="card-img-top img-fluid rounded" src="/themes/cabjm/assets/images/nologo.png" alt="{{name}}">
                                 {{/if}}
@@ -27,6 +27,7 @@
                                     <div class="offer_triangle__segment">
                                         <div class="offer_triangle__content">
                                             <div class="offer_triangle__content_text">
+                                                {{offerLabel this}}
                                             </div>
                                         </div>
                                     </div>
