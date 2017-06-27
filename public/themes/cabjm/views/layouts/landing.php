@@ -55,7 +55,7 @@
     </header> -->
 
     <!-- <section class="landing__hero-image w-100 h-100"> -->
-        <div id="app" class="main w-100 h-100">
+        <div id="app" class="main">
             <?= $content?>
         </div>
     <!-- </section> -->
