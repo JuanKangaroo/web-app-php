@@ -43,6 +43,50 @@
                     return options.inverse(this);
             }
         });
+
+        Handlebars.registerHelper("offerLabel", function(offer) {
+            console.log(offer);
+
+            var offerType = offer.type;
+            var r = {val1:'', val2:''};
+
+            if (offerType == 'points_multiplier') {
+                r.val1 = offer.multip_factor + 'x';
+                r.val2 = 'THE POINTS';
+            } else if (offerType == 'free_product') {
+                r.val1 = 'FREE';
+            } else if (offerType == 'bonus_points') {
+                r.val1 = offer.points;
+                r.val2 = 'Points';
+            } else if (offerType == 'visits_multiplier') {
+                r.val1 = offer.multip_factor + 'x';
+                r.val2 = 'The Punches';
+            } else if (offerType == 'discount_percentage') {
+                r.val1 = offer.discount_value + '%';
+                r.val2 = 'Off';
+            } else if (offerType == 'discount_amount') {
+                r.val1 = '$' + offer.discount_value;
+                r.val2 = 'Off';
+            } else if (offerType == 'visits_multiplier') {
+                if (offer.real_value == offer.discount_value) {
+                    r.val1 = '$' + offer.real_value;
+                } else {
+                    r.val1 = '$' + offer.real_value;
+                    r.val2 = '$' + offer.discount_value;
+                }
+            } else if (offerType == 'redeem_free_product') {
+                r.val1 = offer.points;
+                r.val2 = 'Points';
+            } else if (offerType == 'redeem_discount_amount') {
+                r.val1 = '$' + offer.discount_value;
+            } else if (offerType == 'redeem_discount_percentage') {
+                r.val1 = offer.discount_value + '%';
+            }
+
+            var html = '<div class="offer_triangle__content_text1">' + r.val1 + '</div>';
+            html += '<div class="offer_triangle__content_text2">' + r.val2 + '</div>';
+            return new Handlebars.SafeString(html);
+        });
     }
 
     var datePickerIcons = {

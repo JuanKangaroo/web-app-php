@@ -2,11 +2,25 @@
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
             <div class="row justify-content-center">
-                {{#if images.0.path}}
-                    <img class="card-img-top img-fluid" src="{{images.0.path}}" alt="{{title}}">
-                {{else}}
-                    <img class="card-img-top img-fluid" src="/themes/cabjm/assets/images/nologo.png" alt="{{title}}">
-                {{/if}}
+                <div style="width: 100%;">
+                    {{#if images.0.medium}}
+                        <img class="card-img-top img-fluid" src="{{images.0.medium}}" alt="{{title}}" style="width: 100%;">
+                    {{else}}
+                        <img class="card-img-top img-fluid" src="/themes/cabjm/assets/images/nologo.png" alt="{{title}}" style="width: 100%;">
+                    {{/if}}
+                    <div class="logo-business">
+                        <img class="rounded float-right" src="{{branch.logo.thumbnail}}" alt="{{branch.name}}" style="max-width: 100px;">
+                    </div>
+                    <div class="offer_triangle__container">
+                        <div class="offer_triangle__segment">
+                            <div class="offer_triangle__content">
+                                <div class="offer_triangle__content_text">
+                                    {{offerLabel this}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="card-block py-1 px-0 mt-3">
                 <p class="card-text mb-1 text-left h5">{{title}}</p>

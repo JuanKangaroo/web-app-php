@@ -403,9 +403,15 @@ body {
     bottom: 50px;
 }
 
+.logo-business-coupons {
+    position: absolute;
+    right: 10px;
+    bottom: 35px;
+}
+
 .offer_triangle__container {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     position: absolute;
     top: 0;
     right: 0;
