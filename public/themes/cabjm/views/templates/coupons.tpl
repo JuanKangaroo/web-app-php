@@ -48,6 +48,14 @@
                     <div class="logo-business">
                         <img class="rounded float-right" src="{{../business/logo.thumbnail}}" alt="{{name}}" style="max-width: 100px;">
                     </div>
+                    <div class="offer_triangle__container">
+                        <div class="offer_triangle__segment">
+                            <div class="offer_triangle__content">
+                                <div class="offer_triangle__content_text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         {{/each}}

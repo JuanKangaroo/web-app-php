@@ -412,7 +412,7 @@
     };
 
     App.getBusinessDetail = function(id) {
-         App.showSpinner();
+        App.showSpinner();
         api.client.request({
             url: App.config.api.endpoints.business_detail.replace('{businessid}', id),
             method: 'GET',
@@ -909,12 +909,11 @@
     };
 
     App.buildBusinessDetail = function (context) {
-        //location.href = App.config.appBaseUrl + '/business/detail';
         //var $modal = $('#detailViewModal');
-
         var source = $("#tpl_business_detail").html();
         var template = Handlebars.compile(source);
         $('#business__detail').html(template(context));
+        App.initMap(context.branches);
         /*$modal.find('.modal-body').html(template(context.data));
         App.initMap(context.data.branches);
         $modal.modal('show');*/
@@ -1023,7 +1022,6 @@
             //login page and user is authenticated
             console.log(location.search);
             var urlParams = getUrlParams(location.search); console.log(urlParams);
-
             var id = urlParams['id'];
             App.getBusinessDetail(id);
             //App.verifyEmailIfNotVerified();
