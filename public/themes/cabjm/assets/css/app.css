@@ -378,10 +378,10 @@ body {
 }
 
 .body-bkg-image {
-    background-image: -moz-linear-gradient(top, rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url(../images/background.jpg);
-    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url(../images/background.jpg);
-    background-image: -ms-linear-gradient(top, rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url(../images/background.jpg);
-    background-image: linear-gradient(top, rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url(../images/background.jpg);
+    background-image: -moz-linear-gradient(top, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(../images/background.jpg);
+    background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(../images/background.jpg);
+    background-image: -ms-linear-gradient(top, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(../images/background.jpg);
+    background-image: linear-gradient(top, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(../images/background.jpg);
     background-size: 100%;
 }
 

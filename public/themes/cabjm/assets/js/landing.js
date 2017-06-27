@@ -84,15 +84,6 @@
             setTimeout(function () {
                 location.href = KangarooApi.config.appBaseUrl + '/site/verify';
             }, 3000);
-            //Store the toke on the server
-            // $.post(App.config.appBaseUrl + '/api/setUserToken', {
-            //     user_id: data.id,
-            //     token: JSON.stringify(token),
-            // }, function (data) {
-            //     setTimeout(function () {
-            //         location.href = KangarooApi.config.appBaseUrl + '/site/verify';
-            //     }, 3000);
-            // });
         }, App.handleError);
     };
 
