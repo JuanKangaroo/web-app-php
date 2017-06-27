@@ -1,18 +1,16 @@
-html{
-    background: url(../images/hero.jpg) no-repeat center center fixed; 
-      -webkit-background-size: cover;
-      -moz-background-size: cover;
-      -o-background-size: cover;
-      background-size: cover;
-    /*padding: 0;
-    margin: 0;
-    height: 100%;
-    width: 100%;*/
+html{    
     color: #878787;
-    
 }
 
-body{overflow-y: auto;}
+body{
+    background-image: url(../images/hero.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #464646;
+    /*overflow-y: auto;*/
+}
 
 .loader {
     left: 50%;
