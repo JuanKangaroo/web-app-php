@@ -42,15 +42,13 @@
 
 <div class="row justify-content-center">
     <div class="col-12">
-        {{#if about}}
-            <div class="mt-2 container-wrapper justify-content-center" >
-                <h5 class="text-center text-muted mt-2 mb-4">WHO WE ARE</h5>
-                <h6 class="text-left text-white ml-3 mr-3 mb-3">{{about}}</h6>
-                <div class="row justify-content-center ml-2 mr-2 mb-3">
-                    <div id="map-canvas" class="map-container"></div>
-                </div>
+        <div class="mt-2 container-wrapper justify-content-center" >
+            <h5 class="text-center text-muted mt-2 mb-4">WHO WE ARE</h5>
+            <div class="lead text-left text-white ml-3 mr-3 mb-3">{{about}}</div>
+            <div class="row justify-content-center ml-2 mr-2 mb-3">
+                <div id="map-canvas" class="map-container"></div>
             </div>
-        {{/if}}
+        </div>
     </div>
 </div>
 </script>
