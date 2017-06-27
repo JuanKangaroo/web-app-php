@@ -109,13 +109,7 @@
     App.handleResponse = function (response, ajaxOptions) {
         console.trace('action', ajaxOptions.action, 'data', response);
         try {
-            if (ajaxOptions.action == 'user_login' && response.token_type == 'Bearer') {
-                location.href = App.config.appBaseUrl + '/home';
-            } else if (ajaxOptions.action == 'user_signup') {
-                localStorage.setObject('userProfile', response.data);
-                App.afterSignup(response.data);
-                // location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
-            } else if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
+            if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
                 localStorage.setObject('userProfile', response.data.profile);
                 //fill the page with the info from API
                 App.buildUserProfileDrawer(response.data.profile);
@@ -194,31 +188,6 @@
         }
     };
 
-    App.afterSignup = function(data) {
-        // console.log(data);
-        App.showSpinner();
-
-        //get access token for user
-        api.login({
-            username: App.$signupForm.find('#email').val(),
-            password: App.$signupForm.find('#password').val(),
-        }, function (token) {
-            App.alert('OK', 'We have sent you a verification email. Click on the link to verify you account.');
-
-            setTimeout(function () {
-                location.href = KangarooApi.config.appBaseUrl + '/site/verify';
-            }, 3000);
-            //Store the toke on the server
-            // $.post(App.config.appBaseUrl + '/api/setUserToken', {
-            //     user_id: data.id,
-            //     token: JSON.stringify(token),
-            // }, function (data) {
-            //     setTimeout(function () {
-            //         location.href = KangarooApi.config.appBaseUrl + '/site/verify';
-            //     }, 3000);
-            // });
-        }, App.handleError);
-    };
 
     App.alert = function (type, message, delayTime) {
         var delay = 4000;
@@ -315,35 +284,6 @@
         });
     };
 
-    App.addPosAccount = function (posAccount) {
-        App.showSpinner();
-        var userProfile = App.getLocalUserProfile();
-
-        App.showSpinner();
-        axios({
-            url: App.config.kangarooUrl + '/site/addPosAccount',
-            method: 'POST',
-            data: {
-                user_id: userProfile.id,
-                pos_account: posAccount
-            },
-            headers: App.config.headers
-        }).then(response => {
-            App.handleResponse(response.data, {action: 'add_pos_account'});
-        }).catch (error => {
-            App.handleError(error, {action: 'add_pos_account'});
-        });
-
-        // api.client.request({
-        //     url: App.config.api.endpoints.users + '/' + userProfile.id,
-        //     method: 'PATCH',
-        //     action: 'api_pos_accounts',
-        //     params: {
-        //         intent: "pos_accounts",
-        //         pos_accounts: [pos_account]
-        //     },
-        // }, App.handleResponse, App.handleError);
-    };
 
     App.getLocalAccessToken = function() {
         var token = localStorage.getObject('user_token');
@@ -471,59 +411,7 @@
      *
      ****************************************************************************/
 
-    $(document).on('click', '#login__btn', function (e) {
-        e.preventDefault();
-        var username = App.$loginForm.find('#email').val();
-        var password = App.$loginForm.find('#password').val();
-
-        if (!email || !password) {
-            App.alert('NOT_OK', 'Email and password is required');
-            return;
-        }
-
-        App.showSpinner();
-
-        // $.post(App.config.appBaseUrl + '/api/login', {
-        //     username: username, 
-        //     password: password,
-        // }, function(data) {
-        //     // localStorage.setObject('user_token', data);
-        //     console.log(data);
-        // });
-
-        api.login({
-            username: username,
-            password: password,
-        }, App.handleResponse, App.handleError);
-    });
-
-    $(document).on('click', '#signup_btn', function (e) {
-        e.preventDefault();
-
-        var email = App.$signupForm.find('#email').val();
-        var password = App.$signupForm.find('#password').val();
-
-        if (!email || !password) {
-            App.alert('NOT_OK', 'Email and password is required');
-            return;
-        }
-
-        App.showSpinner();
-
-        if ($.isNumeric(email)) {
-            api.signup({
-                'phone': email,
-                'country_code': 'CA',
-                'pin_code': password,
-            }, App.handleResponse, App.handleError);
-        } else {
-            api.signup({
-                'email': email,
-                'pin_code': password,
-            }, App.handleResponse, App.handleError);
-        }
-    });
-
+ 
     $(document).on('click', '#logout', function (e) {
         api.logout();
     });
@@ -542,84 +430,12 @@
         }, App.handleResponse, App.handleError);
     });
 
-    $('.js-add-pos-account__btn').on('click', function (event) {
-        var userProfile = App.getLocalUserProfile();
-        var userToken = App.getLocalAccessToken();
-        
-        var $button = $(this); // Button that triggered the modal
-        var posId = $(this).data('posId'); // Extract info from data-* attributes
-        var posName = $(this).data('posName'); // Extract info from data-* attributes
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-        var $modal = $('#addAccountsModal');
-
-        $modal.find('.modal-title').text('Add your ' + posName + ' Account');
-        $modal.find('[name=pos_id]').val(posId);
-        $modal.find('[name=account_id]').val('');
-        $modal.find('[name=postal_code]').val('');
-
-        if (userToken) {
-            App.checkEmailVerified();
-        } else if(userProfile && userProfile.email_verified) {
-            $modal.modal('show');
-        } else {
-            console.log('No Access Token or User Profile found or Email not verified');
-        }
-    })
-
-    $(document).on('click', '.js-add-pos-account__confirm-btn', function (event) {
-        $('#addAccountsModal').modal('hide');
-
-        var account = {};
-        //get form data as object
-        $('#add_pos_account__form').serializeArray().map(function (x) {
-            account[x.name] = x.value;
-        });
-
-        if (!account.account_id || !account.postal_code) {
-            App.alert('NOT_OK', 'Account ID and Postal Code is required');
-            return;
-        }
-
-        App.addPosAccount(account);
-    });
-
-    $('#rewardsRedemptionConfirmModal').on('show.bs.modal', function (event) {
-        var $button = $(event.relatedTarget); // Button that triggered the modal
-        var rewardId = $button.data('rewardId'); // Extract info from data-* attributes
-        var rewardTitle = $button.data('rewardTitle'); // Extract info from data-* attributes
-        var isTpr = $button.data('isTpr');
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-        var $modal = $(this);
-
-        if (!isTpr) {
-            event.stopPropagation();
-            var bsModal = $(this).data('bs.modal');
-            bsModal["_isShown"] = false;
-            bsModal["_isTransitioning"] = false;
-            $(this).data('bs.modal', bsModal);
-            App.alert('NOT_OK', 'This is not a partner reward');
-            return false;
-        }
-
-        // modal.find('.modal-title').text('New message to ' + recipient);
-        $modal.find('#reward_title').html(rewardTitle);
-
-        App.redeemItem = {
-            id: rewardId,
-            quantity: 1
-        };
-    });
-
     $('#menu_transactions_list').on('click', function(){
         var $modal = $('#detailViewModal');
         $modal.find('.modal-body').empty();
         $modal.find('.modal-title').empty();
         $modal.modal('show');
         App.getTransactions();
-    });
-
-    $('#menu_add_accounts').on('click', function(){
-        window.location.href = '/site/verify'
     });
 
     $('#menu_contact_us').on('click', function(){
@@ -1046,12 +862,6 @@
         if (currentUrl == '/home') {
             $('.navbar-top').find('#menu_home').addClass('active');
             App.getAccount(); //home page
-        } else if (currentUrl == '/rewards') {
-            $('.navbar-top').find('#menu_rewards').addClass('active');
-            var userProfile = App.getLocalUserProfile();
-            //fill the page with the info from API
-            App.buildUserProfileDrawer(userProfile);
-            App.getRewards();
         } else if (currentUrl == '/coupons') {
             $('.navbar-top').find('#menu_coupons').addClass('active');
             var userProfile = App.getLocalUserProfile();
