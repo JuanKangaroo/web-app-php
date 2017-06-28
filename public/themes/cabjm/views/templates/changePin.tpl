@@ -2,7 +2,7 @@
 
 <form class="form mt-5" id="changePinForm">
     <div class="row justify-content-center">
-        <div class="col-10 col-md-6">
+        <div class="col-12 col-md-6">
             <div class="form-group mt-2">
                 <input id="pin_code" type="number" class="form-control form-control-lg text-center" name="pin_code" placeholder="Enter a 4 digits PIN Code" maxlength="4" required>
             </div>
