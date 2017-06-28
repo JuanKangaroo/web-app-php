@@ -618,7 +618,7 @@
         var $userPhone = $("#userPhone");
         
         if (!userProfile.country_code) {
-            userProfile.country_code = 'CA';
+            userProfile.country_code = App.config.country_code;
         }
 
         try {
@@ -705,7 +705,7 @@
         });
 
         if (formData.phone && !formData.country_code) {
-            formData.country_code = 'CA';
+            formData.country_code = App.config.country_code;
         }
 
         App.showSpinner();

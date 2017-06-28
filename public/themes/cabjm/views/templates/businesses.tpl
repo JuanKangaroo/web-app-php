@@ -2,7 +2,7 @@
 {{#if businesses}}
     <div class="row justify-content-center">
         {{#each businesses}}
-            <div class="col-12 col-md-6 col-lg-4 mb-3">
+            <div class="col-12 col-md-6 col-lg-4 mb-3 animated zoomIn">
                 <a class="card pointer" href="/business/detail?id={{id}}" data-business-id={{id}}>
                     {{#if cover_photo.medium}}
                         <img class="card-img-top img-fluid rounded" src="{{cover_photo.medium}}" alt="{{name}}">

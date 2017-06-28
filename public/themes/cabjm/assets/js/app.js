@@ -659,6 +659,10 @@
         var userProfile = response.data;
         var $modal = $('#detailViewModal');
         var $userPhone = $("#userPhone");
+        
+        if (!userProfile.country_code) {
+            userProfile.country_code = App.config.country_code;
+        }
 
         try {
 
@@ -682,7 +686,7 @@
             });
 
             // User Phone number 
-            $userPhone.intlTelInput({
+            $("#userPhone").intlTelInput({
                 onlyCountries: ['ca', 'us',],
                 separateDialCode: true,
                 selectedCountry: userProfile.country_code,
@@ -744,7 +748,7 @@
         });
 
         if (formData.phone && !formData.country_code) {
-            formData.country_code = 'CA';
+            formData.country_code = App.config.country_code;
         }
 
         App.showSpinner();
@@ -808,29 +812,6 @@
     };
 
     App.buildBusinessesList = function (context) {
-
-        // var template = '<p class="lead">My Points Balance</p>\
-        //                 <p class="display-4 mb-5">'+Number(context.balance.points).toLocaleString()+'</p>';
-
-        // template += '<div class="row">';
-         
-        // var item = '';
-        // for (var i = context.businesses.length - 1; i >= 0; i--) {
-        //     var business = context.businesses[i];
-        //     item = '<div class="col-12 col-md-4">\
-        //                 <div class="card mb-3" style="border: none;">\
-        //                     <img class="card-img-top img-fluid mx-auto" \
-        //                         src="'+business.logo+'" \
-        //                         alt="'+business.name+'" style="max-width: 200px;">\
-        //                 </div>\
-        //             </div>';
-        //     template += item;
-        // }
-
-        // template += '</div>';
-
-        //$('#business__list').html(template);
-
         var intlData = {
             locales: 'en-US'
         }
@@ -880,29 +861,13 @@
         $modal.modal('show');*/
     };
 
-    App.showSubAccountsForm = function (context) {
-        $('#profile_subaccounts_form').show();
-
-        // console.log(context); return;
-        // try{
-        //     var source   = $("#tpl_subaccounts_form").html(); //console.log(source); return;
-        //     var template = Handlebars.compile(source);
-
-        //     $('#profile_subaccounts_form').html(template(context));
-        // } catch (error) {
-        //     console.log(error);
-        // }
-    };
-
     App.buildTransactionsList = function (response) {
         var list = '<table class="table table-striped">';
-        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         var $modal = $('#detailViewModal');
 
         for (var i = 0; i < response.data.length; i++) {
             var trx = response.data[i];
-            var d = new Date(trx.created_at);
-            var createdAt = months[d.getMonth()] +' ' + d.getDate() + ', ' +d.getHours()+':'+d.getMinutes();
+            var createdAt = moment(trx.created_at).format('MMMM D, hh:mm');
 
             list += '<tr>\
                         <td>' + createdAt + '</td>\
