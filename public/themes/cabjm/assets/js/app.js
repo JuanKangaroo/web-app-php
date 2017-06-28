@@ -632,12 +632,12 @@
         }
 
         if (userPhoneNumbers) {
-            if (userEmail.status_code == 33) {
-                $profile.find('#drawerUserPhone').html(userPhoneNumbers.phone);
-                $profile.find('.js-drawer__userPhoneItem').attr('data-phone-value', userPhoneNumbers.phone);
+            if (userPhoneNumbers.status_code == 31) {
+                $profile.find('#drawerUserPhone').html(userPhoneNumbers.mobile);
+                $profile.find('.js-drawer__userPhoneItem').attr('data-phone-value', userPhoneNumbers.mobile);
             } else {
-                $profile.find('#drawerUserPhone').html('Pending - ' + userPhoneNumbers.phone);
-                $profile.find('.js-drawer__userPhoneItem').attr('data-phone-value', 'Pending - ' + userPhoneNumbers.phone);
+                $profile.find('#drawerUserPhone').html('Pending - ' + userPhoneNumbers.mobile);
+                $profile.find('.js-drawer__userPhoneItem').attr('data-phone-value', 'Pending - ' + userPhoneNumbers.mobile);
             }
             $profile.find('.js-drawer__userPhoneItem').attr('data-status-code', userPhoneNumbers.status_code);
         } else {
