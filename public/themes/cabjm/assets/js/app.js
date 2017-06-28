@@ -694,8 +694,9 @@
                 // utilsScript: "/themes/wilsons/assets/js//utils.js"
             });
 
-            $userPhone.on('keyup',function() {
-                var countryCode = $userPhone.intlTelInput("getSelectedCountryData").iso2;
+            $("#userPhone").on('keyup',function() {
+                var countryCode = $("#userPhone").intlTelInput("getSelectedCountryData").iso2;
+                console.log('countryCode', countryCode);
                 $('#userPhoneCountryCode').val(countryCode.toUpperCase());
             });
 

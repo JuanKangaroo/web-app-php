@@ -10,5 +10,6 @@
 
     <address>
         <i class="fa fa-map-marker fa-fw"></i> 
-    94D Old Hope Road, Kgn 6. St. Andrew, Jamaica W.I </address>
+        94D Old Hope Road, Kgn 6. St. Andrew, Jamaica W.I 
+    </address>
 </div>
