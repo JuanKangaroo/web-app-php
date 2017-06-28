@@ -71,6 +71,8 @@
                 App.alert('NOT_OK', error.response.data.phone[0]);
             } else if (error.response.data.token) {
                 App.alert('NOT_OK', error.response.data.token[0]);
+            } else if (error.response.data.country_code) {
+                App.alert('NOT_OK', error.response.data.country_code[0]);
             }
         } else if (error.response.status >= 500) {
             App.alert('NOT_OK', error.response.data.error.description);
@@ -155,17 +157,20 @@
 
     App.verifyCredentials = function (token, email, phone) {
 
+        console.log('phone', phone, 'code', App.config.country_code);
+
         if (email) {
             var data = {
                 intent: 'verify_email',
-                email: email,
                 token: token,
+                email: email,
             };
         } else {
             var data = {
                 intent: 'verify_phone',
-                email: phone,
                 token: token,
+                phone: phone,
+                country_code: App.config.country_code,
             };
         }
 

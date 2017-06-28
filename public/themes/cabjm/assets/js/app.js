@@ -134,14 +134,6 @@
                 App.buildCouponsList(response.data);
             } else if (ajaxOptions.action == 'api_redeem_tpr' && ajaxOptions.method == 'POST') {
                 App.alert('OK', 'You have successfully redeemed a partner reward');
-            } else if (ajaxOptions.action == 'api_verify_credentials') {
-                $('#verify_email_not_verified').hide();
-                App.alert('OK', 'Email successfully verified');
-                //store the user profile in local storage
-                localStorage.setObject('userProfile', response.data);
-                // App.getTokenFromServer(response.data);
-            } else if (ajaxOptions.action == 'add_pos_account') {
-                App.alert('OK', 'Account successfully linked');
             } else if (ajaxOptions.action == 'api_get_transactions') {
                 App.buildTransactionsList(response);
             } else if (ajaxOptions.action == 'api_coupon_detail') {
@@ -276,37 +268,6 @@
         }, App.handleResponse, App.handleError);
     };
 
-    App.verifyCredentials = function (token, email, phone) {
-        console.log('verifyCredentials', token, email);
-
-        if (email) {
-            var data = {
-                intent: 'verify_email',
-                email: email,
-                token: token,
-            };
-        } else {
-            var data = {
-                intent: 'verify_phone',
-                phone: phone,
-                token: token,
-            };
-        }
-
-        //Call directly API without authentication
-        App.showSpinner();
-        axios({
-            url: App.config.api.baseUrl + '/rpc/verify',
-            method: 'POST',
-            data: data,
-            headers: App.config.headers
-        }).then(response => {
-            App.handleResponse(response.data, {action: 'api_verify_credentials'});
-        }).catch (error => {
-            App.handleError(error, {action: 'api_verify_credentials'});
-        });
-    };
-
     App.getLocalAccessToken = function() {
         var token = localStorage.getObject('user_token');
         return token;
@@ -363,22 +324,6 @@
                 return false;
             }
         }, App.handleError);
-    };
-
-    App.verifyEmailIfNotVerified = function () {
-        console.log('verifyEmailIfNotVerified');
-
-        //Get verification token and credetials to verify
-        var emailToken = $('#app').find('[name=verify_token]').val();
-        var emailToVerify = $('#app').find('[name=verify_email]').val();
-        var phoneToVerify = $('#app').find('[name=verify_phone]').val();
-
-        if (emailToken) {
-            console.log('before verifyCredentials');
-            App.verifyCredentials(emailToken, emailToVerify, phoneToVerify);
-        } else {
-            console.log('No Email Verification Token found');
-        }
     };
 
     App.getTransactions = function() {
