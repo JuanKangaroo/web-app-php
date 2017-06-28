@@ -938,22 +938,21 @@
             //login page and user is authenticated
             location.href = App.config.appBaseUrl + '/home';
         } else if (currentUrl == '/business/detail') {
-            //login page and user is authenticated
-            //console.log(location.search);
-            var urlParams = getUrlParams(location.search); console.log(urlParams);
+            var urlParams = getUrlParams(location.search); //console.log(urlParams);
             var id = urlParams['id'];
+
+            App.buildUserProfileDrawer();
             App.getBusinessDetail(id);
-            //App.verifyEmailIfNotVerified();
         }
     };
 
     App.initMap = function (branch) {
         for (var i = 0; i < branch.length; i++) {
-            App.handleData(branch[i]);
+            App.createMapMarker(branch[i]);
         }
     };
 
-    App.handleData = function (branch) {
+    App.createMapMarker = function (branch) {
         var businessId = event;
         var bounds = new google.maps.LatLngBounds();
         var mapOptions = {
@@ -966,19 +965,19 @@
         var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
         //getting the lat and long 
-        var address = branch.address.street.replace(new RegExp("\\\\", "g"), "")+', '+branch.address.city+', '+branch.address.region+', '+branch.address.country;
+        var address = App.buildBranchAddress(branch);
         
         var geocoder = new google.maps.Geocoder();
         geocoder.geocode({
             'address': address
         }, function(results, status) {
 
-            if(branch.address.lat==null)
+            if(!branch.address.lat)
                 var lat = results[0].geometry.location.lat();
             else
                 var lat = branch.address.lat;
 
-            if(branch.address.long==null)
+            if(!branch.address.long)
                 var lon = results[0].geometry.location.lng();
             else
                 var lon = branch.address.long;
@@ -994,20 +993,15 @@
 
             bounds.extend(marker.position);
 
-            var phone = '';
-            if (phone=='') {
-                phone = '<a href="'+branch.web_site+'" style="font-size:12px; font-weight: 500; color: #54c1e2; ">'+branch.web_site+'</a>';
-            }
-           
             var contentString = '<div id="content">'+
               '<div id="siteNotice">'+
               '</div>'+
               '<div id="bodyContent">'+
                   '<div style="font-size:14px; font-weight: 500; color: #000">'+
-                        branch.address.street.replace(new RegExp("\\\\", "g"), "") +
+                        branch.address.formatted.replace(new RegExp("\\\\", "g"), "") +
                   '</div>'+
                   '<div style="font-size:14px; font-weight: 500; color: #54c1e2; ">'+
-                        phone +
+                        branch.name +
                   '</div>'+
               '</div>'+
               '</div>';
@@ -1017,7 +1011,7 @@
                 maxWidth: 300
             });
 
-             google.maps.event.addListener(marker, 'click', function() {
+            google.maps.event.addListener(marker, 'click', function() {
                 infowindow.open(map,marker);
             });
 
