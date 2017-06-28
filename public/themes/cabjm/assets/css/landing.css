@@ -27,7 +27,7 @@ html, body, .container {
 
 .loader #spinner {
     box-sizing: border-box;
-    stroke: #673AB7;
+    stroke: #ffffff; /*673AB7*/
     stroke-width: 3px;
     -webkit-transform-origin: 50%;
     transform-origin: 50%;

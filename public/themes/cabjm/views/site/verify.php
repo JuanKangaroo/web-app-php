@@ -17,7 +17,7 @@
                         </p>
                     </div>
                 <?php elseif($action == 'change' || $action == 'add'): ?>
-                    <div class="alert" role="alert">
+                    <div id="veify_success_verified" style="display: none;">
                         <h4 class="alert-heading">
                             <i class="fa fa-check" style="color: green;"></i>
                             Successfully verified!
@@ -32,7 +32,7 @@
                     </div>
                 <?php endif ?>
 
-                <div class="alert alert-warning" role="alert" id="verify_email_not_veified" style="display: none;">
+                <div id="verify_email_not_veified" style="display: none;">
                     <h4 class="alert-heading">Your email is not verified.</h4>
                     <p>Click the verification link to verify your email.</p>
                 </div>

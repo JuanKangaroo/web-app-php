@@ -27,6 +27,13 @@
                 localStorage.setObject('userProfile', response.data);
                 App.afterSignup(response.data);
                 // location.href = KangarooApi.config.appBaseUrl + KangarooApi.config.appLoginUrl;
+            } else if (ajaxOptions.action == 'api_verify_credentials') {
+                $('#verify_email_not_verified').hide();
+                $('#veify_success_verified').show();
+                // App.alert('OK', 'Email successfully verified');
+                //store the user profile in local storage
+                localStorage.setObject('userProfile', response.data);
+                // App.getTokenFromServer(response.data);
             }
         } catch (e) {
             console.log(e);
@@ -44,11 +51,11 @@
         } else if (error.response.status == 401) {
             App.alert('NOT_OK', error.response.data.message);
         } else if (error.response.status == 404 && 
-            ajaxOptions.action == 'api_verify_credentials' && userProfile && userProfile.email_verified) {
+            ajaxOptions.action == 'api_verify_credentials' && userProfile) {
 
             $('#verify_email_not_veified').hide();
-            App.alert('OK', 'Email successfully verified');
-            // App.alert('NOT_OK', error.response.data.error.description);
+            $('#veify_success_verified').hide();
+            App.alert('NOT_OK', error.response.data.error.description);
         } else if (error.response.status == 404) {
             App.alert('NOT_OK', error.response.data.error.description);
         } else if (error.response.status == 422) {
