@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
             <div class="form-group mt-2">
-                <input id="newemail" type="email" class="form-control form-control-lg text-center" name="newemail" placeholder="New email" required="true">
+                <input id="email" type="email" class="form-control form-control-lg text-center" name="email" placeholder="New email" required="true">
             </div>
         </div>
     </div>

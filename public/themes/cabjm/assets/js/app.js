@@ -45,8 +45,6 @@
         });
 
         Handlebars.registerHelper("offerLabel", function(offer) {
-            console.log(offer);
-
             var offerType = offer.type;
             var r = {val1:'', val2:''};
 
@@ -110,14 +108,23 @@
         console.trace('action', ajaxOptions.action, 'data', response);
         try {
             if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
-                localStorage.setObject('userProfile', response.data.profile);
+                App.setLocalUserProfile(response.data.profile);
+                App.setLocalUserEmails(response.data.user_emails);
+                App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
+                
                 //fill the page with the info from API
-                App.buildUserProfileDrawer(response.data.profile);
+                App.buildUserProfileDrawer();
                 App.buildBusinessesList(response.data);
             } else if (ajaxOptions.action == 'api_user_profile' && ajaxOptions.method == 'GET') {
-                localStorage.setObject('userProfile', response.data.profile);
+                //localStorage.setObject('userProfile', response.data.profile);
+                App.setLocalUserProfile(response.data.profile);
+                App.setLocalUserEmails(response.data.user_emails);
+                App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
             }  else if (ajaxOptions.action == 'api_update_profile') {
                 localStorage.setObject('userProfile', response.data);
+                //App.setLocalUserProfile(response.data.profile);
+                //App.setLocalUserEmails(response.data.user_emails);
+                //App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
                 $('#detailViewModal').modal('hide');
                 App.alert('OK', 'Profile successfully saved.');
             } else if (ajaxOptions.action == 'api_rewards' && ajaxOptions.method == 'GET') {
@@ -145,6 +152,18 @@
             } else if (ajaxOptions.action == 'api_update_pin') {
                 App.alert('OK', 'Pin Code successfully saved');
                 $('#detailViewModal').modal('hide');
+            } else if (ajaxOptions.action == 'api_add_change_email') {
+                App.alert('OK', 'Email successfully saved');
+                $('#detailViewModal').modal('hide');
+                App.setLocalUserProfile(response.data.profile);
+                App.setLocalUserEmails(response.data.user_emails);
+                App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
+            } else if (ajaxOptions.action == 'api_add_change_phone') {
+                App.alert('OK', 'Phone successfully saved');
+                $('#detailViewModal').modal('hide');
+                App.setLocalUserProfile(response.data.profile);
+                App.setLocalUserEmails(response.data.user_emails);
+                App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
             }
         } catch (e) {
             console.log(e);
@@ -270,7 +289,6 @@
         }
 
         //Call directly API without authentication
-
         App.showSpinner();
         axios({
             url: App.config.api.baseUrl + '/verify',
@@ -284,14 +302,35 @@
         });
     };
 
-
     App.getLocalAccessToken = function() {
         var token = localStorage.getObject('user_token');
         return token;
     };
 
+    App.setLocalUserProfile = function(params) {
+        localStorage.setObject('userProfile', params);
+    };
+
+    App.setLocalUserEmails = function(params) {
+        if (params.length == 0) localStorage.setObject('userEmails', null);
+        else localStorage.setObject('userEmails', params[0]);
+    };
+
+    App.setLocalUserPhoneNumbers = function(params) {
+        if (params.length == 0) localStorage.setObject('userPhoneNumbers', null);
+        else localStorage.setObject('userPhoneNumbers', params[0]);
+    };
+
     App.getLocalUserProfile = function() {
         return localStorage.getObject('userProfile');
+    };
+
+    App.getLocalUserEmails = function() {
+        return localStorage.getObject('userEmails');
+    };
+
+    App.getLocalUserPhoneNumbers = function() {
+        return localStorage.getObject('userPhoneNumbers');
     };
 
     App.checkEmailVerified = function () {
@@ -370,15 +409,26 @@
         $('body').removeClass('pushy-open-left');
     };
 
-    App.addChangeEmail = function(event) {
+    App.addChangeEmail = function(params) {
         var $modal = $('#detailViewModal');
         var source = $("#tpl_add_change_email").html();
         $modal.find('.modal-body').html(source);
-        $modal.find('.modal-title').text('');
+        $modal.find('.modal-title').text(params.emailValue);
         $modal.modal('show');
         $('body').removeClass('pushy-open-left');
     };
 
+    App.addChangePhone = function(params) {
+        var params = {country_code: App.config.api.country_code};
+        var $modal = $('#detailViewModal');
+        var source = $("#tpl_add_change_phone").html();
+        var template = Handlebars.compile(source);
+        $modal.find('.modal-body').html(template(params));
+        //$modal.find('.modal-body').html(source);
+        $modal.find('.modal-title').text(params.emailValue);
+        $modal.modal('show');
+        $('body').removeClass('pushy-open-left');
+    };
 
     App.getUserId = function () {
         var userProfile = App.getLocalUserProfile();
@@ -482,7 +532,13 @@
     });
 
     $('.js-drawer__userEmailItem').on('click', function(event){
-        App.addChangeEmail(event);
+        var params = {statusCode: $(this).data('statusCode'), emailValue: $(this).data('emailValue')};
+        App.addChangeEmail(params);
+    });
+
+    $('.js-drawer__userPhoneItem').on('click', function(event){
+        var params = {statusCode: $(this).data('statusCode'), emailValue: $(this).data('phoneValue')};
+        App.addChangePhone(params);
     });
 
     $(document).on('click', '#addChangeEmailCancel', function(event){
@@ -495,6 +551,15 @@
         App.saveAddChangeEmail();
     });
 
+    $(document).on('click', '#addChangePhoneCancel', function(event){
+        event.preventDefault();
+        $('#detailViewModal').modal('hide');
+    });
+
+    $(document).on('click', '#addChangePhoneSave', function(event){
+        event.preventDefault();
+        App.saveAddChangePhone();
+    });
 
     $(document).on('click', '.js-coupon-detail', function (e) {
         App.showSpinner();
@@ -504,16 +569,6 @@
             action: 'api_coupon_detail',
             params: {},
         }, App.handleResponse, App.handleError);
-    });
-
-    $(document).on('click', '.js-business-detail', function (e) {
-/*      App.showSpinner();
-        api.client.request({
-            url: App.config.api.endpoints.business_detail.replace('{businessid}', $(this).data('businessId')),
-            method: 'GET',
-            action: 'api_business_detail',
-            params: {},
-        }, App.handleResponse, App.handleError);*/
     });
 
     /*****************************************************************************
@@ -539,8 +594,12 @@
         App.spinner.removeAttribute('hidden');
     };
 
-    App.buildUserProfileDrawer = function (profile) {
+    App.buildUserProfileDrawer = function () {
         // console.log(context); return;
+        var profile = App.getLocalUserProfile();
+        var userEmail = App.getLocalUserEmails();
+        var userPhoneNumbers = App.getLocalUserPhoneNumbers();
+
         var $profile = $('#drawer');
 
         if (profile.first_name && profile.last_name) {
@@ -548,16 +607,34 @@
             $profile.find('#drawerUserName').html(fullName.trim());
         }
 
-        if (profile.email) {
-            $profile.find('#drawerUserEmail').html(profile.email);
+        if (userEmail) {
+            if (userEmail.status_code == 33) {
+                $profile.find('#drawerUserEmail').html(userEmail.email);
+                $profile.find('.js-drawer__userEmailItem').attr('data-email-value', userEmail.email);
+            } else {
+                $profile.find('#drawerUserEmail').html('Pending');
+                $profile.find('.js-drawer__userEmailItem').attr('data-email-value', 'Pending');
+            }
+            $profile.find('.js-drawer__userEmailItem').attr('data-status-code', userEmail.status_code);
         } else {
-            $profile.find('.js-drawer__userEmailItem').hide();
+            $profile.find('#drawerUserEmail').html('Add your Email');
+            $profile.find('.js-drawer__userEmailItem').attr('data-status-code', 0);
+            $profile.find('.js-drawer__userEmailItem').attr('data-email-value', 'Add your Email');
         }
 
-        if (profile.phone) {
-            $profile.find('#drawerUserPhone').html(profile.phone);
+        if (userPhoneNumbers) {
+            if (userEmail.status_code == 33) {
+                $profile.find('#drawerUserPhone').html(userPhoneNumbers.phone);
+                $profile.find('.js-drawer__userPhoneItem').attr('data-phone-value', userPhoneNumbers.phone);
+            } else {
+                $profile.find('#drawerUserPhone').html('Pending');
+                $profile.find('.js-drawer__userPhoneItem').attr('data-phone-value', 'Pending');
+            }
+            $profile.find('.js-drawer__userPhoneItem').attr('data-status-code', userPhoneNumbers.status_code);
         } else {
-            $profile.find('.js-drawer__userPhoneItem').hide();
+            $profile.find('#drawerUserPhone').html('Add your Phone');
+            $profile.find('.js-drawer__userPhoneItem').attr('data-status-code', 0);
+            $profile.find('.js-drawer__userPhoneItem').attr('data-phone-value', 'Add your Phone');
         }
 
         if (profile.profile_photo) {
@@ -702,6 +779,23 @@
             url: App.config.api.endpoints.users + '/' + App.getUserId(),
             method: 'PATCH',
             action: 'api_add_change_email',
+            params: formData,
+        }, App.handleResponse, App.handleError);
+    };
+
+    App.saveAddChangePhone = function() {
+        var formData = {};
+        
+        //get form data as object
+        $('#addChangePhoneForm').serializeArray().map(function (x) {
+            formData[x.name] = x.value;
+        });
+
+        App.showSpinner();
+        api.client.request({
+            url: App.config.api.endpoints.users + '/' + App.getUserId(),
+            method: 'PATCH',
+            action: 'api_add_change_phone',
             params: formData,
         }, App.handleResponse, App.handleError);
     };
@@ -864,15 +958,14 @@
             App.getAccount(); //home page
         } else if (currentUrl == '/coupons') {
             $('.navbar-top').find('#menu_coupons').addClass('active');
-            var userProfile = App.getLocalUserProfile();
+            //var userProfile = App.getLocalUserProfile();
             //fill the page with the info from API
-            App.buildUserProfileDrawer(userProfile);
+            App.buildUserProfileDrawer();
             App.getCoupons();
         } else if (currentUrl == App.isAuthenticated()) {
             //login page and user is authenticated
             location.href = App.config.appBaseUrl + '/home';
         } else if (currentUrl == '/business/detail') {
-            console.log('entro aca');
             //login page and user is authenticated
             console.log(location.search);
             var urlParams = getUrlParams(location.search); console.log(urlParams);
