@@ -145,7 +145,6 @@
             } else if (ajaxOptions.action == 'api_get_transactions') {
                 App.buildTransactionsList(response);
             } else if (ajaxOptions.action == 'api_coupon_detail') {
-                console.log(response.data);
                 App.buildCouponDetail(response);
             } else if (ajaxOptions.action == 'api_business_detail') {
                 App.buildBusinessDetail(response.data);
@@ -155,15 +154,21 @@
             } else if (ajaxOptions.action == 'api_add_change_email') {
                 App.alert('OK', 'Email successfully saved');
                 $('#detailViewModal').modal('hide');
-                App.setLocalUserProfile(response.data.profile);
                 App.setLocalUserEmails(response.data.user_emails);
                 App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
+                delete response.data["user_emails"];
+                delete response.data["user_phone_numbers"];
+                App.setLocalUserProfile(response.data);
+                App.buildUserProfileDrawer();
             } else if (ajaxOptions.action == 'api_add_change_phone') {
                 App.alert('OK', 'Phone successfully saved');
                 $('#detailViewModal').modal('hide');
-                App.setLocalUserProfile(response.data.profile);
                 App.setLocalUserEmails(response.data.user_emails);
                 App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
+                delete response.data["user_emails"];
+                delete response.data["user_phone_numbers"];
+                App.setLocalUserProfile(response.data);
+                App.buildUserProfileDrawer();
             }
         } catch (e) {
             console.log(e);
@@ -317,8 +322,12 @@
     };
 
     App.setLocalUserPhoneNumbers = function(params) {
-        if (params.length == 0) localStorage.setObject('userPhoneNumbers', null);
-        else localStorage.setObject('userPhoneNumbers', params[0]);
+        if (params.length == 0) 
+            localStorage.setObject('userPhoneNumbers', null);
+        else {
+            console.log(params[0]);
+            localStorage.setObject('userPhoneNumbers', params[0]);
+        }
     };
 
     App.getLocalUserProfile = function() {
@@ -419,13 +428,13 @@
     };
 
     App.addChangePhone = function(params) {
-        var params = {country_code: App.config.api.country_code};
+        var paramsPhone = {country_code: App.config.country_code};
         var $modal = $('#detailViewModal');
         var source = $("#tpl_add_change_phone").html();
         var template = Handlebars.compile(source);
-        $modal.find('.modal-body').html(template(params));
+        $modal.find('.modal-body').html(template(paramsPhone));
         //$modal.find('.modal-body').html(source);
-        $modal.find('.modal-title').text(params.emailValue);
+        $modal.find('.modal-title').text(params.phoneValue);
         $modal.modal('show');
         $('body').removeClass('pushy-open-left');
     };
@@ -537,7 +546,7 @@
     });
 
     $('.js-drawer__userPhoneItem').on('click', function(event){
-        var params = {statusCode: $(this).data('statusCode'), emailValue: $(this).data('phoneValue')};
+        var params = {statusCode: $(this).data('statusCode'), phoneValue: $(this).data('phoneValue')};
         App.addChangePhone(params);
     });
 
@@ -612,8 +621,8 @@
                 $profile.find('#drawerUserEmail').html(userEmail.email);
                 $profile.find('.js-drawer__userEmailItem').attr('data-email-value', userEmail.email);
             } else {
-                $profile.find('#drawerUserEmail').html('Pending');
-                $profile.find('.js-drawer__userEmailItem').attr('data-email-value', 'Pending');
+                $profile.find('#drawerUserEmail').html('Pending - ' + userEmail.email);
+                $profile.find('.js-drawer__userEmailItem').attr('data-email-value', 'Pending - ' + userEmail.email);
             }
             $profile.find('.js-drawer__userEmailItem').attr('data-status-code', userEmail.status_code);
         } else {
@@ -627,8 +636,8 @@
                 $profile.find('#drawerUserPhone').html(userPhoneNumbers.phone);
                 $profile.find('.js-drawer__userPhoneItem').attr('data-phone-value', userPhoneNumbers.phone);
             } else {
-                $profile.find('#drawerUserPhone').html('Pending');
-                $profile.find('.js-drawer__userPhoneItem').attr('data-phone-value', 'Pending');
+                $profile.find('#drawerUserPhone').html('Pending - ' + userPhoneNumbers.phone);
+                $profile.find('.js-drawer__userPhoneItem').attr('data-phone-value', 'Pending - ' + userPhoneNumbers.phone);
             }
             $profile.find('.js-drawer__userPhoneItem').attr('data-status-code', userPhoneNumbers.status_code);
         } else {
@@ -754,8 +763,6 @@
         $('#changePinForm').serializeArray().map(function (x) {
             formData[x.name] = x.value;
         });
-
-        console.log(formData);
 
         App.showSpinner();
         api.client.request({
@@ -967,7 +974,7 @@
             location.href = App.config.appBaseUrl + '/home';
         } else if (currentUrl == '/business/detail') {
             //login page and user is authenticated
-            console.log(location.search);
+            //console.log(location.search);
             var urlParams = getUrlParams(location.search); console.log(urlParams);
             var id = urlParams['id'];
             App.getBusinessDetail(id);

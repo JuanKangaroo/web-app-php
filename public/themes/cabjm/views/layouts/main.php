@@ -61,7 +61,7 @@
                 <li class="pushy-link js-drawer__userPhoneItem" data-status-code="" data-phone-value="">
                     <a href="#">
                         <i class="fa fa-mobile fa-fw" aria-hidden="true"></i>
-                        <span id="drawerUserPhone" style="font-size: larger;"></span>
+                        <span id="drawerUserPhone"></span>
                     </a>
                 </li>
                 <li class="pushy-link"><a href="#" id="logout">Log Out</a></li>
