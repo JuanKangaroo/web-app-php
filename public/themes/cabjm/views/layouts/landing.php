@@ -13,6 +13,7 @@
     </script>
     <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/landing.css?v=<?= $config['version'] ?>">
+    <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/animate.css">
     <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/font-awesome.min.css">
     
     <!-- TODO add manifest here -->
