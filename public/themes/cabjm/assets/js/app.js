@@ -296,7 +296,7 @@
         //Call directly API without authentication
         App.showSpinner();
         axios({
-            url: App.config.api.baseUrl + '/verify',
+            url: App.config.api.baseUrl + '/rpc/verify',
             method: 'POST',
             data: data,
             headers: App.config.headers
