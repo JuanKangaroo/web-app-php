@@ -23,10 +23,10 @@
                             Successfully verified!
                         </h4>
                         <?php if ($email): ?>
-                            <p>Congratulations! You have successfully verified the email address: <? $email ?>.</p>
+                            <p>Congratulations! You have successfully verified the email address: <?= $email ?>.</p>
                             <p>If you want to change the email address, you may go to "Account" and change it.</p>
                         <?php elseif($phone): ?>
-                            <p>Congratulations! You have successfully verified the phone number: <? $phone ?>.</p>
+                            <p>Congratulations! You have successfully verified the phone number: <?= $phone ?>.</p>
                             <p>If you want to change the phone number, you may go to "Account" and change it.</p>
                         <?php endif ?>
                     </div>
