@@ -52,13 +52,13 @@
                         <i class="fa fa-key fa-fw" aria-hidden="true"></i> Change PIN
                     </a>
                 </li>
-                <li class="pushy-link js-drawer__userEmailItem">
+                <li class="pushy-link js-drawer__userEmailItem" data-status-code="" data-email-value="">
                     <a href="#">
                         <i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i>
                         <span id="drawerUserEmail"></span>
                     </a>
                 </li>
-                <li class="pushy-link js-drawer__userPhoneItem">
+                <li class="pushy-link js-drawer__userPhoneItem" data-status-code="" data-phone-value="">
                     <a href="#">
                         <i class="fa fa-mobile fa-fw" aria-hidden="true"></i>
                         <span id="drawerUserPhone" style="font-size: larger;"></span>
@@ -143,7 +143,7 @@
         require_once __DIR__ . '/../templates/businessDetail.tpl';
         require_once __DIR__ . '/../templates/changePin.tpl';
         require_once __DIR__ . '/../templates/addChangeEmail.tpl';
-        
+        require_once __DIR__ . '/../templates/addChangePhone.tpl';
     ?>
     
     <link rel="stylesheet" type="text/css" href="/themes/<?= $config['theme'] ?>/assets/css/bootstrap-datetimepicker-4.17.47.min.css">
