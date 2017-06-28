@@ -793,18 +793,15 @@
         var source = $("#tpl_coupon_detail").html();
         var template = Handlebars.compile(source); 
         $modal.find('.modal-body').html(template(context.data));
+        $modal.find('.modal-title').empty();
         $modal.modal('show');
     };
 
     App.buildBusinessDetail = function (context) {
-        //var $modal = $('#detailViewModal');
         var source = $("#tpl_business_detail").html();
         var template = Handlebars.compile(source);
         $('#business__detail').html(template(context));
         App.initMap(context.branches);
-        /*$modal.find('.modal-body').html(template(context.data));
-        App.initMap(context.data.branches);
-        $modal.modal('show');*/
     };
 
     App.buildTransactionsList = function (response) {
