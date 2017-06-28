@@ -288,7 +288,7 @@
         } else {
             var data = {
                 intent: 'verify_phone',
-                email: phone,
+                phone: phone,
                 token: token,
             };
         }
