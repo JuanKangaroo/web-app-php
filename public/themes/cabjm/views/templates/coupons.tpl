@@ -5,9 +5,9 @@
     <div class="row justify-content-center">
         {{#each offers}}
             <div class="col-12 col-md-6 col-lg-4 mb-3 animated fadeIn">
-                <div class="card pointer js-coupon-detail" data-coupon-id={{id}}>
+                <div class="card pointer js-coupon-detail" style="min-width: 320px; min-height: 170px;" data-coupon-id={{id}}>
                     {{#if images.0.medium}}
-                        <img class="card-img-top img-fluid rounded" src="{{images.0.medium}}" alt="{{name}}">
+                        <img class="card-img-top img-fluid rounded" src="{{images.0.large}}" alt="{{name}}">
                     {{else}}
                         <img class="card-img-top img-fluid rounded" src="/themes/cabjm/assets/images/nologo.png" alt="{{name}}">
                     {{/if}}

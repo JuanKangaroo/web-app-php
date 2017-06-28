@@ -2,13 +2,13 @@
     <div class="row justify-content-center">
         <div class="col-12 col-md-6">
             <div class="row justify-content-center">
-                <div style="width: 100%;">
+                <div class="w-100" style="position: relative;">
                     {{#if images.0.medium}}
                         <img class="card-img-top img-fluid" src="{{images.0.medium}}" alt="{{title}}" style="width: 100%;">
                     {{else}}
                         <img class="card-img-top img-fluid" src="/themes/cabjm/assets/images/nologo.png" alt="{{title}}" style="width: 100%;">
                     {{/if}}
-                    <div class="logo-business">
+                    <div class="logo-business offer-details">
                         <img class="rounded float-right" src="{{branch.logo.thumbnail}}" alt="{{branch.name}}" style="max-width: 100px;">
                     </div>
                     <div class="offer_triangle__container">

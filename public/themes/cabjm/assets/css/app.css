@@ -409,6 +409,10 @@ body {
     bottom: 35px;
 }
 
+.logo-business.offer-details{
+    bottom: 10px;
+}
+
 .offer_triangle__container {
     width: 120px;
     height: 120px;
