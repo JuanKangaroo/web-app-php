@@ -108,30 +108,28 @@
         console.trace('action', ajaxOptions.action, 'data', response);
         try {
             if (ajaxOptions.action == 'api_account' && ajaxOptions.method == 'GET') {
-                App.setLocalUserProfile(response.data.profile);
-                App.setLocalUserEmails(response.data.user_emails);
-                App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
+                App.setLocalUserProfile(response.data);
+                App.setLocalUserEmails(response.included.user_emails);
+                App.setLocalUserPhoneNumbers(response.included.user_phone_numbers);
                 
                 //fill the page with the info from API
                 App.buildUserProfileDrawer();
-                App.buildBusinessesList(response.data);
+                App.buildBusinessesList(response.included);
             } else if (ajaxOptions.action == 'api_user_profile' && ajaxOptions.method == 'GET') {
-                //localStorage.setObject('userProfile', response.data.profile);
-                App.setLocalUserProfile(response.data.profile);
-                App.setLocalUserEmails(response.data.user_emails);
-                App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
+                App.setLocalUserProfile(response.data);
+                App.setLocalUserEmails(response.included.user_emails);
+                App.setLocalUserPhoneNumbers(response.included.user_phone_numbers);
             }  else if (ajaxOptions.action == 'api_update_profile') {
-                localStorage.setObject('userProfile', response.data);
-                //App.setLocalUserProfile(response.data.profile);
-                //App.setLocalUserEmails(response.data.user_emails);
-                //App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
+                App.setLocalUserProfile(response.data);
+                App.setLocalUserEmails(response.included.user_emails);
+                App.setLocalUserPhoneNumbers(response.included.user_phone_numbers);
                 $('#detailViewModal').modal('hide');
                 App.alert('OK', 'Profile successfully saved.');
             } else if (ajaxOptions.action == 'api_rewards' && ajaxOptions.method == 'GET') {
                 //fill the page with the info from API
                 App.buildRewardsList(response.data);
             } else if (ajaxOptions.action == 'api_coupons' && ajaxOptions.method == 'GET') {
-                App.buildCouponsList(response.data);
+                App.buildCouponsList(response.included);
             } else if (ajaxOptions.action == 'api_redeem_tpr' && ajaxOptions.method == 'POST') {
                 App.alert('OK', 'You have successfully redeemed a partner reward');
             } else if (ajaxOptions.action == 'api_get_transactions') {
@@ -139,26 +137,22 @@
             } else if (ajaxOptions.action == 'api_coupon_detail') {
                 App.buildCouponDetail(response);
             } else if (ajaxOptions.action == 'api_business_detail') {
-                App.buildBusinessDetail(response.data);
+                App.buildBusinessDetail(response);
             } else if (ajaxOptions.action == 'api_update_pin') {
                 App.alert('OK', 'Pin Code successfully saved');
                 $('#detailViewModal').modal('hide');
             } else if (ajaxOptions.action == 'api_add_change_email') {
                 App.alert('OK', 'Email successfully saved');
                 $('#detailViewModal').modal('hide');
-                App.setLocalUserEmails(response.data.user_emails);
-                App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
-                delete response.data["user_emails"];
-                delete response.data["user_phone_numbers"];
+                App.setLocalUserEmails(response.included.user_emails);
+                App.setLocalUserPhoneNumbers(response.included.user_phone_numbers);
                 App.setLocalUserProfile(response.data);
                 App.buildUserProfileDrawer();
             } else if (ajaxOptions.action == 'api_add_change_phone') {
                 App.alert('OK', 'Phone successfully saved');
                 $('#detailViewModal').modal('hide');
-                App.setLocalUserEmails(response.data.user_emails);
-                App.setLocalUserPhoneNumbers(response.data.user_phone_numbers);
-                delete response.data["user_emails"];
-                delete response.data["user_phone_numbers"];
+                App.setLocalUserEmails(response.included.user_emails);
+                App.setLocalUserPhoneNumbers(response.included.user_phone_numbers);
                 App.setLocalUserProfile(response.data);
                 App.buildUserProfileDrawer();
             }
@@ -801,7 +795,7 @@
         var source = $("#tpl_business_detail").html();
         var template = Handlebars.compile(source);
         $('#business__detail').html(template(context));
-        App.initMap(context.branches);
+        App.initMap(context.included.branches);
     };
 
     App.buildTransactionsList = function (response) {
